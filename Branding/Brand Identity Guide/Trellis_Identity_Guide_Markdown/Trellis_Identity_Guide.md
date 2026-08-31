@@ -1,4 +1,4 @@
-# Trellis — Visual & Verbal Identity Guide (v2.1, August 2026)
+# Trellis — Visual & Verbal Identity Guide (v2.2, August 2026)
 
 Published artifact (full designed version — logo, color, type, voice, tagline, in-product proof): https://claude.ai/code/artifact/8dbdd7ac-d76f-48d0-99c5-5185a7c6fd0c
 (Rebuilt Aug 28, 2026 with the finalized Fraunces-wordmark logo art and full logo/icon specimen set.)
@@ -6,7 +6,7 @@ Published artifact (full designed version — logo, color, type, voice, tagline,
 This doc is a text summary for search inside the project. See the artifact for the actual visual specimens.
 
 ## 1. Logo & Trademark — FINALIZED (logo art updated Aug 27, 2026)
-The mark: two fence posts joined by a top rail and a bold X crossbar — a plain, solid-fill drawing of an actual trellis panel, no outline, no gradient. Works as icon alone (favicon, app icon, avatar) or paired with the wordmark, the same "stands alone or combined" model as Slack's icon and lockup.
+The mark: an open trellis grid — two vertical posts crossed by three horizontal rails — with a single climbing vine weaving diagonally through the grid and sprouting two simple leaves. A plain, solid-fill drawing, no outline, no gradient. Works as icon alone (favicon, app icon, avatar) or paired with the wordmark, the same "stands alone or combined" model as Slack's icon and lockup.
 - **Wordmark typeface: Fraunces, Bold** — reserved for the logotype at this weight; Fraunces at lighter weights also carries headlines and the tagline (see Typography), so the wordmark and the rest of the brand's display type now share one family instead of two. This replaces the earlier decision to set the wordmark in Source Serif 4 Bold.
 - **Primary lockup:** Ink (#1D2A20) icon + wordmark on Paper/white.
 - **Reversed:** Paper/white icon + wordmark on a dark ground (Ink or Moss Deep).
@@ -14,8 +14,6 @@ The mark: two fence posts joined by a top rail and a bold X crossbar — a plain
 - Minimum clear space = the width of one post, on all sides. Icon reads correctly down to 16px.
 - Don't: outline the mark, add a drop shadow, stretch it off-square, substitute the wordmark typeface, or permanently attach the tagline to the lockup in-product.
 - Final logo files (transparent PNGs — icon alone and horizontal icon+wordmark lockup, each in black, white, and Moss Deep green) live in the Branding/New final logo folder and have replaced the placeholder logo art in the identity guide's asset set.
-
-Design history: earlier rounds explored a circular lattice-and-bud mark, a dense crosshatch pattern, several structure+vine icon concepts, and a version where the double-L in "Trellis" was rebuilt as the trellis posts (rejected — read as an "H"). The finalized direction returned to a separate icon + wordmark pair, with the icon drawn as a literal, solid-fill trellis panel. The wordmark typeface was later revisited: the original typography study picked Source Serif 4 over Fraunces (judged too soft/curved against the icon's geometry at the time), but the final produced logo art uses Fraunces Bold — recorded here as the current standard.
 
 ## 2. Color Palette
 | Name | Hex | Role |
@@ -63,4 +61,4 @@ Sample microcopy:
 ## 6. In Product (proof point)
 The Health Score card is where color, type, and voice all have to hold up at once: large mono score + gold delta, Moss progress bar, plain-language copy naming what changed and what's next, Moss Deep CTA.
 
-*Status: living document. Logo finalized Aug 2026 after several design rounds; wordmark typeface switched from Source Serif 4 to Fraunces on Aug 27, 2026 to match the final produced logo art; identity guide artifact rebuilt Aug 28, 2026 with the full logo specimen set; revisit after first real user/UI testing.*
+*Status: living document. Logo finalized Aug 2026; wordmark typeface switched from Source Serif 4 to Fraunces on Aug 27, 2026 to match the final produced logo art; identity guide artifact rebuilt Aug 28, 2026 with the full logo specimen set; logo description corrected Aug 31, 2026 to match the final open-grid-and-vine mark; revisit after first real user/UI testing.*
