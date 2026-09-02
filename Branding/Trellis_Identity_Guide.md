@@ -71,6 +71,7 @@ Sample microcopy:
 
 ## 5. Tagline & Verbal System
 - **Primary tagline:** "Give your content something to climb."
+- **One-sentence definition:** "Trellis is a digital marketing workspace that analyzes your website, recommends prioritized SEO, AEO, and SEM improvements, and helps you manage and measure your progress."
 - **Positioning line** (pitch/landing): "A complete search strategy — without the consultant-sized invoice."
 - **In-app empty state:** "Every plant needs something to climb. Add your first site to get started."
 - **Onboarding/email:** "You bring the content. We'll bring the structure."

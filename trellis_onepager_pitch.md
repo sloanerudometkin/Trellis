@@ -4,6 +4,8 @@
 
 ## The Promise
 
+**Trellis is a digital marketing workspace that analyzes your website, recommends prioritized SEO, AEO, and SEM improvements, and helps you manage and measure your progress.**
+
 Trellis helps resource-limited marketers discover what their website needs, decide what to do first, manage the work through completion, and show how their search strategy is improving — all in one workspace.
 
 The user submits a website URL, and Trellis analyzes the site, produces prioritized SEO, Answer Engine Optimization (AEO), and paid-search recommendations, turns accepted recommendations into trackable tasks, and automatically saves reports that show progress across repeated analyses.

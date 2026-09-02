@@ -18,9 +18,11 @@
 
 ## What is Trellis?
 
+**Trellis is a digital marketing workspace that analyzes your website, recommends prioritized SEO, AEO, and SEM improvements, and helps you manage and measure your progress.**
+
 A **trellis** is a framework that gives a climbing plant something to grow against — the plant supplies the growth, the trellis supplies the structure. Website content works the same way: most small teams aren't short on ambition, they're short on structure — a prioritized order to work in, a place to track what's done, and a way to see whether it's working.
 
-Trellis submits a website URL, then analyzes the site and turns that analysis into a single guided workflow:
+You submit a website URL, then Trellis analyzes the site and turns that analysis into a single guided workflow:
 
 **Analyze → Recommend → Prioritize → Complete the work → Rescan → Measure progress**
 

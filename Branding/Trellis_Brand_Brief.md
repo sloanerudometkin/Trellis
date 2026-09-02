@@ -2,6 +2,7 @@
 
 **Recommended name:** Trellis
 **Tagline:** "Give your content something to climb."
+**One-sentence definition:** Trellis is a digital marketing workspace that analyzes your website, recommends prioritized SEO, AEO, and SEM improvements, and helps you manage and measure your progress.
 **Positioning:** For the solo marketer or nonprofit team doing SEO, AEO, and SEM alone, Trellis is the accessible audit-to-published growth strategy workspace built for the person most search tools overwhelm or price out.
 
 **Customer-facing promise:** Know what to fix, what to create, and what to do next — without needing an expensive search consultancy.

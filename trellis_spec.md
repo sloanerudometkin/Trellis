@@ -2,7 +2,9 @@
 
 Software Requirements Specification (v2.2 — September 2, 2026)
 
-*Trellis is an agentic-AI web application that helps digital marketing managers plan, prioritize, and organize a full organic-and-paid search growth strategy — SEO, Answer Engine Optimization (AEO), and SEM (paid search) — by packaging consultancy-style guidance into a repeatable workspace built entirely on free tiers and open-source software.*
+**Plain-language definition:** Trellis is a digital marketing workspace that analyzes your website, recommends prioritized SEO, AEO, and SEM improvements, and helps you manage and measure your progress.
+
+**Technical definition:** Trellis is an agentic-AI web application that helps digital marketing managers plan, prioritize, and organize a full organic-and-paid search growth strategy — SEO, Answer Engine Optimization (AEO), and SEM (paid search) — by packaging consultancy-style guidance into a repeatable workspace built entirely on free tiers and open-source software.
 
 **Product promise:** Trellis helps resource-limited marketers discover what their website needs, decide what to do first, manage the work through completion, and show how their search strategy is improving — all in one workspace.
 
