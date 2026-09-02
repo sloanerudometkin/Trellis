@@ -1,0 +1,96 @@
+@font-face {
+  font-family: "Fraunces";
+  src: url("../assets/Fonts/Fraunces/Fraunces-Variable.ttf") format("truetype-variations");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Public Sans";
+  src: url("../assets/Fonts/PublicSans/PublicSans-Variable.ttf") format("truetype-variations");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../assets/Fonts/IBMPlexMono/IBMPlexMono-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --color-paper: #f1f3ea;
+  --color-ink: #1d2a20;
+  --color-moss: #3f6b4a;
+  --color-moss-deep: #2c4e35;
+  --color-gold: #a9791f;
+  --color-sage-tint: #e2e9db;
+  --color-white: #ffffff;
+
+  --color-page: var(--color-paper);
+  --color-surface: var(--color-white);
+  --color-surface-subtle: var(--color-sage-tint);
+  --color-text: var(--color-ink);
+  --color-text-muted: #536257;
+  --color-heading: var(--color-moss-deep);
+  --color-action: var(--color-moss-deep);
+  --color-action-hover: #203c28;
+  --color-action-pressed: #172d1e;
+  --color-link: var(--color-moss);
+  --color-border: #bdc8ba;
+  --color-focus: #785513;
+  --color-progress: var(--color-moss);
+  --color-highlight: var(--color-gold);
+  --color-error: #9b2c2c;
+  --color-success: #28613a;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Public Sans", Arial, sans-serif;
+  --font-utility: "IBM Plex Mono", "Courier New", monospace;
+
+  --text-display: clamp(3rem, 6vw, 5.5rem);
+  --text-h1: clamp(2.5rem, 5vw, 4.5rem);
+  --text-h2: clamp(2rem, 3.5vw, 3.25rem);
+  --text-h3: clamp(1.5rem, 2.25vw, 2rem);
+  --text-h4: 1.25rem;
+  --text-body-lg: 1.125rem;
+  --text-body: 1rem;
+  --text-body-sm: 0.875rem;
+  --text-label: 0.875rem;
+  --text-utility: 0.875rem;
+
+  --leading-display: 0.98;
+  --leading-heading: 1.1;
+  --leading-body: 1.6;
+  --leading-compact: 1.35;
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-6: 3rem;
+  --space-8: 4rem;
+  --space-12: 6rem;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 2px rgb(29 42 32 / 8%), 0 8px 24px rgb(29 42 32 / 6%);
+  --focus-ring: 0 0 0 3px var(--color-paper), 0 0 0 6px var(--color-focus);
+  --content-reading: 70ch;
+  --content-wide: 75rem;
+  --control-min-height: 2.75rem;
+  --transition-fast: 150ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+  }
+}

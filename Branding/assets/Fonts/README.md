@@ -5,16 +5,16 @@ Font files for the Trellis brand system, matching `Trellis_Identity_Guide.md` an
 ## Fraunces — display
 Wordmark logotype (Bold), headlines, and the tagline. Use weight ~500 for headlines/tagline, Bold reserved for the logotype itself.
 - `Fraunces-Variable.ttf` — variable font, weight axis + optical size (`opsz`) + softness/wonk axes. Set `font-weight` anywhere from 100–900.
-- `Fraunces-Italic-Variable.ttf` — italic companion.
 
 ## Public Sans — body / UI
 Everything the user reads to get work done: body copy, UI labels, buttons.
 - `PublicSans-Variable.ttf` — variable font, weight axis 100–900.
-- `PublicSans-Italic-Variable.ttf` — italic companion.
 
 ## IBM Plex Mono — utility
 Health Score, deltas ("68 ▲ +7"), counts, timestamps — anything numeric/tabular.
-- Ships as static weight files (Thin, ExtraLight, Light, Regular, Medium, SemiBold, Bold — each with an Italic).
+- `IBMPlexMono-Regular.ttf` — Regular (400), the utility weight used by the identity guide.
+
+The folder intentionally contains only the fonts required by the Trellis identity guide. Italic companions and redundant IBM Plex Mono weights are not part of the approved brand system.
 
 ## Using these in CSS
 ```css

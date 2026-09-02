@@ -1,12 +1,14 @@
-**TRELLIS: A SEO / AEO / SEM GROWTH STRATEGY PLATFORM**
+**TRELLIS: AN SEO / AEO / SEM GROWTH STRATEGY PLATFORM**
 
-Software Requirements Specification (v2.1 — September 1, 2026)
+Software Requirements Specification (v2.2 — September 2, 2026)
 
-* Trellis is an agentic-AI web application that helps digital marketing managers plan, prioritize, and organize a full organic-and-paid search growth strategy — SEO, Answer Engine Optimization (AEO), and SEM (paid search) — designed to replicate what a full-service digital marketing consultancy (e.g., Alphametic) delivers, entirely on free tiers and open-source software.*
+*Trellis is an agentic-AI web application that helps digital marketing managers plan, prioritize, and organize a full organic-and-paid search growth strategy — SEO, Answer Engine Optimization (AEO), and SEM (paid search) — by packaging consultancy-style guidance into a repeatable workspace built entirely on free tiers and open-source software.*
 
-**In one sentence:** Your paid and organic growth strategy, all in one place — Trellis uses agentic AI to scrape a submitted website by URL, delivers the SEO/AEO/SEM insights and suggestions a marketer would otherwise get from a paid consultant, lets you accept or reject each suggestion, turns accepted ones into tasks, tracks those tasks to completion, and executes your reporting.
+**Product promise:** Trellis helps resource-limited marketers discover what their website needs, decide what to do first, manage the work through completion, and show how their search strategy is improving — all in one workspace.
 
-**Built to cost $0:** every component — frontend, backend, database, LLM, and hosting — runs on free tiers or open-source software, no credit card required anywhere in the stack (see Section 5 for the budget breakdown and Section 2.5 for free-tier limits).
+**How it works:** The user submits a website URL, and Trellis analyzes the site, produces prioritized SEO, AEO, and paid-search recommendations, turns accepted recommendations into trackable tasks, and automatically generates and saves reports that show progress across repeated analyses.
+
+**Built to cost $0:** every component — frontend, backend, database, LLM, and hosting — runs on free tiers or open-source software, no credit card required anywhere in the stack (see Section 5 for the budget breakdown and Section 2.6 for free-tier limits). This describes the MVP's build-and-demo infrastructure, not a permanent customer-pricing guarantee at every future usage level.
 
 **Product mottoes (guiding the functionality below):**
 - *"The AEO/SEO/SEM consultant you can't afford, minus the invoice."*
@@ -20,7 +22,7 @@ Software Requirements Specification (v2.1 — September 1, 2026)
 ### 1.1 Purpose
 This document specifies the requirements for the Trellis SEO/AEO/SEM Growth Strategy Platform, a three-tier web application for Digital Marketing Managers — especially at small businesses and nonprofits — to plan, prioritize, and track a full organic (SEO/AEO) and paid (SEM) growth strategy. It is written to give Sloane (the sole developer), and any future contributor, reviewer, or evaluator (instructor, hiring manager, or investor), a single, unambiguous reference for what the system does, what it does not do, how it's built, and when each piece is expected to ship.
 
-**North star:** Trellis gives a digital marketing manager the same outcomes they'd get from hiring a full-service digital marketing consultancy — organic strategy (technical audits, keyword/content strategy, authority building, local visibility, AI-citation tracking) and paid strategy (SEM keyword and ad guidance, built for cost-efficiency) — delivered continuously through software instead of a paid engagement. Trellis is deliberately a full-funnel growth tool, not an SEO/AEO-only one: the same audit that tells a marketer what to fix for free also tells them what's worth paying to boost, and roughly what it should cost.
+**North star:** Trellis packages consultancy-style search strategy into a guided, repeatable workspace for marketers who lack specialist time, budget, or tools. It helps them move from website analysis to prioritized action, completed work, and progress reporting across organic and paid search.
 
 ### 1.2 Intended Audience
 - **Sloane (developer/product owner):** primary reference for scope, priority, and acceptance criteria while building.
@@ -31,7 +33,7 @@ This document specifies the requirements for the Trellis SEO/AEO/SEM Growth Stra
 ### 1.3 Product Scope
 
 **In scope (this document covers):**
-- A single-user (MVP) web app for auditing one website at a time and managing its full AEO/SEO/SEM growth strategy through to publication — organic (AEO/SEO) and paid (SEM) are both core, not an add-on to an SEO-only tool.
+- A single-user (MVP) web app that can save multiple website workspaces but analyzes one website at a time. "Single-user" means the MVP has no shared teams, roles, or collaborative accounts. Within each website workspace, the user manages a full AEO/SEO/SEM growth strategy through to publication — organic (AEO/SEO) and paid (SEM) are both core, not an add-on to an SEO-only tool.
 - An AI agent subsystem that scrapes a submitted URL and returns structured, prioritized, rationale-backed recommendations across organic and paid channels alike.
 - A cost-conscious SEM (paid search) strategy layer: keyword and ad-group suggestions, placement/targeting guidance, and a Cost Tier estimate per keyword, generated from the same site analysis used for SEO/AEO — with an optional (Phase 2) upgrade to real Google Ads Keyword Planner data via the user's own free Google Ads account.
 - A trackable Organizer (kanban) that carries every recommendation — AEO, SEO/content, and SEM alike — from suggestion to published/live.
@@ -40,7 +42,7 @@ This document specifies the requirements for the Trellis SEO/AEO/SEM Growth Stra
 - A single Health Score (0–100) summarizing a website's overall organic SEO/AEO progress and its trend over time (see FR-7 for why SEM is tracked as its own summary rather than blended into this score).
 
 **Explicitly out of scope (for the phases defined here):**
-- Fully automated, continuous polling of ChatGPT/Perplexity/other AI engines for citation tracking — no free or ToS-compliant way to do this at volume exists (see 2.6 Assumptions and Dependencies, and 5.3 Risks). A manual-assisted substitute is in scope instead (FR-12).
+- Fully automated, continuous polling of ChatGPT/Perplexity/other AI engines for citation tracking — no free or ToS-compliant way to do this at volume exists (see 2.7 Assumptions and Dependencies, and 5.3 Risks). A manual-assisted substitute is in scope instead (FR-12).
 - A comprehensive third-party backlink index (Ahrefs/Moz/SEMrush-style) — backlink visibility is scoped to what Google Search Console already reports (FR-11).
 - Paid crawler/audit tools, paid LLM tiers, paid hosting, or any component that requires a credit card, for as long as this remains a $0-to-build project (see 5.1 Budget).
 - Native mobile apps; this is a responsive web application only.
@@ -88,33 +90,94 @@ This document specifies the requirements for the Trellis SEO/AEO/SEM Growth Stra
 ## 2. Overall Description
 
 ### 2.1 Product Perspective
-This is a new, standalone product — not an extension of an existing system. It is a three-tier web application (presentation / API+agent / data, detailed in 2.4) built entirely from free-tier and open-source components so it can be built and demonstrated at $0.
+This is a new, standalone product — not an extension of an existing system. It is a three-tier web application (presentation / API+agent / data, detailed in 2.5) built entirely from free-tier and open-source components so it can be built and demonstrated at $0.
 
-Most competing AEO tools (see 2.7) stop at insight: a citation score, a dashboard, a report. This product's differentiation is that it is a **strategy + execution workspace** — every recommendation follows a visible path from **audit → suggestion → task → published** and stays a living, trackable initiative rather than a one-time report. Combined with serving a persona (solo/nonprofit marketers, no team, no budget) that established competitors price above, this is the defensible edge — not the SEO+AEO combination itself, which is now table stakes in this market.
+Most competing AEO tools (see 2.8) stop at insight: a citation score, a dashboard, a report. This product's differentiation is that it is a **strategy + execution workspace** — every recommendation follows a visible path from **audit → suggestion → task → published** and stays a living, trackable initiative rather than a one-time report. Combined with serving a persona (solo/nonprofit marketers, no team, no budget) that established competitors price above, this is the defensible edge — not the SEO+AEO combination itself, which is now table stakes in this market.
 
 Trellis is also deliberately a **full-funnel growth product**, not an organic-only one: it covers both organic strategy (AEO/SEO) and paid strategy (SEM) in the same $0 workspace, one audit, one Organizer, one coherent plan — rather than treating paid search as an afterthought, a separate tool, or a Phase-3 nice-to-have.
 
+**Defining product loop:** **Analyze → Recommend → Prioritize → Complete the work → Rescan → Measure progress.** Trellis's core promise depends on the whole loop: analysis produces guidance, accepted guidance becomes manageable work, and later scans and Reports show what changed.
+
+**Promise and boundaries:**
+
+| Trellis promises | Trellis does not promise |
+|---|---|
+| Consultancy-style guidance structured for a resource-limited marketer | Guaranteed equivalence to a human consultancy |
+| Prioritized recommendations based on the submitted website | Guaranteed rankings, traffic, AI citations, or revenue |
+| A workflow from recommendation through publication | Automatic implementation of changes on the user's website |
+| Paid-search planning and clearly labeled cost guidance | Campaign creation, bidding, purchasing, or spending |
+| Consistent progress reporting from data Trellis has computed | Real traffic, conversion, or ROI data in the MVP |
+| Guided AEO improvements and, in Phase 2, manual citation checks | Continuous automated monitoring of AI answer engines |
+| A $0-to-build MVP technology stack | Permanent free commercial operation at every usage level |
+
 ### 2.2 Product Functions (Summary)
-At a high level, the system:
-1. Lets a user add a website and run a one-click analysis of it.
-2. Runs an AI agent that scrapes the site and returns structured, prioritized, rationale-backed recommendations spanning organic strategy (AEO, SEO/content, technical health, local SEO) and paid strategy (SEM keyword/ad guidance).
-3. Lets the user accept or dismiss each recommendation, and tracks accepted ones — organic or paid — through a kanban pipeline to "Published."
-4. Computes and displays a single Health Score per website (organic SEO/AEO progress), trended over time, plus a since-last-scan delta of what's new; SEM tracks its own cost/keyword-count summary alongside it (FR-8.8).
-5. Generates a cost-conscious SEM keyword and ad-group strategy, favoring cheaper high-intent long-tail keywords over expensive ones, so paid search decisions are part of the same one-click analysis instead of a separate exercise.
-6. In later phases, extends the same pipeline to backlink visibility, competitor benchmarking, a guided AI-citation checklist, real Google Ads keyword/CPC data, and proactive progress digests.
-7. Automatically generates a saved Report after every analysis, built from a predefined KPI set spanning organic and paid performance, and lets the user compare any two reports (e.g., this month vs. last month, or last analysis vs. current) — so tracking progress over time never requires a separate spreadsheet or a trip to Google Analytics.
+At a high level, the system helps the user achieve four outcomes:
+
+1. **Understand what needs attention.** The user adds a website and runs an analysis. Trellis examines its content and technical condition, then returns structured, prioritized, rationale-backed recommendations across AEO, SEO/content, technical health, and paid-search planning.
+2. **Choose a practical strategy.** The user can accept or dismiss recommendations and see why each one matters. Trellis also produces a cost-conscious SEM keyword and ad-group strategy that favors high-intent, lower-cost opportunities while clearly labeling estimates.
+3. **Complete the work.** Accepted recommendations become Organizer tasks that move through a visible pipeline to Published, keeping strategy and execution in one workspace instead of a separate spreadsheet.
+4. **Demonstrate progress.** Trellis tracks the organic Health Score across scans, highlights what changed since the previous scan, automatically saves a Report after every analysis, and lets the user compare any two Reports. SEM remains a separate summary; real traffic, conversion, and ROI data require the Phase 2 integrations.
+
+Later phases extend these outcomes with local visibility, backlinks Google already sees, guided AI-citation checks, real Google Ads keyword/CPC data, GA4 reporting enrichment, progress digests, and competitor benchmarking.
 
 Full detail and acceptance-level requirements for each function are in Section 3.
 
 ### 2.3 User Classes and Characteristics
 
-**2.3.1 Primary persona — "Priya."** Marketing Manager at a 12-person nonprofit (or a solo marketer serving several small-business clients). Owns marketing end-to-end — organic and paid alike; no dedicated SEO/AEO/SEM specialist or budget; currently tracks content in scattered spreadsheets; newly aware AI answer engines are becoming a traffic source, and unsure whether/where paid search would be worth the spend. Technical comfort: low-to-moderate — needs plain-language rationale, not raw data.
+**2.3.1 Primary persona — "Priya."** Marketing Manager at a 12-person nonprofit. Owns marketing end-to-end — organic and paid alike; has no dedicated SEO/AEO/SEM specialist or specialist-tool budget; currently tracks content in scattered spreadsheets; is newly aware that AI answer engines are becoming a traffic source; and is unsure whether or where paid search would be worth the spend. Technical comfort: low-to-moderate — needs plain-language rationale, not raw data.
 
 **2.3.2 Secondary persona — small agency account manager.** Manages multiple client sites; needs a consistent, repeatable audit-and-plan workflow she can run the same way across every client. Technical comfort: moderate; values consistency and speed over depth of customization.
 
-**2.3.3 End-user objectives:** understand what to fix or create for organic visibility; understand not just what to fix organically, but what would be worth paying for and roughly what it would cost, without needing to already know how Google Ads auctions work; get a fast starting point from a URL (target: actionable plan in under 5 minutes); keep strategy and content pipeline in one place per site; track content and AEO tasks to completion; see overall progress at a glance and how it's changed since the last visit; revisit sites periodically for what's new; see performance summarized the same way every time, without having to decide which numbers matter or rebuild a monthly report by hand in a spreadsheet; compare this period to last period at a glance.
+**2.3.3 End-user objectives:**
+- Know what to fix or create and why it matters.
+- Receive an actionable starting plan from a URL in under five minutes.
+- Decide which organic recommendations to pursue and which paid-search opportunities may fit the user's goals and budget.
+- Keep strategy, decisions, and active work in one place per website.
+- Track accepted AEO, SEO/content, and SEM work through completion.
+- Revisit a website, discover what is new, and see progress since the prior scan.
+- Review the same meaningful KPIs every time and compare periods without rebuilding a spreadsheet.
 
-### 2.4 Operating Environment
+### 2.4 Core User Use Cases
+
+The use cases below connect the product promise to the detailed, testable requirements in Section 3. They describe intended user outcomes; the referenced functional requirements remain authoritative for acceptance criteria and phase scope.
+
+#### UC-1 — Create the first website action plan
+- **User need:** "I know my website needs improvement, but I do not know what to do first."
+- **Trigger:** The user submits a website URL and optional business context.
+- **Trellis response:** Analyze the site and generate prioritized, site-specific SEO, AEO, technical, content, and SEM recommendations with plain-language rationales.
+- **Visible outcome:** The user receives an actionable starting plan in under five minutes.
+- **Related requirements:** FR-1, FR-3, FR-5, FR-6, FR-8, NFR-5.
+
+#### UC-2 — Turn recommendations into a focused plan
+- **User need:** "I have recommendations, but I need help deciding which ones to pursue."
+- **Trigger:** The user reviews a recommendation.
+- **Trellis response:** Explain why the recommendation matters and let the user accept or dismiss it.
+- **Visible outcome:** Accepted recommendations enter the active plan; dismissed recommendations leave it and retain a simple reason for future quality improvement.
+- **Related requirements:** FR-2, FR-3, FR-8, DR-3, DR-4.
+
+#### UC-3 — Manage work through completion
+- **User need:** "I need one place to manage my SEO, AEO, content, and SEM work."
+- **Trigger:** The user accepts a recommendation.
+- **Trellis response:** Create a corresponding Organizer task and keep its stage synchronized with the originating recommendation.
+- **Visible outcome:** The user moves work from Backlog through Published without maintaining a separate spreadsheet.
+- **Related requirements:** FR-2, FR-3, FR-4, FR-8.
+
+#### UC-4 — Decide whether paid search is worth considering
+- **User need:** "I do not understand Google Ads or know which keywords might fit my budget."
+- **Trigger:** Trellis completes a website analysis.
+- **Trellis response:** Generate starter ad groups, relative Cost Tiers, targeting guidance, negative keywords, landing-page matches, and lower-cost alternatives.
+- **Visible outcome:** The user receives a clearly labeled planning aid to implement manually in Google Ads if they choose.
+- **Boundary:** Trellis does not launch campaigns, guarantee bid prices, or spend money. Real search volume and CPC data require the Phase 2 Google Ads connection.
+- **Related requirements:** FR-8; upgraded by FR-14 and FR-15.
+
+#### UC-5 — Measure improvement over time
+- **User need:** "I need to know whether the work is moving in the right direction."
+- **Trigger:** The user rescans the website or opens Reports.
+- **Trellis response:** Save a new KPI snapshot, update the organic Health Score trend, summarize what changed, and compare the new Report with an earlier one.
+- **Visible outcome:** The user sees completed work, new opportunities, organic progress indicators, and clearly labeled SEM planning indicators. Real traffic, conversions, revenue, and ROI require the Phase 2 GA4 and Google Ads connections.
+- **Related requirements:** FR-1, FR-7, FR-9, FR-14, FR-15.
+
+### 2.5 Operating Environment
 - **Client:** any modern desktop or mobile browser (responsive web app); no OS-specific requirement.
 - **Frontend:** React + TypeScript (Vite), Tailwind + shadcn/ui, hosted on Vercel or Netlify's free tier.
 - **Backend:** Python + Flask API server, hosted on Render/Fly.io/Railway free tier (sleeps after ~15 min idle — see 5.3 Risks).
@@ -124,14 +187,14 @@ Full detail and acceptance-level requirements for each function are in Section 3
 
 Full software-interface detail (which external APIs each component talks to) is in Section 4.3.
 
-### 2.5 Design and Implementation Constraints
+### 2.6 Design and Implementation Constraints
 - **Zero-cost constraint:** every component must run on a free tier or be open-source, with no credit card required anywhere in the stack, for as long as this is a personal/demo project (see 5.1 Budget for what changes if it becomes a paid product).
 - **Free-tier rate limits govern design:** ~14,400 req/day on Groq, ~1,500 req/day on Gemini; request queuing and caching are required, not optional (NFR-3).
 - **Security constraints:** JWT-based authentication, per-user data scoping, secrets management, and rate limiting to protect shared free-tier quota (NFR-1).
 - **Accessibility constraint:** WCAG 2.1 AA compliance is a requirement, not a stretch goal (NFR-4).
 - **Solo-developer constraint:** all schedule estimates in Section 5 assume one part-time developer (Sloane, ~5–10 hrs/week), which shapes both scope sequencing and the decision to lean on managed free-tier services rather than self-hosting infrastructure.
 
-### 2.6 Assumptions and Dependencies
+### 2.7 Assumptions and Dependencies
 - Groq and Google Gemini continue to offer no-credit-card free tiers at roughly current request-volume limits for the life of this project; if either changes terms, FR-5 (AI Agent Subsystem) has a documented fallback (switch primary/backup roles, or add a third free provider).
 - Google's PageSpeed Insights, Business Profile, and Search Console APIs remain free and available to individual developers; Search Console and GBP both require the *user* to verify ownership of their own site/listing, which is a real onboarding step, not just an API call (documented in 5.3 Risks).
 - There is no free or ToS-compliant way to programmatically poll ChatGPT, Perplexity, or other AI engines at volume; FR-12 is deliberately designed as manual-assisted rather than fully automated for this reason.
@@ -140,7 +203,7 @@ Full software-interface detail (which external APIs each component talks to) is 
 - The Google Ads API's Basic Access tier (FR-14) remains free and includes Keyword Planner data (`KeywordPlanIdeaService`); Trellis's own one-time Basic Access review is assumed to complete in Google's stated ~5 business days, requested early in Phase 2 planning so it doesn't block FR-14 (documented in 5.3 Risks).
 - The Google Analytics Data API (FR-15) remains free and requires no comparable developer-side app review, only each user's own OAuth connection; it's assumed to remain adequate for reading GA4 sessions, users, and conversion/revenue data at MVP-to-Phase-2 usage scale.
 
-### 2.7 Competitive Landscape
+### 2.8 Competitive Landscape
 The AEO tooling category is roughly two years old (Profound and Otterly.AI launched late 2023) and has grown crowded through 2026. Relevant categories:
 - **AEO-native platforms** (Profound, Scrunch AI, Athena HQ, AirOps) — enterprise-priced ($2,000–$5,000+/month), built for brand-scale citation tracking, not this product's persona.
 - **SEO incumbents with AEO bolted on** (Conductor, Semrush AI Toolkit, Surfer AI Tracker) — already combine SEO + AEO, which means "SEO and AEO in one place" alone is not a differentiator.
@@ -201,7 +264,7 @@ Python agent that turns a URL into structured recommendations.
 - **FR-6.5** The system shall flag duplicate or thin content, reusing the word-frequency analysis from FR-3.1.
 - **FR-6.6** The system shall roll all findings into a single prioritized fix list per FR-5.6.
 - **FR-6.7** In addition to FR-6.5's exact-repetition signal, the system shall compute pairwise TF-IDF cosine similarity across a site's scraped pages (reusing the FR-3.5 TF-IDF pass) and flag page pairs above a similarity threshold as likely near-duplicate content, since two pages can share the same distinctive vocabulary without being textually identical.
-- *Rationale:* replicates a consultancy-grade technical audit with no paid crawler tool, per the $0 constraint (2.5). FR-6.7 adds a near-duplicate signal that plain word-frequency comparison (FR-6.5) cannot catch on its own, at no new cost (same TF-IDF pass as FR-3.5).
+- *Rationale:* provides a consultancy-style technical audit with no paid crawler tool, per the $0 constraint (2.6). FR-6.7 adds a near-duplicate signal that plain word-frequency comparison (FR-6.5) cannot catch on its own, at no new cost (same TF-IDF pass as FR-3.5).
 
 ### FR-7 — Health Score (MVP)
 - **FR-7.1** The system shall compute a single 0–100 Health Score per website as a weighted blend of: AEO checklist completion %, technical audit findings resolved %, keyword/content-gap coverage, and (once available) the AI-citation check-log rate (FR-12.3).
@@ -254,7 +317,7 @@ Turns data Trellis already computes into a saved, comparable Report — no new e
 - **FR-12.2** The user shall be able to manually run those questions in free consumer AI apps and log whether the site was cited.
 - **FR-12.3** The system shall track a "cited in X of Y checks" log over time per site.
 - **FR-12.4** This log shall feed the Health Score (FR-7) once available.
-- *Rationale:* continuous automated cross-engine citation monitoring has no free or ToS-compliant path at volume (2.6); this is the $0-compatible substitute, explicitly positioned to users as manual-assisted, not automated monitoring.
+- *Rationale:* continuous automated cross-engine citation monitoring has no free or ToS-compliant path at volume (2.7); this is the $0-compatible substitute, explicitly positioned to users as manual-assisted, not automated monitoring.
 
 ### FR-13 — Progress Digest (Phase 2)
 - **FR-13.1** The system shall generate a weekly or monthly email/in-app summary per website (e.g., "Your Health Score moved from 61 → 68 this month, 2 tasks overdue, 3 new keyword opportunities").
@@ -274,7 +337,7 @@ Upgrades FR-9's Reports with real traffic, conversion, and revenue data once the
 - **FR-15.2** Once connected, the system shall call the free Google Analytics Data API to retrieve, per reporting period: sessions, new vs. returning users, and (where the user has configured GA4 conversions/goals) conversion count and any tracked revenue.
 - **FR-15.3** Where the site also has real ad spend data (FR-14, Google Ads connected), the system shall compute and display a real ROI figure (GA4-attributed conversions or revenue ÷ actual ad spend) alongside the existing heuristic Cost Tier view, clearly distinguishing "estimate" fields from "real" fields at all times (extending the FR-8.9 disclosure pattern).
 - **FR-15.4** The system shall add real GA4 metrics as additional KPI rows in the FR-9 Report and its comparison view, rather than a separate report — so a user with GA4 connected sees one enriched report, not two.
-- **FR-15.5** The system shall clearly label any KPI in FR-15.2/17.3 as sourced from the user's own GA4 account, and shall never modify or write to the user's GA4 property — read-only, exactly as FR-11 reads Search Console without writing to it.
+- **FR-15.5** The system shall clearly label any KPI in FR-15.2/15.3 as sourced from the user's own GA4 account, and shall never modify or write to the user's GA4 property — read-only, exactly as FR-11 reads Search Console without writing to it.
 - *Dependency note:* unlike FR-14's Google Ads API, the Google Analytics Data API does not require a separate developer-side app review — only the per-user OAuth connection (FR-15.1) — so FR-15 has less setup risk than FR-14, though it still depends on the user already having GA4 installed on their site, which Trellis cannot do for them.
 
 ### FR-16 — Competitor & Entity Benchmarking (Phase 3)
@@ -285,14 +348,14 @@ Upgrades FR-9's Reports with real traffic, conversion, and revenue data once the
 
 ### FR-17 — AI-Drafted Opening Paragraph (Phase 3, optional)
 - **FR-17.1** For each content suggestion (FR-3.2), the system shall optionally draft a short opening paragraph via the free-tier LLM, in addition to the existing outline.
-- *Rationale:* kept optional/Phase 3 since full content generation isn't core to the MVP's differentiation and several funded competitors already offer it (2.7).
+- *Rationale:* kept optional/Phase 3 since full content generation isn't core to the MVP's differentiation and several funded competitors already offer it (2.8).
 
 ### DR — Data Requirements
 Core (MVP) entities and relationships: **User** → **Website** → **AnalysisRun** → **Keyword**, **Suggestion**, **Report**; **Website** also has **ContentItem** and **AEOTask**. New entities supporting FR-6 (technical audit), FR-10 (local SEO), FR-11 (backlink visibility), FR-12 (AI-citation checklist), and FR-16 (competitor benchmarking): **TechnicalAuditFinding**, **LocalListingCheck**, **ReferringDomain**, **CitationCheckLog**, **Competitor**. Full ER diagram (MVP-core subset) is in the delivered `.docx`.
 
 - **DR-1** `AnalysisRun.health_score` (int, 0–100) — snapshot of the Health Score (FR-7) at the time of the run, enabling the trend line on the Website Overview.
 - **DR-2** `Suggestion.rationale` (text) — the one-sentence "why this matters" explanation (FR-5.3).
-- **DR-3** `Suggestion.status` (enum: `pending` / `accepted` / `dismissed`) — an explicit acceptance state so acceptance-rate is measurable (2.3.3 success metrics).
+- **DR-3** `Suggestion.status` (enum: `pending` / `accepted` / `dismissed`) — an explicit acceptance state supporting the decision workflow in UC-2 and making suggestion acceptance measurable.
 - **DR-4** `Suggestion.dismiss_reason` (enum, nullable: `not_relevant` / `too_much_work` / `already_doing_this` / `other`) — captured only when dismissed; feeds Phase 2 suggestion-quality tuning.
 - **DR-5** `Suggestion.stage` (enum: `suggested` / `in_plan` / `in_production` / `published`) — mirrors the linked `ContentItem.status` or `AEOTask.status` per FR-2.3/FR-4.3.
 - **DR-6** `Suggestion.category` (enum) — extended to include `sem` alongside the existing `aeo` / `seo_content` values (FR-8).
@@ -308,9 +371,9 @@ Core (MVP) entities and relationships: **User** → **Website** → **AnalysisRu
 ### NFR — Non-Functional Requirements
 - **NFR-1 (Security):** JWT-based authentication; all data scoped per-user; secrets managed via environment/secret-store, never committed; rate limiting on all endpoints to protect shared free-tier quota.
 - **NFR-2 (Scalability):** stateless API design; long-running agent work (FR-5) run as async jobs as usage grows beyond inline-request handling; caching of scrape/trend results to avoid redundant free-tier API calls.
-- **NFR-3 (Cost management):** request budgets and a request queue in front of the LLM providers (2.5); caching wherever a re-computation would otherwise re-spend a free-tier quota unit.
+- **NFR-3 (Cost management):** request budgets and a request queue in front of the LLM providers (2.6); caching wherever a re-computation would otherwise re-spend a free-tier quota unit.
 - **NFR-4 (Accessibility):** WCAG 2.1 AA compliance across the frontend.
-- **NFR-5 (Performance):** time-to-first-actionable-plan under 5 minutes from URL submission (2.3.3), acknowledging free-hosting cold starts (2.6) as a bounded exception.
+- **NFR-5 (Performance):** time-to-first-actionable-plan under 5 minutes from URL submission (UC-1), acknowledging free-hosting cold starts (2.7) as a bounded exception.
 - **NFR-6 (Reliability):** JSON-schema validation with automatic retry on every LLM structured-output call (FR-5.5), since free-tier models are more prone to schema drift than paid frontier models.
 
 ---
@@ -326,7 +389,7 @@ Shallow navigation: **Login → My Websites → Add Website wizard → Website W
 - **Reports section:** a list of past Reports (newest first) with the FR-9.6 one-line summary shown per row; opening one shows the full KPI breakdown grouped Organic / Paid / Pipeline, matching the section layout used elsewhere. A "Compare" control lets the user pick any two reports (defaulting to "most recent vs. previous") and see every KPI side by side with its delta, using the same up/down indicator style as the Health Score trend (FR-7.3). Once FR-15 is connected, a GA4 row group appears with real traffic/conversion figures, and a real-ROI figure replaces the heuristic Cost Tier summary wherever both FR-14 and FR-15 are connected — with "estimate" vs. "real" labeled per FR-8.9/FR-15.5's disclosure pattern throughout.
 - **Organizer:** kanban board (FR-4.1) plus separate AEO/SEO task list views (FR-4.2).
 
-**Core user flows covered by these screens:** add a website and run the first analysis; act on a content suggestion (creates an Organizer card, sets its stage to "In Plan"); accept or dismiss a suggestion (dismissing prompts a one-tap reason); work an AEO checklist item to completion; review the Report generated by an analysis and compare it to a prior one.
+**Core user flows covered by these screens:** create the first website action plan (UC-1); accept or dismiss recommendations to form a focused plan (UC-2); move accepted AEO, SEO/content, and SEM work through the Organizer (UC-3); review clearly labeled paid-search guidance without launching a campaign (UC-4); and review or compare Reports after rescanning to measure progress (UC-5).
 
 ### 4.2 Hardware Interfaces
 None. This is a standard responsive web application with no dedicated hardware dependency; it runs on any device with a modern browser and an internet connection.
@@ -358,15 +421,15 @@ None. This is a standard responsive web application with no dedicated hardware d
 ## 5. Preliminary Schedule & Budget
 
 ### 5.1 Budget
-The build-and-demo cost of this project is **$0**: every component in Sections 2.4 and 4.3 runs on a free tier or is open-source, with no credit card required anywhere in the stack. The only real cost is developer time (Sloane, part-time, ~5–10 hrs/week — see 5.2).
+The build-and-demo cost of this project is **$0**: every component in Sections 2.5 and 4.3 runs on a free tier or is open-source, with no credit card required anywhere in the stack. The only real cost is developer time (Sloane, part-time, ~5–10 hrs/week — see 5.2). This is an implementation constraint for the current project, not a permanent customer-pricing commitment if usage later exceeds free-tier limits.
 
 **What would cost money later:** if this becomes a paid product with real customers, the free-tier caps below become a cost-of-goods question that needs revisiting (not a Phase 1–3 concern):
-- LLM requests/day beyond Groq's/Gemini's free limits (2.5).
+- LLM requests/day beyond Groq's/Gemini's free limits (2.6).
 - Database storage beyond the free Postgres tier's cap.
 - Transactional email sends beyond the free tier (FR-13).
-- Backend hosting beyond free-tier compute/uptime (cold starts, 2.6).
+- Backend hosting beyond free-tier compute/uptime (cold starts, 2.7).
 
-**Monetization note (future, non-binding):** a plausible path is self-serve subscription pricing below the competitive set in 2.7 — e.g., $15–40/month for the solo/nonprofit tier, higher for a Phase 2 agency tier — validated against real users before committing to a number.
+**Monetization note (future, non-binding):** a plausible path is self-serve subscription pricing below the competitive set in 2.8 — e.g., $15–40/month for the solo/nonprofit tier, higher for a Phase 2 agency tier — validated against real users before committing to a number.
 
 ### 5.2 Preliminary Schedule
 **Assumption:** solo developer, part-time at roughly 5–10 hours/week (per Sloane's stated availability). All dates are estimates from today (September 2, 2026) and will shift with actual weekly velocity — this schedule should be revisited once Phase 1 is underway and a real hours-per-feature rate is known.
@@ -397,14 +460,14 @@ Multi-site benchmarking, competitor & entity benchmarking (FR-16, including the 
 - **Free-tier LLM rate limits** — mitigated with a request queue (NFR-3); a burst of testing/demo traffic could still hit daily caps.
 - **Free-model JSON consistency** — mitigated with schema validation + one retry (FR-5.5, NFR-6); persistent drift could slow Phase 1's agent milestone.
 - **Gemini's free-tier data-training clause** — a legal/privacy consideration for the backup LLM path (FR-5.4), not a blocker, but should be disclosed to end users eventually.
-- **Free-hosting cold starts** — accepted tradeoff (2.6) that affects perceived performance (NFR-5), not correctness.
-- **Scraping and pytrends reliability** — both are best-effort, unofficial, or subject to site-specific blocking; no SLA exists (2.6).
+- **Free-hosting cold starts** — accepted tradeoff (2.7) that affects perceived performance (NFR-5), not correctness.
+- **Scraping and pytrends reliability** — both are best-effort, unofficial, or subject to site-specific blocking; no SLA exists (2.7).
 - **TF-IDF boilerplate filtering is threshold-dependent** (FR-3.5) — too aggressive a similarity threshold risks stripping out a genuinely important term that happens to recur intentionally across many pages (e.g., a tagline or core service name); should be spot-checked against a few real sites before being treated as tuned correctly, the same category of judgment call already flagged for the Health Score weighting (FR-7) and predefined-KPI set (FR-9.2).
 - **AEO best practices still evolving** — the best-practice knowledge base (FR-5.2) will need periodic manual updates until a RAG-backed refresh pipeline exists (Phase 2+).
 - **Automated AI-citation tracking is deliberately excluded from $0 scope** — FR-12 is the manual substitute; true automation would be a future paid upgrade, not a schedule slip.
 - **Backlink visibility is scoped to Search Console data only** (FR-11), not a full third-party index — an explicit scope tradeoff.
-- **Search Console/GBP both require per-website user verification** — real onboarding friction (2.6) that could slow Phase 2 adoption testing even though the engineering is straightforward.
-- **Health Score weighting is an unvalidated product judgment call** (FR-7) — should be tested with a few real users before Phase 2, or the "track your progress" promise (2.3.3) is undercut by a score that feels arbitrary.
+- **Search Console/GBP both require per-website user verification** — real onboarding friction (2.7) that could slow Phase 2 adoption testing even though the engineering is straightforward.
+- **Health Score weighting is an unvalidated product judgment call** (FR-7) — should be tested with a few real users before Phase 2, or the "measure improvement over time" promise (UC-5) is undercut by a score that feels arbitrary.
 - **SEM Cost Tier is a heuristic, not real auction data** (FR-8.1) — needs the same persistent-disclosure treatment as Gemini's data-training clause (FR-8.9), so users never mistake it for a real Google Ads quote.
 - **Google Ads API Basic Access review turnaround** (FR-14) — the one-time ~5-business-day review of Trellis itself should be requested at the start of Phase 2 planning, not discovered as a blocker mid-sprint.
 - **Google Ads account creation is a real onboarding step** (FR-14.1) — even though free, asking a nonprofit/solo marketer to create a Google Ads account is the same category of friction already logged for GBP/Search Console above.
@@ -463,3 +526,4 @@ Multi-site benchmarking, competitor & entity benchmarking (FR-16, including the 
 - **Sep 2, 2026 (project doc cleanup + brand reconciliation):** per Sloane's request, reviewed all nine project docs for consistency. Fixed a stale date reference in 5.2 ("today" was still August 26, 2026; updated to September 2, 2026, the actual date of this pass — no schedule durations or milestone dates changed, only the anchor date label). Updated `Trellis_Brand_Brief.md` and `Trellis_Identity_Guide.md` to reflect the Sep 1, 2026 "SEM elevated to core product identity" decision above, which those two brand docs had not yet caught up to (their mission/positioning language still read SEO/AEO-only). Deleted four stale/duplicate docs from the `claude/` folder that were superseded by current root-level versions: `claude/SEO_AEO_Platform_Spec.md` (old v1.3, already self-labeled "Superseded" in its own header), `claude/SEO_AEO_Platform_OnePager.md` (pre-SEM pitch, superseded by `trellis_onepager_pitch.md`), `claude/Trellis_SEO_AEO_Platform_OnePagerPitch.md` (word-for-word duplicate of `trellis_onepager_pitch.md`), and `claude/Trellis_Brand_Brief.md` (older near-duplicate of the root Brand Brief). No requirement content, IDs, or phase assignments changed in this pass — this was a housekeeping and cross-document consistency pass only.
 - **Sep 2, 2026 (identity guide artifact corrected):** the published Identity Guide artifact's "Logo & Trademark" section still described an earlier fence-posts-and-X logo concept in words, even though the actual embedded logo artwork had already been updated to the final open-grid-and-vine mark (confirmed by inspecting the artifact's own image data) — the descriptive text simply hadn't been updated to match. Corrected the artifact's mark description and clear-space wording to match both the actual artwork and this spec/the Identity Guide doc's own description. No change to this document's content; logged here since it's the kind of cross-artifact drift this decision log otherwise tracks.
 - **Sep 2, 2026 (one-sentence summary added):** per Sloane's request, added an explicit plain-language "In one sentence" summary right after the cover definition and before "Built to cost $0," so the spec states the literal end-to-end workflow (scrape by URL → SEO/AEO/SEM insights and suggestions in place of a paid consultant → accept/reject → turn into tasks → track to completion → reporting) in one place, in addition to the more abstract North Star (1.1) and the three brand-voice mottoes. Order standardized to SEO/AEO/SEM to match this document's established ordering everywhere else (Sloane's own phrasing used SEO/SEM/AEO informally). No functional scope, requirement IDs, or phase assignments changed — this is a framing addition only.
+- **Sep 2, 2026 (v2.2 — product promise and use-case communication):** replaced the long cover summary with separate outcome-focused Product Promise and How It Works statements; revised the North Star to promise consultancy-style guidance without claiming guaranteed equivalence to a human consultancy; added the defining product loop (Analyze → Recommend → Prioritize → Complete the work → Rescan → Measure progress) and a Promise and Boundaries table; reorganized the Section 2.2 summary around four user outcomes; separated the nonprofit primary persona from the agency persona; converted the end-user objectives into a scannable list; added five numbered core use cases with needs, triggers, system responses, visible outcomes, boundaries, and requirement traceability; and clarified that single-user MVP accounts can save multiple website workspaces while analyzing one site at a time. Renumbered the former Sections 2.4–2.7 to 2.5–2.8 and updated their cross-references. Also corrected FR-15.5's mistyped cross-reference from `17.3` to `15.3`. No feature, phase, requirement ID, or implementation scope changed in this revision.

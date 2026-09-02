@@ -1,0 +1,199 @@
+                                                                                                                                                                                   USER
+TRELLIS MVP DATA MODEL                                                                                                                                                                                                                                                                                   CARDINALITY: 1 = exactly one         0..1 = optional one         0..* = zero or many
+                                                                                                                                                       int                 id                               PK
+Parent tables are above the records they own or produce.                                                                                                                                                                                                                                                                        PK = primary key            FK = foreign key    UQ = unique
+                                                                                                                                                       string              name
+CORE UNIQUE RULES                                                                                                                                      string              email
+users.email; websites(user_id, url); keywords(analysis_run_id, phrase);                                                                                string              password_hash
+reports.analysis_run_id; organizer_items.suggestion_id                                                                                                 datetime            created_at
+
+                                                                                                                                                                                        1
+CORE ENUMS
+acceptance_status: pending / accepted / dismissed                                                                                                                                             manages
+stage: backlog / in_production / in_review / published
+                                                                                                                                                                                       0..*
+
+
+                                                                                                                                                                                WEBSITE
+
+                                                                                                                                              int                    id                                               PK
+                                                                                                                                              int                    user_id                                          FK
+                                                                                                                                                                                                                                 1                                                                 organizes
+                                                                                                                                              string                 url
+                                                                                                                                              string                 business_name
+                                                                                                                                              text                   business_context
+                                                                                                                                              datetime               created_at
+
+                                                                                                                                                                                        1
+
+                                                                                                                                                                                              has runs                                                                                                                                                             0..*
+
+                                                                                                                                                                                       0..*
+                                                                                                                                                                                                                                                                                                                                                    ORGANIZER_ITEM
+
+                                                                                                                                                                           ANALYSIS_RUN                                                                                                                                         int                 id                                     PK
+                                                                                                                                                                                                                                                                                                                                int                 website_id                             FK
+                                                                                                                                       int                      id                                                         PK
+                                                                                                                                                                                                                                                                                                                                int                 suggestion_id                        FK,UQ
+                                                                                                                                       int                      website_id                                                 FK
+                                                                                                                                                                                                                                                                                                                                string              item_type
+                                                                                                                                       string                   status                                                                                                                                                   0..1
+                                                                                                                                                                                                                                                                                                                                string              title
+                                                                                                                                       int                      pages_scanned_count                                                                                                                 becomes when accepted
+                                                                                                                                                                                                                                                                                                                                string              stage
+                                                                                                                                       int                      health_score
+                                                                                                                                                                                                                                                                                                                                date                due_date
+                                                                                                                                       text                     error_message
+                                                                                                                                                                                                                                                                                                                                datetime            created_at
+                                                                                                                                       datetime                 started_at
+                                                                                                                                                                                                                                                                                                                                datetime            updated_at
+                                                                                                                                       datetime                 completed_at
+                                                                                                                                                                                                                                                                                                                                datetime            published_at
+                                                                                                                                                                                        1
+                                                                                                                                                                                                                                                                                                                                                                    1
+                                                                                                                                              1
+
+
+                        captures pages                                                  discovers                                 generates                                                                                  detects                                               produces
+
+
+                                                                                                                                      0..*
+                                                                                                                                                                                                                                0..*
+                               0..*                                                                                            SUGGESTION                                                                                                                                               0..1
+                                                                                                                                                                                                                 TECHNICAL_FINDING
+                                                                                           0..*          int        id                                                          PK
+                      PAGE_SNAPSHOT                                                                                                                                                                                                                                                REPORT
+                                                                                                         int        analysis_run_id                                             FK              int              id                                 PK
+                                                                                                                                                                                                                                                                                                                                                     records stage changes
+int              id                                       PK                         KEYWORD                                                                                                    int              analysis_run_id                    FK    int            id                                       PK
+                                                                                                         int        page_snapshot_id                                            FK?
+int              analysis_run_id                          FK          int       id                  PK   string     category                                                                    int              page_snapshot_id                   FK?   int            analysis_run_id                        FK,UQ
+string           url                                                  int       analysis_run_id     FK   string     title                                                                       int              related_page_snapshot_id           FK?   int            website_id                               FK
+string           page_title                                           string    phrase                   text       description                                                                 string           finding_type                             int            health_score
+text             extracted_content                                    int       frequency                json       starter_outline                                                             string           severity                                 int            health_score_delta
+text             raw_html                                             decimal   trend_score              text       rationale                                                                   text             explanation                              decimal        aeo_completion_pct
+int              word_count                                           string    search_intent            string     priority                                                                    string           resolution_status                        decimal        aeo_completion_delta
+int              http_status                                                                             string     acceptance_status                                                           datetime         resolved_at                              int            technical_findings_open
+                                                                                            1                1                                                                     1
+datetime         scraped_at                                                                              string     dismiss_reason                                                              datetime         created_at                               int            technical_findings_resolved
+
+                                                                                                         string     work_stage                                                                                                   1                        int            content_published_count
+
+                                                                                                         string     cost_tier                                                                                                                             json           top_keywords
+
+                                                                                                         string     ad_group_label                                                                                                                        int            sem_accepted_count
+
+                                                                                                         text       ad_copy_angle                                                                                                                         json           sem_cost_tier_breakdown
+
+                                                                                                         text       landing_page_match                                                                                                                    int            ad_groups_defined_count
+
+                                                                                                         text       targeting_notes                                                                                                                       json           organizer_stage_counts
+
+                                                                                                         text[]     negative_keywords                                                                                                                     int            tasks_published_count
+
+                                                                                                         int        cheaper_alternative_to_id                                   FK?                                                                       text           summary
+                                                         links                                                                                                                                                                             links
+                                                                                                         datetime   created_at                                                                                                                            datetime       generated_at
+                                                         0..*
+                                                                                                                                                                                                                                                                                                                                                            0..*
+                                                                                                         datetime   updated_at                                                                                                               0..*
+                                                                                            0..*                                                                                              0..*
+                                         SUGGESTION_KEYWORD
+                                                                                                                                                                                                                                                                                                                                      ORGANIZER_STAGE_HISTORY
+                                                                                                                                                                                                                      SUGGESTION_TECHNICAL_FINDING
+                        int               suggestion_id                         PK,FK
+                                                                                                                                                                                                                                                                                                                   int                   id                                                PK
+                        int               keyword_id                            PK,FK                                                                                                                 int                  suggestion_id                         PK,FK
+                                                                                                                                                                                                                                                                                                                   int                   organizer_item_id                                 FK
+                        int               recommended_usage_count                                                                                                                                     int                  technical_finding_id                  PK,FK
+                                                                                                                                                                                                                                                                                                                   string                from_stage
+                                                                                                                                                                                                                                                                                                                   string                to_stage
+                                                                                                                                                                                                                                                                                                                   datetime              changed_at
+TRELLIS MVP RELATIONSHIP REFERENCE
+Use these rules when creating SQLAlchemy models, migrations, and database constraints.
+
+
+
+
+ Parent table                                  Child table                                      Cardinality             Foreign key / constraint                                   What it means
+
+
+ users                                         websites                                         1 to 0..*               websites.user_id -> users.id                               A user may manage many websites; every website has one user.
+
+
+
+ websites                                      analysis_runs                                    1 to 0..*               analysis_runs.website_id -> websites.id                    A website may be scanned many times; every run belongs to one website.
+
+
+
+ analysis_runs                                 page_snapshots                                   1 to 0..*               page_snapshots.analysis_run_id -> analysis_runs.id         One run stores every page captured during that scan.
+
+
+
+ analysis_runs                                 keywords                                         1 to 0..*               keywords.analysis_run_id -> analysis_runs.id               One run may discover many keyword candidates.
+
+
+
+ analysis_runs                                 suggestions                                      1 to 0..*               suggestions.analysis_run_id -> analysis_runs.id            One run may generate many AEO, SEO/content, and SEM suggestions.
+
+
+
+ analysis_runs                                 technical_findings                               1 to 0..*               technical_findings.analysis_run_id -> analysis_runs.id     One run may detect many technical issues.
+
+
+
+ analysis_runs                                 reports                                          1 to 0..1               reports.analysis_run_id FK + UNIQUE                        A completed run gets one immutable report; an unfinished run may have none.
+
+
+
+ websites                                      reports                                          1 to 0..*               reports.website_id -> websites.id                          A website keeps report history across all runs.
+
+
+
+ websites                                      organizer_items                                  1 to 0..*               organizer_items.website_id -> websites.id                  A website owns one ongoing task pipeline across multiple scans.
+
+
+
+ suggestions                                   organizer_items                                  1 to 0..1               organizer_items.suggestion_id FK + UNIQUE                  An accepted suggestion may create one task; a task has one source suggestion.
+
+
+
+ organizer_items                               organizer_stage_history                          1 to 0..*               stage_history.organizer_item_id -> organizer_items.id      Every task can record many stage changes over time.
+
+
+
+ suggestions + keywords                        suggestion_keywords                              many to many            composite PK: suggestion_id + keyword_id                   A suggestion can target many keywords; a keyword can support many suggestions.
+
+
+
+ suggestions + findings                        suggestion_technical_finding                     many to many            composite PK: suggestion_id + finding_id                   A suggestion can address many findings and vice versa.
+
+
+
+ page_snapshots                                suggestions                                      1 to 0..*               suggestions.page_snapshot_id nullable FK                   A suggestion may concern one saved page; a page may have many suggestions.
+
+
+
+ page_snapshots                                technical_findings                               1 to 0..*               page_snapshot_id / related_page_snapshot_id nullable FKs   A finding may be sitewide, page-specific, or compare two saved pages.
+
+
+
+ suggestions                                   suggestions                                      1 to 0..*               cheaper_alternative_to_id nullable self-FK                 A lower-cost SEM suggestion can point back to the expensive suggestion it replaces.
+
+
+
+
+   IMPLEMENTATION RULES
+
+   1. Keep acceptance_status separate from work_stage: accepting work is not the same as completing it.
+   2. Valid organizer stages: backlog, in_production, in_review, published. Set published_at when entering Published.
+   3. Valid suggestion categories: aeo, seo_content, sem. Cost and ad fields remain NULL unless category = sem.
+   4. Dismiss reasons: not_relevant, too_much_work, already_doing_this, other. Require a reason only when dismissed.
+   5. Constrain health_score to 0-100 and enforce the unique rules listed on page 1.
+   6. Reports are snapshots: never recalculate an old report when scoring logic changes; comparisons are computed from two saved rows.
+   7. Organizer work survives later scans because it belongs to WEBSITE; its source SUGGESTION preserves where the task originated.
+
+
+
+                                                                                                                                                                                                                                                                         MVP scope only - excludes Phase 2 and Phase 3 integration tables
+

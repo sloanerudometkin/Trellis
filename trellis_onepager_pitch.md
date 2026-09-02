@@ -1,61 +1,58 @@
-# Trellis: A SEO / AEO / SEM Growth Strategy Platform
+# Trellis: An SEO / AEO / SEM Growth Strategy Platform
 
-**Trellis: the AEO/SEO/SEM consultant you can't afford — minus the invoice**
+**Give your content something to climb.**
 
-Trellis is an agentic-AI web app that plans, prioritizes, and tracks a website's full organic-and-paid search growth strategy — SEO, Answer Engine Optimization (AEO), and SEM (paid search) — built to replicate what a full-service digital marketing consultancy delivers, at $0 to run.
+## The Promise
+
+Trellis helps resource-limited marketers discover what their website needs, decide what to do first, manage the work through completion, and show how their search strategy is improving — all in one workspace.
+
+The user submits a website URL, and Trellis analyzes the site, produces prioritized SEO, Answer Engine Optimization (AEO), and paid-search recommendations, turns accepted recommendations into trackable tasks, and automatically saves reports that show progress across repeated analyses.
+
+**Analyze → Recommend → Prioritize → Complete the work → Rescan → Measure progress**
 
 ## The Problem
 
-Small-business and nonprofit marketing teams need to show up in Google results and, increasingly, in AI answer engines like ChatGPT, Perplexity, and Google AI Overviews. But:
+Small-business and nonprofit marketers are responsible for organic search, visibility in AI answers, content, and paid-search decisions — often without a specialist team or specialist-tool budget. Audits identify problems but rarely help finish the work; plans scatter across spreadsheets; paid-search tools assume expertise; and reporting must be rebuilt somewhere else. The result is plenty of information, but no clear path from **“What should I do?”** to **“What did we accomplish, and are we improving?”**
 
-- They have no dedicated SEO/AEO/SEM specialist and no budget for one — a real consultancy runs into the thousands per month.
-- Strategy and content live in scattered spreadsheets, with no single place to see what to fix, what to write, or what's already done.
-- Existing AEO tools stop at insight: a citation score, a dashboard, a report. They don't carry the work through to done.
-- Even a beginner marketer who's ready to try paid ads has no easy way to know what's worth buying, or what it should cost — that knowledge normally lives with a paid consultant too.
-- Showing progress means yet another trip outside the tool — rebuilding a monthly report by hand in Excel, or pulling numbers from Google Analytics — because "strategy" and "reporting" live in two different places.
+## The Trellis Experience
 
-## The Solution
+1. **Understand:** receive a plain-language technical audit and prioritized organic and paid-search opportunities.
+2. **Decide:** see why each recommendation matters, then accept or dismiss it.
+3. **Complete:** move accepted work through the Organizer from Backlog to Published.
+4. **Measure:** rescan, see what changed, follow the organic Health Score, and compare saved Reports.
 
-Trellis is a three-tier web app where a marketer drops in a URL and gets a full audit-to-action workspace:
+## Core Use Cases
 
-- An AI agent scrapes the site and returns structured, prioritized recommendations — each with a plain-language rationale, not just a checklist item.
-- Every recommendation is tracked from Suggested → In Plan → In Production → Published, so nothing gets lost after the audit.
-- A single 0–100 Health Score shows overall progress at a glance, and how it's trending over time.
-- A companion SEM (paid search) plan — which keywords are worth buying, where to run ads, and a cost-tier estimate that favors cheaper, high-intent long-tail keywords over expensive ones — so paid and organic strategy live in one workspace instead of needing a second tool.
-- Every analysis automatically saves a Report — the same predefined KPIs every time, organic and paid alike, so the marketer never has to decide what to track — with a Compare view for this month vs. last month, or the latest scan vs. the one before it, all without leaving Trellis or opening a spreadsheet.
+- **Create a first action plan:** turn a website URL into an actionable starting plan in under five minutes.
+- **Build a focused backlog:** accept useful recommendations and dismiss irrelevant ones.
+- **Manage execution:** track SEO, AEO, content, and SEM work through completion.
+- **Evaluate paid search:** explore cost-conscious keywords and starter ad groups without launching or funding a campaign through Trellis.
+- **Measure improvement:** compare scans and Reports to see completed work, new opportunities, and changes in Trellis's KPIs.
 
-## Who It's For
+## Who It Serves
 
-**Primary: The Solo / In-House Marketer**
+**Primary — Priya, a nonprofit marketing manager:** Owns marketing end-to-end without a dedicated SEO/AEO/SEM specialist and needs plain-language direction rather than raw data.
 
-"Priya," a marketing manager at a 12-person nonprofit (or a solo marketer serving several small-business clients). Owns marketing end-to-end — organic and paid alike — with no SEO/AEO/SEM specialist and no budget. Uses the app to run a first analysis in minutes, build an AEO, content, and SEM plan for the site, track every task through to published, and pull up a Report whenever it's time to show progress — all in one workspace.
+**Secondary — Small agency account manager:** Needs a consistent audit-to-action workflow across several client websites. The MVP saves multiple website workspaces but analyzes one site at a time; shared teams and roles are not included.
 
-**Secondary: The Small Agency Manager**
+## Why It Is Different
 
-Manages several client sites and needs a consistent, repeatable audit-and-plan workflow. Uses the app to run the same audit → plan → organizer process across every client site, with progress visible at a glance for each one.
+- **Follow-through, not just findings:** recommendations become trackable work and remain visible through publication.
+- **One coherent strategy:** SEO, AEO, content, technical health, and cost-conscious SEM guidance share one workflow.
+- **Plain-language priorities:** every recommendation explains why it matters.
+- **Reporting built in:** every analysis creates a comparable snapshot.
+- **Designed for constrained teams:** the MVP is built and demonstrated entirely with free-tier and open-source components.
 
-## How It Works
+## What Trellis Does Not Promise
 
-1. Submit a URL
-2. AI agent audits the site across organic (AEO/SEO) and paid (SEM) opportunity, plus technical health
-3. Prioritized, rationale-backed suggestions across organic and paid strategy alike
-4. Track in kanban to Published, with a saved Report generated automatically after every analysis
+Trellis provides consultancy-style guidance, not guaranteed rankings, traffic, AI citations, or revenue. It does not change the user's website, launch campaigns, bid, or spend money. MVP paid costs are labeled estimates and MVP Reports use Trellis-computed data; real CPC, traffic, conversion, revenue, and ROI data require optional Phase 2 connections. **$0** describes the MVP's build-and-demo stack, not permanent customer pricing.
 
-## Why It's Different
+## Roadmap & Stack
 
-- Most AEO tools sell a score or a report and stop there. This is a strategy + execution workspace — every recommendation is carried through audit → suggestion → task → published.
-- Purpose-built for the underserved solo/nonprofit persona: entry-level AEO tools start at $79–199/month; enterprise platforms run $2,000+/month.
-- Consultancy-style depth — technical audits, local SEO, backlinks, competitor benchmarking, AI-citation checks — engineered to run at $0.
-- Bundles a cost-conscious SEM strategy into the same $0 workspace as the organic plan — nowhere else in this landscape pairs paid and organic strategy for a solo/nonprofit budget.
-- Reporting lives in the same workspace too: a saved, comparable Report after every analysis with predefined KPIs baked in, so growth strategy really is all in one place — no separate trip to Excel or Google Analytics just to see how things are going.
-
-## Status & Stack
-
-**Stack:** React + TypeScript · Python/Flask API · LangGraph AI agent · free-tier LLM (Groq / Gemini) · PostgreSQL — entirely free/open-source, no credit card anywhere.
-
-- **MVP:** core audit → plan → organizer loop, Health Score, technical SEO audit, SEM keyword & ad strategy (heuristic cost-tier estimates), automatic Reports with predefined KPIs and month-over-month/last-analysis comparison.
-- **Phase 2:** multi-user, local SEO/Google Business Profile, backlink visibility, guided AI-citation checks, real Google Ads keyword & CPC data, real Google Analytics 4 traffic/conversion data enriching Reports (with real ROI once paired with real ad spend), progress digests.
-- **Phase 3:** competitor benchmarking, white-label reporting, browser extension.
+- **MVP:** website workspaces; SEO/AEO/content and technical analysis; accept/dismiss decisions; Organizer; organic Health Score; heuristic SEM strategy; automatic Reports and comparisons.
+- **Phase 2:** local SEO/Google Business Profile, backlinks Google already sees through Search Console, guided manual AI-citation checks, progress digests, real Google Ads keyword/CPC data, and GA4-enriched Reports.
+- **Phase 3:** competitor and entity benchmarking plus optional AI-drafted content openings.
+- **Stack:** React + TypeScript · Python/Flask · LangGraph · Groq/Gemini · PostgreSQL.
 
 ---
 
