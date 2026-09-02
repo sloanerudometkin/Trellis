@@ -1,4 +1,4 @@
-# Trellis — Visual & Verbal Identity Guide (v2.2, August 2026)
+# Trellis — Visual & Verbal Identity Guide (v2.3, September 2026)
 
 Published artifact (full designed version — logo, color, type, voice, tagline, in-product proof): https://claude.ai/code/artifact/8dbdd7ac-d76f-48d0-99c5-5185a7c6fd0c
 (Rebuilt Aug 28, 2026 with the finalized Fraunces-wordmark logo art and full logo/icon specimen set.)
@@ -53,12 +53,12 @@ Sample microcopy:
 
 ## 5. Tagline & Verbal System
 - **Primary tagline:** "Give your content something to climb."
-- **Positioning line** (pitch/landing): "The AEO/SEO consultant you can't afford — minus the invoice."
+- **Positioning line** (pitch/landing): "The AEO/SEO/SEM consultant you can't afford — minus the invoice."
 - **In-app empty state:** "Every plant needs something to climb. Add your first site to get started."
 - **Onboarding/email:** "You bring the content. We'll bring the structure."
 - **Never say:** "AI-powered SEO optimization platform."
 
 ## 6. In Product (proof point)
-The Health Score card is where color, type, and voice all have to hold up at once: large mono score + gold delta, Moss progress bar, plain-language copy naming what changed and what's next, Moss Deep CTA.
+The Health Score card is where color, type, and voice all have to hold up at once: large mono score + gold delta, Moss progress bar, plain-language copy naming what changed and what's next, Moss Deep CTA. The SEM section mirrors this pattern but keeps its own small summary (accepted keyword count, cost-tier mix) rather than folding into the Health Score — paid and organic are tracked as coequal disciplines, not blended into one number.
 
-*Status: living document. Logo finalized Aug 2026; wordmark typeface switched from Source Serif 4 to Fraunces on Aug 27, 2026 to match the final produced logo art; identity guide artifact rebuilt Aug 28, 2026 with the full logo specimen set; logo description corrected Aug 31, 2026 to match the final open-grid-and-vine mark; revisit after first real user/UI testing.*
+*Status: living document. Logo finalized Aug 2026; wordmark typeface switched from Source Serif 4 to Fraunces on Aug 27, 2026 to match the final produced logo art; identity guide artifact rebuilt Aug 28, 2026 with the full logo specimen set; logo description corrected Aug 31, 2026 to match the final open-grid-and-vine mark; positioning line updated Sep 2, 2026 to include SEM, matching the spec's Sep 1, 2026 decision to make SEM coequal with SEO/AEO (this guide's visual/voice guidance was otherwise unaffected — only the pitch/landing positioning line changed); revisit after first real user/UI testing.*
