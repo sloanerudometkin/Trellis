@@ -67,12 +67,13 @@ See [`trellis_onepager_pitch.md`](trellis_onepager_pitch.md) for the full pitch 
 
 | Layer | Choice |
 |---|---|
-| Frontend | React + TypeScript |
-| Backend | Python / Flask |
-| AI agents | LangGraph, running on Groq / Gemini |
-| Database | PostgreSQL |
+| Frontend | React + TypeScript (Vite), Tailwind + shadcn/ui — hosted on **Netlify** |
+| Backend | Python + Flask + Gunicorn — hosted on **Render** (the single committed free host; see `trellis_spec.md` 5.3 for why Fly.io/Railway were ruled out) |
+| AI pipeline | Plain Python functions (no agent framework) calling **Groq** (primary) / **Gemini** (backup) for suggestion generation, with Pydantic validating every response |
+| Database | PostgreSQL via **Supabase** (also provides authentication and row-level security), accessed through SQLAlchemy + Alembic |
+| Scraping | HTTPX + BeautifulSoup by default; Playwright only as a fallback for JavaScript-heavy sites |
 
-Every layer runs on a free tier or open-source software — no credit card required anywhere in the MVP build. (This describes the build-and-demo stack for this project, not a permanent pricing promise.)
+Every layer runs on a free tier or open-source software — no credit card required anywhere in the MVP build. (This describes the build-and-demo stack for this project, not a permanent pricing promise.) See `trellis_spec.md` Sections 2.5–2.7 for the full reasoning and current free-tier limits behind each choice.
 
 ## Project Status
 
