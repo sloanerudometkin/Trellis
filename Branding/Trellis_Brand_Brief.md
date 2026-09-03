@@ -1,9 +1,9 @@
-# Trellis — Brand Brief (v3.0, September 2026)
+# Trellis — Brand Brief (v3.1, September 2026)
 
 **Recommended name:** Trellis
 **Tagline:** "Give your content something to climb."
 **Primary positioning line:** "Your paid and organic search growth strategy—all in one place."
-**One-sentence definition:** Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress.
+**One-sentence definition:** Trellis is a website analysis and action-planning app for solo marketers and small teams that brings paid and organic search together: it analyzes a site for SEO, AEO, and SEM opportunities, turns the findings into one prioritized plan, tracks the work through completion, and measures progress across repeat analyses.
 **Positioning:** For the solo marketer or nonprofit team responsible for organic and paid search without specialist support, Trellis is the accessible strategy-and-execution workspace where every website analysis strengthens one ongoing plan, workflow, and reporting history.
 
 **Customer-facing promise:** Analyze your website, receive prioritized consultancy-style guidance across SEO, AEO, and SEM, carry the right work through completion, and measure progress in one connected workspace—without needing an ongoing search consultancy.
@@ -43,6 +43,8 @@ Every website needs something to grow and structure to grow along—a garden fai
 ## Website Story & Message Hierarchy
 The marketing website leads with the customer's outcome, not unexplained category terminology. SEO, AEO, and SEM support the promise; they are not the first thing a visitor must decode.
 
+Within the first two sentences, every audience should understand three things: **what Trellis is** (a website analysis and action-planning app), **who it is for** (solo marketers and small teams responsible for search), and **what it does** (unifies paid and organic opportunities in one action-to-measurement workflow). Paid and organic search must remain the focal point; AI, the garden metaphor, individual features, and the $0 build stack are supporting details.
+
 1. **Position:** Your paid and organic search growth strategy—all in one place.
 2. **Outcome:** Know what to fix, what to create, where paid search may be worthwhile, and what to do next.
 3. **Problem:** Most affordable tools separate organic and paid planning, stop at findings, or leave execution and reporting in spreadsheets.
@@ -58,7 +60,7 @@ Recommended homepage hero:
 
 > **Your paid and organic search growth strategy—all in one place.**
 >
-> Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress.
+> Trellis is a website analysis and action-planning app for solo marketers and small teams that brings paid and organic search together: it analyzes a site for SEO, AEO, and SEM opportunities, turns the findings into one prioritized plan, tracks the work through completion, and measures progress across repeat analyses.
 >
 > *Give your content something to climb.*
 
@@ -105,4 +107,4 @@ Every important screen should answer three questions in this order: **What happe
 ## Name Status
 "Trellis" chosen as the working name; trademark/domain availability check not yet run (Sidekick and GrowthDesk were checked and ruled out — both actively in use by other companies). Backups if Trellis doesn't clear: Wingman, Ascendly, Vantro.
 
-*Status: production-ready brand foundation v3.0. SEO/AEO/SEM are coequal; website messaging, visual system, and product experience rules are defined. Permanent pricing claims remain intentionally withheld until the customer offer is finalized. Trademark/domain validation and real-user validation remain owner actions before public launch.*
+*Status: production-ready brand foundation v3.1. Paid and organic search are the primary message; SEO/AEO/SEM are coequal parts of the product; website messaging, visual system, and product experience rules are defined. Permanent pricing claims remain intentionally withheld until the customer offer is finalized. Trademark/domain validation and real-user validation remain owner actions before public launch.*

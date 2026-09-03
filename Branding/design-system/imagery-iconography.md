@@ -35,7 +35,7 @@ Show **structured growth**, not generic gardening and not futuristic AI. Visuals
 
 ## Diagrams
 
-- The official five-step story is Analyze → Recommend → Prioritize → Complete → Measure progress.
+- The official six-step story is Analyze → Recommend → Prioritize → Complete → Rescan → Measure progress.
 - Use a horizontal sequence on wide screens and a vertical sequence on narrow screens.
 - Give every step a verb, a one-sentence outcome, and a visible connection to the next step.
 

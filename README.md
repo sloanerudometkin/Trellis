@@ -18,7 +18,7 @@
 
 ## What is Trellis?
 
-**Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress.**
+**Trellis is a website analysis and action-planning app for solo marketers and small teams that brings paid and organic search together: it analyzes a site for SEO, AEO, and SEM opportunities, turns the findings into one prioritized plan, tracks the work through completion, and measures progress across repeat analyses.**
 
 *Give your content something to climb.*
 

@@ -1,4 +1,4 @@
-# Trellis — Visual & Verbal Identity Guide (v3.0, September 2026)
+# Trellis — Visual & Verbal Identity Guide (v3.1, September 2026)
 
 Published artifact (full designed version — logo, color, type, voice, tagline, in-product proof): https://claude.ai/code/artifact/8dbdd7ac-d76f-48d0-99c5-5185a7c6fd0c
 (Rebuilt Aug 28, 2026 with the finalized Fraunces-wordmark logo art and full logo/icon specimen set.)
@@ -92,7 +92,7 @@ Sample microcopy:
 ## 5. Tagline & Verbal System
 - **Primary tagline:** "Give your content something to climb."
 - **Primary positioning line:** "Your paid and organic search growth strategy—all in one place."
-- **One-sentence definition:** "Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress."
+- **One-sentence definition:** "Trellis is a website analysis and action-planning app for solo marketers and small teams that brings paid and organic search together: it analyzes a site for SEO, AEO, and SEM opportunities, turns the findings into one prioritized plan, tracks the work through completion, and measures progress across repeat analyses."
 - **Supporting promise:** "Analyze your website, uncover organic and paid opportunities, prioritize the right work, and measure progress in one connected workspace."
 - **Value proof:** "Analyze whenever you need to → every run strengthens one evolving strategy, prioritized plan, Organizer, and reporting history."
 - **In-app empty state:** "Every plant needs something to climb. Add your first site to get started."
@@ -100,6 +100,8 @@ Sample microcopy:
 - **Never say:** "AI-powered SEO optimization platform."
 
 On marketing pages, lead with the unified paid-and-organic position, then explain the outcome before introducing category names:
+
+The first two sentences must answer **what it is, who it is for, and what it does**. Paid and organic search are the focal point. AI, individual features, the garden metaphor, and the $0 build stack may support that message, but must not replace or precede it.
 
 > Your paid and organic search growth strategy—all in one place.
 
@@ -173,7 +175,7 @@ Preferred hero copy:
 
 > **Your paid and organic search growth strategy—all in one place.**
 >
-> Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress.
+> Trellis is a website analysis and action-planning app for solo marketers and small teams that brings paid and organic search together: it analyzes a site for SEO, AEO, and SEM opportunities, turns the findings into one prioritized plan, tracks the work through completion, and measures progress across repeat analyses.
 >
 > *Give your content something to climb.*
 
