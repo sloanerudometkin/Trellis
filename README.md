@@ -32,14 +32,18 @@ The result is not separate SEO, AEO, and advertising plans. It is one coordinate
 
 ## The Problem
 
-Small-business and nonprofit marketers are often responsible for organic search, AI-answer visibility, content, and paid-search decisions all at once, with no specialist team and no specialist-tool budget. Today that usually means separate organic and paid tools, audits that point out problems but don't help finish the work, plans scattered across spreadsheets, and reporting rebuilt by hand. There's plenty of information, but no coordinated path from *"where should we grow?"* to *"what should I do next?"* to *"what did we accomplish, and is it working?"*
+Digital marketers are often responsible for a complete paid and organic search strategy—SEO, AEO, and SEM—without a specialist team or the budget for an ongoing consultancy. Consultants and audit tools can provide useful insights, but their support often stops at recommendations. The marketer is left to execute the work across separate organic and paid-search tools, scattered spreadsheets, task trackers, and reports rebuilt by hand. There is plenty of information, but no connected path from *"What should we improve?"* to *"What should I do next?"* to *"Did the work make a difference?"*
+
+## The Solution
+
+Trellis brings that entire workflow into one connected website workspace. It turns a website analysis into prioritized, consultancy-style guidance, helps the marketer decide what to act on, carries accepted recommendations through execution, and saves the results needed to measure progress over time.
 
 ## How It Works
 
-1. **Analyze** — submit a website URL once to uncover connected organic and paid-search opportunities.
+1. **Analyze** — submit a website URL to create a workspace, then analyze and rescan the site whenever needed.
 2. **Recommend** — receive plain-language, site-specific recommendations across SEO, AEO, content, technical health, and SEM.
 3. **Prioritize** — compare impact, rationale, and clearly labeled paid Cost Tiers, then accept or dismiss each recommendation.
-4. **Complete** — move accepted organic and paid work through one Organizer from Backlog to Published or Live.
+4. **Complete** — turn accepted recommendations into tasks and move them through one Organizer (Kanban board) from Backlog to Published or Live.
 5. **Rescan** — analyze the site again to identify changes and new opportunities.
 6. **Measure progress** — follow the organic Health Score, review the separate SEM summary, and compare saved Reports in one reporting system.
 

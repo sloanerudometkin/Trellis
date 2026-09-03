@@ -4,7 +4,7 @@
 
 ## The Promise
 
-**Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion.**
+**Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress.**
 
 *Give your content something to climb.*
 
@@ -14,14 +14,18 @@ Trellis helps resource-limited marketers analyze their website, uncover organic 
 
 ## The Problem
 
-Small-business and nonprofit marketers are responsible for organic search, visibility in AI answers, content, and paid-search decisions—often without a specialist team or specialist-tool budget. Organic tools, paid-search tools, task trackers, and reports usually live in different places. Audits identify problems but rarely help finish the work, paid-search tools assume expertise, and the marketer must assemble the strategy in spreadsheets. The result is plenty of information, but no coordinated path from **“Where should we grow?”** to **“What should I do next?”** to **“What did we accomplish, and are we improving?”**
+Digital marketers are often responsible for a complete paid and organic search strategy—SEO, AEO, and SEM—without a specialist team or the budget for an ongoing consultancy. Consultants and audit tools can provide valuable insights, but their support often stops at recommendations. The marketer is left to execute the work across separate organic and paid-search tools, scattered spreadsheets, task trackers, and reports rebuilt by hand. The result is plenty of information, but no connected path from **“What should we improve?”** to **“What should I do next?”** to **“Did the work make a difference?”**
+
+## The Solution
+
+Trellis brings the entire strategy into one connected website workspace. Submit a URL, analyze and rescan the site whenever needed, and receive prioritized, consultancy-style recommendations across SEO, AEO, and SEM. Accept or dismiss each recommendation, turn accepted recommendations into tasks on an Organizer (Kanban board), track the work through completion, and use the automatic Report from every analysis to measure progress over time. The organic Health Score shows SEO/AEO momentum, while a separate SEM summary keeps paid-search insights clear and honest.
 
 ## The Trellis Experience
 
 1. **Analyze:** submit a website URL—and analyze it again whenever needed—to uncover connected organic and paid-search opportunities.
 2. **Recommend:** receive plain-language, site-specific SEO, AEO, content, technical, and SEM recommendations.
 3. **Prioritize:** compare impact, rationale, and clearly labeled Cost Tiers, then accept or dismiss each recommendation.
-4. **Complete:** move accepted organic and paid work through one Organizer from Backlog to Published or Live.
+4. **Complete:** turn accepted recommendations into tasks and move them through one Organizer (Kanban board) from Backlog to Published or Live.
 5. **Rescan:** analyze the site again to identify changes and new opportunities.
 6. **Measure:** follow the organic Health Score, review the separate SEM summary, and compare saved Reports in one reporting system.
 

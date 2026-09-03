@@ -6,7 +6,7 @@
 **One-sentence definition:** Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress.
 **Positioning:** For the solo marketer or nonprofit team responsible for organic and paid search without specialist support, Trellis is the accessible strategy-and-execution workspace where every website analysis strengthens one ongoing plan, workflow, and reporting history.
 
-**Customer-facing promise:** Analyze your website, uncover organic and paid opportunities, prioritize the right work, and measure progress in one connected workspace—without needing an expensive search consultancy.
+**Customer-facing promise:** Analyze your website, receive prioritized consultancy-style guidance across SEO, AEO, and SEM, carry the right work through completion, and measure progress in one connected workspace—without needing an ongoing search consultancy.
 
 Full designed version (palette, type specimens, layout, logo): https://claude.ai/code/artifact/6de9a540-79ee-4a60-aaca-fe5197796e10
 (Rebuilt Aug 28, 2026 with the finalized Fraunces-wordmark logo art. Final logo files: `Branding/assets/logo/`.)
@@ -17,7 +17,7 @@ Full designed version (palette, type specimens, layout, logo): https://claude.ai
 A website's content is the plant. What it's missing isn't ambition, it's structure — a prioritized order to work in, a place to track what's done, a way to see progress. That's what Trellis supplies; the site owner still writes the content, fixes the pages, publishes the posts, and decides what (if anything) to spend on ads. It's also a quiet, deliberate pun: unpaid search visibility has been called "organic" search since before AEO existed, and a trellis is literally garden infrastructure.
 
 ## Brand Positioning
-Tools priced for a solo marketer often stop at insight: a score or report. They also tend to separate organic work from paid-search planning, forcing one marketer to assemble a strategy across specialized tools and spreadsheets. Trellis is designed around access, coordination, and follow-through. Each analysis produces connected organic and paid opportunities; every rescan updates the ongoing strategy and adds to its reporting history; one prioritized plan helps the user decide what to do; and one Organizer carries accepted work from Suggested to Published or Live. Paid search is not an extra feature attached to an organic product—it is a coequal part of the search strategy, with its own honest success signals and clear MVP limits.
+Digital marketers are often responsible for a complete paid and organic search strategy without a specialist team or the budget for an ongoing consultancy. Consultants and audit tools can provide useful insights, but their support often stops at recommendations. The marketer is left to execute across specialized tools, scattered spreadsheets, task trackers, and manually assembled reports. Trellis is designed to close that gap through access, coordination, and follow-through. Each analysis produces connected organic and paid opportunities; every rescan updates the ongoing strategy and adds to its reporting history; one prioritized plan helps the user decide what to do; and one Organizer carries accepted work from Suggested to Published or Live. Paid search is not an extra feature attached to an organic product—it is a coequal part of the search strategy, with its own honest success signals and clear MVP limits.
 
 ## Mission
 **To make a coordinated paid-and-organic search growth strategy accessible to under-resourced marketers—from website analysis and prioritization through execution and measurement.**
@@ -58,7 +58,7 @@ Recommended homepage hero:
 
 > **Your paid and organic search growth strategy—all in one place.**
 >
-> Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion.
+> Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress.
 >
 > *Give your content something to climb.*
 

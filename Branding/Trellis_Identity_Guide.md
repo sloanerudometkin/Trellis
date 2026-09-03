@@ -107,6 +107,8 @@ Follow with:
 
 > Know what to fix, what to create, where paid search may be worthwhile, and what to do next—without needing an expensive search consultancy.
 
+When more explanation is appropriate, connect that outcome to the full value story: consultants and audit tools often stop at recommendations, while Trellis connects analysis, prioritization, execution, and measurement in one website workspace.
+
 The official product story is: **Analyze → Recommend → Prioritize → Complete → Rescan → Measure progress.** Use this sequence in diagrams, demonstrations, onboarding, and product tours so visitors can see that Trellis continues beyond the audit.
 
 ## 6. In Product (proof point)
@@ -171,7 +173,7 @@ Preferred hero copy:
 
 > **Your paid and organic search growth strategy—all in one place.**
 >
-> Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion.
+> Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress.
 >
 > *Give your content something to climb.*
 
