@@ -2,10 +2,11 @@
 
 **Recommended name:** Trellis
 **Tagline:** "Give your content something to climb."
-**One-sentence definition:** Trellis is a digital marketing workspace that analyzes your website, recommends prioritized SEO, AEO, and SEM improvements, and helps you manage and measure your progress.
-**Positioning:** For the solo marketer or nonprofit team doing SEO, AEO, and SEM alone, Trellis is the accessible audit-to-published growth strategy workspace built for the person most search tools overwhelm or price out.
+**Primary positioning line:** "Your paid and organic search growth strategy—all in one place."
+**One-sentence definition:** Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress.
+**Positioning:** For the solo marketer or nonprofit team responsible for organic and paid search without specialist support, Trellis is the accessible strategy-and-execution workspace that turns one website analysis into one coordinated plan, one workflow, and one reporting system.
 
-**Customer-facing promise:** Know what to fix, what to create, and what to do next — without needing an expensive search consultancy.
+**Customer-facing promise:** Analyze your website, uncover organic and paid opportunities, prioritize the right work, and measure progress in one connected workspace—without needing an expensive search consultancy.
 
 Full designed version (palette, type specimens, layout, logo): https://claude.ai/code/artifact/6de9a540-79ee-4a60-aaca-fe5197796e10
 (Rebuilt Aug 28, 2026 with the finalized Fraunces-wordmark logo art. Final logo files: `Branding/assets/logo/`.)
@@ -16,10 +17,10 @@ Full designed version (palette, type specimens, layout, logo): https://claude.ai
 A website's content is the plant. What it's missing isn't ambition, it's structure — a prioritized order to work in, a place to track what's done, a way to see progress. That's what Trellis supplies; the site owner still writes the content, fixes the pages, publishes the posts, and decides what (if anything) to spend on ads. It's also a quiet, deliberate pun: unpaid search visibility has been called "organic" search since before AEO existed, and a trellis is literally garden infrastructure.
 
 ## Brand Positioning
-Tools priced for a solo marketer often stop at insight: a score or report. Tools that carry work through to done are usually designed and priced for larger teams. Trellis is designed around access and follow-through—not merely “SEO + AEO in one place,” but a workspace that stays with a recommendation from Suggested to Published and pairs cost-conscious paid-search planning with the organic strategy instead of leaving it in another tool or spreadsheet.
+Tools priced for a solo marketer often stop at insight: a score or report. They also tend to separate organic work from paid-search planning, forcing one marketer to assemble a strategy across specialized tools and spreadsheets. Trellis is designed around access, coordination, and follow-through. One website analysis produces connected organic and paid opportunities; one prioritized plan helps the user decide what to do; one Organizer carries accepted work from Suggested to Published or Live; and one reporting system makes progress visible. Paid search is not an extra feature attached to an organic product—it is a coequal part of the search strategy, with its own honest success signals and clear MVP limits.
 
 ## Mission
-**To make a complete organic-and-paid search growth strategy accessible to under-resourced marketers—audited, prioritized, and carried through to published.**
+**To make a coordinated paid-and-organic search growth strategy accessible to under-resourced marketers—from website analysis and prioritization through execution and measurement.**
 
 Positioning says where Trellis sits in the market; mission says why it gets out of bed — the sentence every roadmap decision, dismissed feature idea, and pricing conversation has to answer to. Three deliberate commitments inside it:
 - **"Complete strategy," not a partial one** — depth across technical, local, content, AEO, and paid search, not just breadth of buzzwords. The moment Trellis stops at a score and calls it done, it's become the tool it was built to replace.
@@ -42,20 +43,24 @@ Every website needs something to grow and structure to grow along—a garden fai
 ## Website Story & Message Hierarchy
 The marketing website leads with the customer's outcome, not unexplained category terminology. SEO, AEO, and SEM support the promise; they are not the first thing a visitor must decode.
 
-1. **Outcome:** Know what to fix, what to create, and what to do next.
-2. **Problem:** Most affordable tools find issues and leave the user with another report or spreadsheet.
-3. **Difference:** Trellis carries recommendations through one visible workflow: **Analyze → Recommend → Prioritize → Complete → Measure progress.**
-4. **Proof:** Show a realistic Health Score change, prioritized recommendation, task status, and next action.
-5. **Scope:** Explain SEO, AEO, and SEM in plain language as three connected parts of one search strategy.
-6. **Audience:** State explicitly that Trellis is built for solo marketers, nonprofits, and small teams.
-7. **Access:** Explain exactly what the current offer includes, its limits, and whether payment is required. Never imply permanent free access unless product pricing has formally committed to it.
-8. **Action:** Invite the visitor to add a site and build a first plan.
+1. **Position:** Your paid and organic search growth strategy—all in one place.
+2. **Outcome:** Know what to fix, what to create, where paid search may be worthwhile, and what to do next.
+3. **Problem:** Most affordable tools separate organic and paid planning, stop at findings, or leave execution and reporting in spreadsheets.
+4. **Difference:** Trellis turns one website analysis into **one coordinated strategy → one prioritized plan → one Organizer → one reporting system.**
+5. **Workflow:** Show how that strategy moves through **Analyze → Recommend → Prioritize → Complete → Rescan → Measure progress.**
+6. **Proof:** Pair organic proof (Health Score change) with paid proof (cost-conscious keyword or ad-group opportunity), then show their shared task status and next action.
+7. **Scope:** Explain SEO, AEO, and SEM in plain language as three connected parts of one search strategy, while labeling paid estimates and organic metrics accurately.
+8. **Audience:** State explicitly that Trellis is built for solo marketers, nonprofits, and small teams.
+9. **Access:** Explain exactly what the current offer includes, its limits, and whether payment is required. Never imply permanent free access unless product pricing has formally committed to it.
+10. **Action:** Invite the visitor to add a site and build a first coordinated plan.
 
 Recommended homepage hero:
 
-> **Give your content something to climb.**
+> **Your paid and organic search growth strategy—all in one place.**
 >
-> Trellis turns your website audit into a prioritized SEO, AEO, and paid-search plan—and helps you carry every recommendation through to published.
+> Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion.
+>
+> *Give your content something to climb.*
 
 - Primary action: **Build my first plan**
 - Secondary action: **See how Trellis works**
@@ -74,6 +79,7 @@ Talks like a capable friend who happens to know SEO — never a vendor, never a 
 
 ## Visual Identity Starter
 - **Color:** Paper `#F1F3EA`, Ink `#1D2A20`, Moss (primary) `#3F6B4A`, Moss Deep `#2C4E35`, Gold (accent, reserved for deltas/badges/progress only) `#A9791F`, Sage Tint `#E2E9DB`.
+- **Intended feeling:** The palette should make an overwhelmed solo marketer feel calm, capable, and supported. Paper and Sage create breathing room, Ink provides credibility, Moss communicates steady growth, Moss Deep gives important actions confident direction, and Gold selectively celebrates momentum.
 - **Type:** Fraunces (display — headlines, tagline, and the logo wordmark itself), Public Sans (body — UI copy, long-form text), IBM Plex Mono (utility — labels, metadata, numbers like "68 ▲ +7"). Final logo files live in `Branding/assets/logo/`.
 - **Production system:** Exact responsive type, color, spacing, component, imagery, icon, and motion rules live in `Branding/design-system/`.
 

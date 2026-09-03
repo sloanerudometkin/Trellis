@@ -1,20 +1,23 @@
 **TRELLIS: AN SEO / AEO / SEM GROWTH STRATEGY PLATFORM**
 
-Software Requirements Specification (v2.2 — September 2, 2026)
+Software Requirements Specification (v2.3 — September 2, 2026)
 
-**Plain-language definition:** Trellis is a digital marketing workspace that analyzes your website, recommends prioritized SEO, AEO, and SEM improvements, and helps you manage and measure your progress.
+**Primary positioning:** Your paid and organic search growth strategy—all in one place.
+
+**Plain-language definition:** Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress.
 
 **Technical definition:** Trellis is an agentic-AI web application that helps digital marketing managers plan, prioritize, and organize a full organic-and-paid search growth strategy — SEO, Answer Engine Optimization (AEO), and SEM (paid search) — by packaging consultancy-style guidance into a repeatable workspace built entirely on free tiers and open-source software.
 
-**Product promise:** Trellis helps resource-limited marketers discover what their website needs, decide what to do first, manage the work through completion, and show how their search strategy is improving — all in one workspace.
+**Product promise:** Trellis helps resource-limited marketers analyze their website, uncover organic and paid opportunities, prioritize the right work, and measure progress in one connected workspace.
 
-**How it works:** The user submits a website URL, and Trellis analyzes the site, produces prioritized SEO, AEO, and paid-search recommendations, turns accepted recommendations into trackable tasks, and automatically generates and saves reports that show progress across repeated analyses.
+**How it works:** One website analysis produces one coordinated paid-and-organic strategy. Trellis turns that strategy into a prioritized plan, carries accepted SEO, AEO, content, technical, and SEM recommendations through one Organizer, and automatically saves Reports that show progress across repeated analyses.
 
 **Built to cost $0:** every component — frontend, backend, database, LLM, and hosting — runs on free tiers or open-source software, no credit card required anywhere in the stack (see Section 5 for the budget breakdown and Section 2.6 for free-tier limits). This describes the MVP's build-and-demo infrastructure, not a permanent customer-pricing guarantee at every future usage level.
 
 **Product mottoes (guiding the functionality below):**
 - *"The AEO/SEO/SEM consultant you can't afford, minus the invoice."*
 - *"Your full organic-and-paid search growth strategy — from insight to execution."*
+- *"One website analysis. One coordinated strategy. One prioritized plan, Organizer, and reporting system."*
 - *"No more spreadsheets. One workspace, start to published."*
 
 ---
@@ -24,7 +27,7 @@ Software Requirements Specification (v2.2 — September 2, 2026)
 ### 1.1 Purpose
 This document specifies the requirements for the Trellis SEO/AEO/SEM Growth Strategy Platform, a three-tier web application for Digital Marketing Managers — especially at small businesses and nonprofits — to plan, prioritize, and track a full organic (SEO/AEO) and paid (SEM) growth strategy. It is written to give Sloane (the sole developer), and any future contributor, reviewer, or evaluator (instructor, hiring manager, or investor), a single, unambiguous reference for what the system does, what it does not do, how it's built, and when each piece is expected to ship.
 
-**North star:** Trellis packages consultancy-style search strategy into a guided, repeatable workspace for marketers who lack specialist time, budget, or tools. It helps them move from website analysis to prioritized action, completed work, and progress reporting across organic and paid search.
+**North star:** Trellis makes a coordinated paid-and-organic search growth strategy accessible to marketers who lack specialist time, budget, or tools. It turns one website analysis into one actionable strategy and keeps planning, prioritization, execution, and measurement connected—without overstating its MVP estimates as live campaign or revenue data.
 
 ### 1.2 Intended Audience
 - **Sloane (developer/product owner):** primary reference for scope, priority, and acceptance criteria while building.
@@ -96,7 +99,7 @@ This is a new, standalone product — not an extension of an existing system. It
 
 Most competing AEO tools (see 2.8) stop at insight: a citation score, a dashboard, a report. This product's differentiation is that it is a **strategy + execution workspace** — every recommendation follows a visible path from **audit → suggestion → task → published** and stays a living, trackable initiative rather than a one-time report. Combined with serving a persona (solo/nonprofit marketers, no team, no budget) that established competitors price above, this is the defensible edge — not the SEO+AEO combination itself, which is now table stakes in this market.
 
-Trellis is also deliberately a **full-funnel growth product**, not an organic-only one: it covers both organic strategy (AEO/SEO) and paid strategy (SEM) in the same $0 workspace, one audit, one Organizer, one coherent plan — rather than treating paid search as an afterthought, a separate tool, or a Phase-3 nice-to-have.
+Trellis is deliberately a **paid-and-organic search growth product**, not an organic tool with an SEM feature attached. Organic strategy (AEO/SEO) and paid strategy (SEM) begin with the same website analysis and remain connected through one coordinated strategy, one prioritized plan, one Organizer, and one reporting system. They share a workflow without being misleadingly blended into one metric: the organic Health Score and the separate SEM summary preserve the different evidence each discipline requires.
 
 **Defining product loop:** **Analyze → Recommend → Prioritize → Complete the work → Rescan → Measure progress.** Trellis's core promise depends on the whole loop: analysis produces guidance, accepted guidance becomes manageable work, and later scans and Reports show what changed.
 
@@ -113,12 +116,12 @@ Trellis is also deliberately a **full-funnel growth product**, not an organic-on
 | A $0-to-build MVP technology stack | Permanent free commercial operation at every usage level |
 
 ### 2.2 Product Functions (Summary)
-At a high level, the system helps the user achieve four outcomes:
+At a high level, the system helps the user achieve four connected outcomes across paid and organic search:
 
-1. **Understand what needs attention.** The user adds a website and runs an analysis. Trellis examines its content and technical condition, then returns structured, prioritized, rationale-backed recommendations across AEO, SEO/content, technical health, and paid-search planning.
-2. **Choose a practical strategy.** The user can accept or dismiss recommendations and see why each one matters. Trellis also produces a cost-conscious SEM keyword and ad-group strategy that favors high-intent, lower-cost opportunities while clearly labeling estimates.
-3. **Complete the work.** Accepted recommendations become Organizer tasks that move through a visible pipeline to Published, keeping strategy and execution in one workspace instead of a separate spreadsheet.
-4. **Demonstrate progress.** Trellis tracks the organic Health Score across scans, highlights what changed since the previous scan, automatically saves a Report after every analysis, and lets the user compare any two Reports. SEM remains a separate summary; real traffic, conversion, and ROI data require the Phase 2 integrations.
+1. **Understand where growth may come from.** The user adds a website and runs one analysis. Trellis examines its content and technical condition, then returns connected, rationale-backed opportunities across AEO, SEO/content, technical health, and paid-search planning.
+2. **Choose one practical strategy.** Trellis prioritizes organic and paid opportunities in one plan. The user sees why each recommendation matters, compares likely impact and clearly labeled SEM Cost Tiers, and accepts or dismisses each recommendation.
+3. **Complete the work in one workflow.** Accepted organic and paid recommendations become Organizer tasks that move through a visible pipeline to Published or Live, keeping strategy and execution together instead of scattered across specialist tools and spreadsheets.
+4. **Demonstrate progress in one reporting system.** Trellis tracks the organic Health Score and separate SEM summary, highlights what changed since the previous scan, automatically saves a Report after every analysis, and lets the user compare any two Reports. Real traffic, conversion, spend, revenue, and ROI require the Phase 2 integrations.
 
 Later phases extend these outcomes with local visibility, backlinks Google already sees, guided AI-citation checks, real Google Ads keyword/CPC data, GA4 reporting enrichment, progress digests, and competitor benchmarking.
 
@@ -529,3 +532,4 @@ Multi-site benchmarking, competitor & entity benchmarking (FR-16, including the 
 - **Sep 2, 2026 (identity guide artifact corrected):** the published Identity Guide artifact's "Logo & Trademark" section still described an earlier fence-posts-and-X logo concept in words, even though the actual embedded logo artwork had already been updated to the final open-grid-and-vine mark (confirmed by inspecting the artifact's own image data) — the descriptive text simply hadn't been updated to match. Corrected the artifact's mark description and clear-space wording to match both the actual artwork and this spec/the Identity Guide doc's own description. No change to this document's content; logged here since it's the kind of cross-artifact drift this decision log otherwise tracks.
 - **Sep 2, 2026 (one-sentence summary added):** per Sloane's request, added an explicit plain-language "In one sentence" summary right after the cover definition and before "Built to cost $0," so the spec states the literal end-to-end workflow (scrape by URL → SEO/AEO/SEM insights and suggestions in place of a paid consultant → accept/reject → turn into tasks → track to completion → reporting) in one place, in addition to the more abstract North Star (1.1) and the three brand-voice mottoes. Order standardized to SEO/AEO/SEM to match this document's established ordering everywhere else (Sloane's own phrasing used SEO/SEM/AEO informally). No functional scope, requirement IDs, or phase assignments changed — this is a framing addition only.
 - **Sep 2, 2026 (v2.2 — product promise and use-case communication):** replaced the long cover summary with separate outcome-focused Product Promise and How It Works statements; revised the North Star to promise consultancy-style guidance without claiming guaranteed equivalence to a human consultancy; added the defining product loop (Analyze → Recommend → Prioritize → Complete the work → Rescan → Measure progress) and a Promise and Boundaries table; reorganized the Section 2.2 summary around four user outcomes; separated the nonprofit primary persona from the agency persona; converted the end-user objectives into a scannable list; added five numbered core use cases with needs, triggers, system responses, visible outcomes, boundaries, and requirement traceability; and clarified that single-user MVP accounts can save multiple website workspaces while analyzing one site at a time. Renumbered the former Sections 2.4–2.7 to 2.5–2.8 and updated their cross-references. Also corrected FR-15.5's mistyped cross-reference from `17.3` to `15.3`. No feature, phase, requirement ID, or implementation scope changed in this revision.
+- **Sep 2, 2026 (v2.3 — unified paid-and-organic messaging):** established **“Your paid and organic search growth strategy—all in one place”** as the primary positioning; revised the cover definition, Product Promise, How It Works, North Star, Product Perspective, and Product Functions around one website analysis producing one coordinated strategy, prioritized plan, Organizer, and reporting system; and clarified why the shared workflow retains separate organic Health Score and SEM summary signals. Synchronized this hierarchy and homepage/pitch opening across `README.md`, `trellis_onepager_pitch.md`, `Trellis_Brand_Brief.md`, and `Trellis_Identity_Guide.md`. No features, phases, requirement IDs, data fields, or implementation scope changed.

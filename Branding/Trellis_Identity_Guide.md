@@ -30,6 +30,26 @@ The mark: an open trellis grid—two vertical supports crossed by three horizont
 
 Rule: if Gold appears more than once per screen, pull it back — it works because it's rare. Ink/Paper and Paper/Moss Deep clear WCAG AA for body text; Gold-on-Paper is AA for large text/labels only.
 
+### Color strategy and intended feeling
+
+The palette is designed for solo marketers, nonprofit teams, and small organizations that may already feel overwhelmed by search marketing. It should make the work feel calm, credible, organized, and achievable—not urgent, judgmental, or highly technical.
+
+| Color | Intended effect | Audience purpose |
+|---|---|---|
+| Paper | Calm, openness, and breathing room | Reduces dashboard pressure and helps the next step feel manageable |
+| Ink | Trust, clarity, and competence | Gives recommendations authority without feeling cold or corporate |
+| Moss | Steady growth and forward movement | Connects visible progress to the Trellis growth metaphor |
+| Moss Deep | Confidence and direction | Makes primary actions and important headings feel dependable |
+| Sage Tint | Support and organization | Groups related information without adding visual pressure |
+| Gold | Achievement and positive momentum | Rewards meaningful progress and draws attention selectively |
+
+Apply the emotional intent through these rules:
+
+- **Reassurance before urgency:** Paper, white space, and Sage should dominate. Avoid large fields of intense color or excessive alerts that make users feel behind.
+- **Gold as a reward signal:** Use Gold for meaningful improvement, new opportunities, milestones, or limited emphasis—not warnings, errors, routine navigation, or general decoration.
+- **Progress is not the same as status:** Moss is both a brand color and a progress color, so its presence alone must not mean "complete" or "successful." Pair every state with a written label and, where useful, an icon or shape.
+- **Context over universal claims:** Color associations vary by person and culture. Validate the intended feelings—calm, capable, supported, and clear—with representative users instead of assuming color alone creates them.
+
 ## 3. Typography
 - **Fraunces** — wordmark at 700; display headlines and tagline at 500. Do not use it for paragraphs, navigation, forms, or data tables.
 - **Public Sans** — body and UI at 400; labels, buttons, and emphasized body copy at 600. This is everything the user reads to get work done.
@@ -71,17 +91,23 @@ Sample microcopy:
 
 ## 5. Tagline & Verbal System
 - **Primary tagline:** "Give your content something to climb."
-- **One-sentence definition:** "Trellis is a digital marketing workspace that analyzes your website, recommends prioritized SEO, AEO, and SEM improvements, and helps you manage and measure your progress."
-- **Positioning line** (pitch/landing): "A complete search strategy — without the consultant-sized invoice."
+- **Primary positioning line:** "Your paid and organic search growth strategy—all in one place."
+- **One-sentence definition:** "Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress."
+- **Supporting promise:** "Analyze your website, uncover organic and paid opportunities, prioritize the right work, and measure progress in one connected workspace."
+- **Value proof:** "One website analysis → one coordinated strategy → one prioritized plan → one Organizer → one reporting system."
 - **In-app empty state:** "Every plant needs something to climb. Add your first site to get started."
 - **Onboarding/email:** "You bring the content. We'll bring the structure."
 - **Never say:** "AI-powered SEO optimization platform."
 
-On marketing pages, lead with the outcome before the category names:
+On marketing pages, lead with the unified paid-and-organic position, then explain the outcome before introducing category names:
 
-> Know what to fix, what to create, and what to do next—without needing an expensive search consultancy.
+> Your paid and organic search growth strategy—all in one place.
 
-The official product story is: **Analyze → Recommend → Prioritize → Complete → Measure progress.** Use this sequence in diagrams, demonstrations, onboarding, and product tours so visitors can see that Trellis continues beyond the audit.
+Follow with:
+
+> Know what to fix, what to create, where paid search may be worthwhile, and what to do next—without needing an expensive search consultancy.
+
+The official product story is: **Analyze → Recommend → Prioritize → Complete → Rescan → Measure progress.** Use this sequence in diagrams, demonstrations, onboarding, and product tours so visitors can see that Trellis continues beyond the audit.
 
 ## 6. In Product (proof point)
 The Health Score card is where color, type, and voice all have to hold up at once: large mono score + gold delta, Moss progress bar, plain-language copy naming what changed and what's next, Moss Deep CTA. The SEM section mirrors this pattern but keeps its own small summary (accepted keyword count, cost-tier mix) rather than folding into the Health Score — paid and organic are tracked as coequal disciplines, not blended into one number.
@@ -131,20 +157,23 @@ The Health Score card is where color, type, and voice all have to hold up at onc
 ## 9. Website Experience Pattern
 Recommended homepage sequence:
 
-1. Outcome-led hero and two actions: **Build my first plan** and **See how Trellis works**.
-2. The problem with report-only tools.
-3. The five-step audit-to-published workflow.
-4. Product proof using a realistic Health Score delta and prioritized next action.
-5. Plain-language explanations of SEO, AEO, and SEM.
-6. Who Trellis is for.
-7. An explicit explanation of the current offer, limits, and price once those decisions are finalized.
-8. A focused final call to action.
+1. Paid-and-organic positioning hero and two actions: **Build my first plan** and **See how Trellis works**.
+2. The problem with disconnected organic tools, paid-search tools, reports, and spreadsheets.
+3. The unifying proof: **one analysis → one coordinated strategy → one prioritized plan → one Organizer → one reporting system**.
+4. The six-step analysis-to-measurement workflow.
+5. Product proof pairing a realistic organic Health Score delta with a clearly labeled paid-search opportunity and prioritized next action.
+6. Plain-language explanations of SEO, AEO, and SEM as connected parts of one search strategy.
+7. Who Trellis is for.
+8. An explicit explanation of the current offer, limits, and price once those decisions are finalized.
+9. A focused final call to action.
 
 Preferred hero copy:
 
-> **Give your content something to climb.**
+> **Your paid and organic search growth strategy—all in one place.**
 >
-> Trellis turns your website audit into a prioritized SEO, AEO, and paid-search plan—and helps you carry every recommendation through to published.
+> Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion.
+>
+> *Give your content something to climb.*
 
 Use the climbing metaphor at major story moments only. The interface should feel structured and supportive, not garden-themed.
 

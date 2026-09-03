@@ -2,10 +2,10 @@
   <img src="Branding/assets/logo/PNGs/trellis-horizontal-green-logo-2C4E35-transparent.png" alt="Trellis logo" width="360">
 </p>
 
-<h3 align="center">Give your content something to climb.</h3>
+<h3 align="center">Your paid and organic search growth strategy—all in one place.</h3>
 
 <p align="center">
-  An SEO / AEO / SEM growth strategy workspace for marketers who don't have a specialist team — or a specialist budget.
+  One website analysis. One coordinated strategy. One prioritized plan, Organizer, and reporting system.
 </p>
 
 <p align="center">
@@ -18,7 +18,9 @@
 
 ## What is Trellis?
 
-**Trellis is a digital marketing workspace that analyzes your website, recommends prioritized SEO, AEO, and SEM improvements, and helps you manage and measure your progress.**
+**Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress.**
+
+*Give your content something to climb.*
 
 A **trellis** is a framework that gives a climbing plant something to grow against — the plant supplies the growth, the trellis supplies the structure. Website content works the same way: most small teams aren't short on ambition, they're short on structure — a prioritized order to work in, a place to track what's done, and a way to see whether it's working.
 
@@ -26,18 +28,20 @@ You submit a website URL, then Trellis analyzes the site and turns that analysis
 
 **Analyze → Recommend → Prioritize → Complete the work → Rescan → Measure progress**
 
-It produces prioritized SEO, AEO (Answer Engine Optimization — how a site shows up in AI answers like ChatGPT or Google's AI Overviews), and cost-conscious paid-search (SEM) recommendations; turns the ones you accept into trackable tasks; and automatically saves a report each time you rescan, so you can see what changed.
+The result is not separate SEO, AEO, and advertising plans. It is one coordinated paid-and-organic search strategy: Trellis produces prioritized organic and cost-conscious paid-search recommendations from the same website analysis, turns accepted recommendations into trackable tasks in one Organizer, and automatically saves comparable Reports so you can see what changed.
 
 ## The Problem
 
-Small-business and nonprofit marketers are often responsible for organic search, AI-answer visibility, content, and paid-search decisions all at once, with no specialist team and no specialist-tool budget. Today that usually means: audit tools that point out problems but don't help finish the work, plans that scatter across spreadsheets, paid-search tools that assume expertise the marketer doesn't have, and reporting that has to be rebuilt by hand every time. There's plenty of information and no clear path from *"what should I do?"* to *"what did we accomplish, and is it working?"*
+Small-business and nonprofit marketers are often responsible for organic search, AI-answer visibility, content, and paid-search decisions all at once, with no specialist team and no specialist-tool budget. Today that usually means separate organic and paid tools, audits that point out problems but don't help finish the work, plans scattered across spreadsheets, and reporting rebuilt by hand. There's plenty of information, but no coordinated path from *"where should we grow?"* to *"what should I do next?"* to *"what did we accomplish, and is it working?"*
 
 ## How It Works
 
-1. **Understand** — submit a website URL and get back a plain-language technical audit plus prioritized organic and paid-search opportunities.
-2. **Decide** — see *why* each recommendation matters, then accept or dismiss it.
-3. **Complete** — move accepted work through the Organizer (a kanban-style board) from Backlog to Published.
-4. **Measure** — rescan the site, see what changed, follow your Health Score over time, and compare saved Reports.
+1. **Analyze** — submit a website URL once to uncover connected organic and paid-search opportunities.
+2. **Recommend** — receive plain-language, site-specific recommendations across SEO, AEO, content, technical health, and SEM.
+3. **Prioritize** — compare impact, rationale, and clearly labeled paid Cost Tiers, then accept or dismiss each recommendation.
+4. **Complete** — move accepted organic and paid work through one Organizer from Backlog to Published or Live.
+5. **Rescan** — analyze the site again to identify changes and new opportunities.
+6. **Measure progress** — follow the organic Health Score, review the separate SEM summary, and compare saved Reports in one reporting system.
 
 ## Who It's For
 
@@ -47,8 +51,8 @@ Small-business and nonprofit marketers are often responsible for organic search,
 ## Key Features (MVP)
 
 - **Website workspaces** — save and revisit multiple sites; analyze one at a time.
-- **AI site analysis** — an AI agent scrapes a submitted URL and returns structured, rationale-backed recommendations across SEO, AEO, and content.
-- **Cost-conscious SEM strategy** — keyword and ad-group suggestions with a Cost Tier estimate per keyword, without launching or spending on a real campaign.
+- **Unified site analysis** — one submitted URL produces structured, rationale-backed opportunities across organic SEO, AEO, content, technical health, and paid search.
+- **Cost-conscious paid-search strategy** — SEM keyword, ad-group, landing-page, targeting, and negative-keyword guidance with clearly labeled Cost Tier estimates, without launching or spending on a real campaign.
 - **Organizer (kanban)** — every recommendation, organic or paid, moves visibly from Suggested through to Published.
 - **Health Score** — a single 0–100 score summarizing organic SEO/AEO progress, plus the change since your last scan.
 - **Automatic Reports** — every analysis run saves a comparable snapshot, so progress is visible without a spreadsheet.
@@ -76,7 +80,7 @@ Trellis is currently in the **specification and design phase** — the requireme
 | [`trellis_onepager_pitch.md`](trellis_onepager_pitch.md) | The one-page pitch: problem, promise, and roadmap at a glance. |
 | [`architecture and data model/`](architecture%20and%20data%20model) | The database/data model design (`Trellis_Data_Model.md`, plus a rendered PDF). |
 | [`Branding/`](Branding) | The brand brief, identity guide, design-system tokens, and logo/favicon assets. |
-| [`new feature proposals/`](new%20feature%20proposals) | Drafted proposals for future features (SEM strategy, reporting & analytics). |
+| [`new feature proposals/`](new%20feature%20proposals) | Design-history proposals that informed the current SEM strategy and reporting requirements. |
 
 ## Roadmap
 
