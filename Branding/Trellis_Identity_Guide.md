@@ -94,7 +94,7 @@ Sample microcopy:
 - **Primary positioning line:** "Your paid and organic search growth strategy—all in one place."
 - **One-sentence definition:** "Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress."
 - **Supporting promise:** "Analyze your website, uncover organic and paid opportunities, prioritize the right work, and measure progress in one connected workspace."
-- **Value proof:** "One website analysis → one coordinated strategy → one prioritized plan → one Organizer → one reporting system."
+- **Value proof:** "Analyze whenever you need to → every run strengthens one evolving strategy, prioritized plan, Organizer, and reporting history."
 - **In-app empty state:** "Every plant needs something to climb. Add your first site to get started."
 - **Onboarding/email:** "You bring the content. We'll bring the structure."
 - **Never say:** "AI-powered SEO optimization platform."
@@ -159,7 +159,7 @@ Recommended homepage sequence:
 
 1. Paid-and-organic positioning hero and two actions: **Build my first plan** and **See how Trellis works**.
 2. The problem with disconnected organic tools, paid-search tools, reports, and spreadsheets.
-3. The unifying proof: **one analysis → one coordinated strategy → one prioritized plan → one Organizer → one reporting system**.
+3. The unifying proof: **analyze whenever needed → every run strengthens one evolving strategy → one prioritized plan → one Organizer → one reporting history**.
 4. The six-step analysis-to-measurement workflow.
 5. Product proof pairing a realistic organic Health Score delta with a clearly labeled paid-search opportunity and prioritized next action.
 6. Plain-language explanations of SEO, AEO, and SEM as connected parts of one search strategy.

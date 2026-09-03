@@ -4,7 +4,7 @@
 **Tagline:** "Give your content something to climb."
 **Primary positioning line:** "Your paid and organic search growth strategy—all in one place."
 **One-sentence definition:** Trellis analyzes your website and turns its findings into one prioritized plan for improving organic visibility, appearing in AI answers, and making smarter paid-search decisions—then helps you carry the work through to completion and measure progress.
-**Positioning:** For the solo marketer or nonprofit team responsible for organic and paid search without specialist support, Trellis is the accessible strategy-and-execution workspace that turns one website analysis into one coordinated plan, one workflow, and one reporting system.
+**Positioning:** For the solo marketer or nonprofit team responsible for organic and paid search without specialist support, Trellis is the accessible strategy-and-execution workspace where every website analysis strengthens one ongoing plan, workflow, and reporting history.
 
 **Customer-facing promise:** Analyze your website, uncover organic and paid opportunities, prioritize the right work, and measure progress in one connected workspace—without needing an expensive search consultancy.
 
@@ -17,7 +17,7 @@ Full designed version (palette, type specimens, layout, logo): https://claude.ai
 A website's content is the plant. What it's missing isn't ambition, it's structure — a prioritized order to work in, a place to track what's done, a way to see progress. That's what Trellis supplies; the site owner still writes the content, fixes the pages, publishes the posts, and decides what (if anything) to spend on ads. It's also a quiet, deliberate pun: unpaid search visibility has been called "organic" search since before AEO existed, and a trellis is literally garden infrastructure.
 
 ## Brand Positioning
-Tools priced for a solo marketer often stop at insight: a score or report. They also tend to separate organic work from paid-search planning, forcing one marketer to assemble a strategy across specialized tools and spreadsheets. Trellis is designed around access, coordination, and follow-through. One website analysis produces connected organic and paid opportunities; one prioritized plan helps the user decide what to do; one Organizer carries accepted work from Suggested to Published or Live; and one reporting system makes progress visible. Paid search is not an extra feature attached to an organic product—it is a coequal part of the search strategy, with its own honest success signals and clear MVP limits.
+Tools priced for a solo marketer often stop at insight: a score or report. They also tend to separate organic work from paid-search planning, forcing one marketer to assemble a strategy across specialized tools and spreadsheets. Trellis is designed around access, coordination, and follow-through. Each analysis produces connected organic and paid opportunities; every rescan updates the ongoing strategy and adds to its reporting history; one prioritized plan helps the user decide what to do; and one Organizer carries accepted work from Suggested to Published or Live. Paid search is not an extra feature attached to an organic product—it is a coequal part of the search strategy, with its own honest success signals and clear MVP limits.
 
 ## Mission
 **To make a coordinated paid-and-organic search growth strategy accessible to under-resourced marketers—from website analysis and prioritization through execution and measurement.**
@@ -46,7 +46,7 @@ The marketing website leads with the customer's outcome, not unexplained categor
 1. **Position:** Your paid and organic search growth strategy—all in one place.
 2. **Outcome:** Know what to fix, what to create, where paid search may be worthwhile, and what to do next.
 3. **Problem:** Most affordable tools separate organic and paid planning, stop at findings, or leave execution and reporting in spreadsheets.
-4. **Difference:** Trellis turns one website analysis into **one coordinated strategy → one prioritized plan → one Organizer → one reporting system.**
+4. **Difference:** Trellis lets the user analyze whenever needed, with **every run → one evolving strategy → one prioritized plan → one Organizer → one reporting history.**
 5. **Workflow:** Show how that strategy moves through **Analyze → Recommend → Prioritize → Complete → Rescan → Measure progress.**
 6. **Proof:** Pair organic proof (Health Score change) with paid proof (cost-conscious keyword or ad-group opportunity), then show their shared task status and next action.
 7. **Scope:** Explain SEO, AEO, and SEM in plain language as three connected parts of one search strategy, while labeling paid estimates and organic metrics accurately.

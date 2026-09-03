@@ -8,7 +8,7 @@
 
 *Give your content something to climb.*
 
-Trellis helps resource-limited marketers analyze their website, uncover organic and paid opportunities, prioritize the right work, and measure progress in one connected workspace. One website analysis becomes one coordinated strategy, one prioritized plan, one Organizer, and one reporting system.
+Trellis helps resource-limited marketers analyze their website, uncover organic and paid opportunities, prioritize the right work, and measure progress in one connected workspace. Users can analyze and rescan whenever needed; every run strengthens one evolving strategy, prioritized plan, Organizer, and reporting history.
 
 **Analyze → Recommend → Prioritize → Complete the work → Rescan → Measure progress**
 
@@ -18,7 +18,7 @@ Small-business and nonprofit marketers are responsible for organic search, visib
 
 ## The Trellis Experience
 
-1. **Analyze:** submit one website URL to uncover connected organic and paid-search opportunities.
+1. **Analyze:** submit a website URL—and analyze it again whenever needed—to uncover connected organic and paid-search opportunities.
 2. **Recommend:** receive plain-language, site-specific SEO, AEO, content, technical, and SEM recommendations.
 3. **Prioritize:** compare impact, rationale, and clearly labeled Cost Tiers, then accept or dismiss each recommendation.
 4. **Complete:** move accepted organic and paid work through one Organizer from Backlog to Published or Live.
@@ -42,7 +42,7 @@ Small-business and nonprofit marketers are responsible for organic search, visib
 ## Why It Is Different
 
 - **Follow-through, not just findings:** recommendations become trackable work and remain visible through publication.
-- **Paid and organic, truly coordinated:** one website analysis produces connected SEO, AEO, content, technical, and cost-conscious SEM opportunities—not separate plans the marketer must reconcile.
+- **Paid and organic, truly coordinated:** every analysis produces connected SEO, AEO, content, technical, and cost-conscious SEM opportunities—not separate plans the marketer must reconcile.
 - **One system from strategy through measurement:** accepted organic and paid recommendations share one prioritized plan, Organizer, and reporting system.
 - **Plain-language priorities:** every recommendation explains why it matters.
 - **Reporting built in:** every analysis creates a comparable snapshot.

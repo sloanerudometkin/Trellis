@@ -5,7 +5,7 @@
 <h3 align="center">Your paid and organic search growth strategy—all in one place.</h3>
 
 <p align="center">
-  One website analysis. One coordinated strategy. One prioritized plan, Organizer, and reporting system.
+  Analyze whenever you need to. Every run strengthens one coordinated strategy, plan, Organizer, and reporting system.
 </p>
 
 <p align="center">
@@ -51,7 +51,7 @@ Small-business and nonprofit marketers are often responsible for organic search,
 ## Key Features (MVP)
 
 - **Website workspaces** — save and revisit multiple sites; analyze one at a time.
-- **Unified site analysis** — one submitted URL produces structured, rationale-backed opportunities across organic SEO, AEO, content, technical health, and paid search.
+- **Repeatable site analysis** — analyze and rescan a website whenever needed; every run produces structured, rationale-backed opportunities across organic SEO, AEO, content, technical health, and paid search.
 - **Cost-conscious paid-search strategy** — SEM keyword, ad-group, landing-page, targeting, and negative-keyword guidance with clearly labeled Cost Tier estimates, without launching or spending on a real campaign.
 - **Organizer (kanban)** — every recommendation, organic or paid, moves visibly from Suggested through to Published.
 - **Health Score** — a single 0–100 score summarizing organic SEO/AEO progress, plus the change since your last scan.
