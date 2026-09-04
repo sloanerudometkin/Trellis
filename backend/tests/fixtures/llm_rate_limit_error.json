@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "rate_limit_exceeded",
+    "message": "The test request reached its mocked rate limit."
+  }
+}

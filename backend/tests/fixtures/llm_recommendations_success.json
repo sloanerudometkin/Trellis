@@ -1,0 +1,41 @@
+{
+  "suggestions": [
+    {
+      "category": "aeo",
+      "title": "Add a concise answer section",
+      "description": "Answer the main visitor question directly below the page heading.",
+      "rationale": "A direct answer makes the page easier for visitors and answer engines to understand.",
+      "priority": "high",
+      "affected_page_url": "https://example.com/"
+    },
+    {
+      "category": "seo_content",
+      "title": "Publish a beginner planting guide",
+      "description": "Create a practical guide organized around seasonal planting questions.",
+      "starter_outline": [
+        "Choose plants for the season",
+        "Prepare the garden bed",
+        "Create a weekly care plan"
+      ],
+      "rationale": "The guide addresses a relevant topic that is not covered by the current homepage.",
+      "priority": "medium",
+      "affected_page_url": null
+    },
+    {
+      "category": "sem",
+      "title": "Test a community garden workshop ad group",
+      "description": "Group workshop-related keywords around a matching workshop landing page.",
+      "rationale": "Focused keywords and a matching destination can make a small test budget more useful.",
+      "priority": "medium",
+      "affected_page_url": "https://example.com/workshops",
+      "cost_tier": "low",
+      "ad_group_guidance": "Keep workshop-intent keywords in one tightly themed group.",
+      "landing_page_fit": "Use the workshops page and repeat the workshop details in the page heading.",
+      "targeting_notes": "Start with the local service area only.",
+      "negative_keywords": [
+        "jobs",
+        "wholesale"
+      ]
+    }
+  ]
+}
