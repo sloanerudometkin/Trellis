@@ -1,7 +1,8 @@
 # Trellis MVP Kanban and Development Workflow Plan
 
-**Delivery deadline:** Monday, September 14, 2026  
-**Source of truth:** `trellis_spec.md` v2.8  
+**Delivery policy:** Feature-complete, acceptance-driven MVP; dates may move rather than cutting FR-1–FR-9
+**Planning estimate:** Approximately 20 weeks for one part-time developer; review after every milestone
+**Source of truth:** `trellis_spec.md` v2.9
 **MVP scope:** FR-1 through FR-9, DR-1 through DR-14 as they support the MVP, and NFR-1 through NFR-6  
 **Team assumption:** one developer, one active implementation branch at a time  
 **Release path:** feature branch → `dev` → `main`
@@ -44,7 +45,7 @@ The plan follows a test-first workflow. Tests and implementation stay together o
 | Sprint | Sprint 0, Sprint 1, Sprint 2, Sprint 3 |
 | Type | Feature, Test, Security, Infrastructure, Documentation, Release |
 | Priority | P0 Blocker, P1 Required, P2 Polish |
-| Target date | Sep 4 through Sep 14 |
+| Target window | Milestone week range; update forecasts without changing acceptance scope |
 | Requirement | UC/FR/DR/NFR IDs from the specification |
 | Branch | Feature branch containing the work |
 
@@ -96,15 +97,15 @@ An issue can move to Done only when:
 
 | Sprint | Dates | GitHub milestone | Milestone outcome | Associated issues |
 |---|---|---|---|---|
-| Sprint 0 | Sep 4 | **M1 — Tested Foundation** | The app, test harness, database/auth contracts, and CI foundation exist. | MVP-001–MVP-003 |
-| Sprint 1 | Sep 5–7 | **M2 — First Website Action Plan** | A user can sign in, add a website, run a resumable analysis, and receive persisted SEO/AEO recommendations. | MVP-004–MVP-008 |
-| Sprint 2 | Sep 8–11 | **M3 — Complete Strategy and Execution Loop** | A user can decide on recommendations, manage work, review technical and SEM guidance, and measure progress. | MVP-009–MVP-013 |
-| Sprint 3 | Sep 12–14 | **M4 — Deployed MVP Release** | All six views work together; the app is accessible, tested, deployed, smoke-tested, and demo-ready. | MVP-014–MVP-016 |
+| Sprint 0 | Weeks 1–3 | **M1 — Tested Foundation** | The app, test harness, database/auth contracts, and CI foundation exist. | MVP-001–MVP-003 |
+| Sprint 1 | Weeks 4–10 | **M2 — First Website Action Plan** | A user can sign in, add a website, run a resumable analysis, and receive persisted SEO/AEO recommendations. | MVP-004–MVP-008 |
+| Sprint 2 | Weeks 11–18 | **M3 — Complete Strategy and Execution Loop** | A user can decide on recommendations, manage work, review technical and SEM guidance, and measure progress. | MVP-009–MVP-013 |
+| Sprint 3 | Weeks 19–20 | **M4 — Deployed MVP Release** | All six views work together; the app is accessible, tested, deployed, smoke-tested, and demo-ready. | MVP-014–MVP-016 |
 
 ## 5. Milestone 1 — Tested Foundation
 
 **Sprint:** Sprint 0  
-**Due:** Friday, September 4  
+**Estimated window:** Weeks 1–3
 **Exit condition:** all three issues are merged into `dev`, and CI automatically runs backend and frontend tests.
 
 ### MVP-001 — Establish the automated test foundation
@@ -112,7 +113,7 @@ An issue can move to Done only when:
 **Type:** Test / Infrastructure  
 **Priority:** P0  
 **Branch:** `feature/test-foundation`  
-**Create branch:** Sep 4, from the latest `dev`, before any app feature code  
+**Create branch:** At milestone start, from the latest `dev`, before any app feature code
 **Dependencies:** none  
 **Spec:** Section 5.2 test-first rule; NFR-4; NFR-6
 
@@ -149,7 +150,7 @@ An issue can move to Done only when:
 - [ ] Write tests for required enums, nullable rules, unique rules, and foreign keys.
 - [ ] Scaffold the React/TypeScript frontend and Flask backend.
 - [ ] Configure SQLAlchemy and Alembic.
-- [ ] Implement the MVP database schema from the approved data model.
+- [ ] Implement the MVP database schema from the approved data model: one Organizer item table, one canonical Organizer stage, affected-page URLs instead of permanent page snapshots/raw HTML, and Supabase Auth UUID ownership.
 - [ ] Define the initial REST API request/response contracts.
 - [ ] Configure Supabase Auth and JWT validation.
 - [ ] Add and test per-user row-level security boundaries.
@@ -196,7 +197,7 @@ An issue can move to Done only when:
 **Type:** Feature / Full stack  
 **Priority:** P0  
 **Branch:** `feature/analysis-flow`  
-**Create branch:** Sep 5, from `dev` after `feature/test-foundation` is merged  
+**Create branch:** After `feature/test-foundation` is merged, from the latest `dev`
 **Dependencies:** M1 complete  
 **Spec:** UC-1; FR-1.1; FR-1.3; FR-5.1; NFR-1
 
@@ -272,7 +273,7 @@ An issue can move to Done only when:
 **Type:** Feature / Backend / AI integration  
 **Priority:** P0  
 **Branch:** `feature/recommendations`  
-**Create branch:** Sep 7, from `dev` after `feature/analysis-flow` is merged  
+**Create branch:** After `feature/analysis-flow` is merged, from the latest `dev`
 **Dependencies:** MVP-005, MVP-006  
 **Spec:** FR-5.2–FR-5.6; NFR-3; NFR-6
 
@@ -322,7 +323,7 @@ An issue can move to Done only when:
 ## 7. Milestone 3 — Complete Strategy and Execution Loop
 
 **Sprint:** Sprint 2  
-**Due:** Friday, September 11  
+**Estimated window:** Weeks 11–18
 **Exit condition:** UC-2 through UC-5 work and all FR-1–FR-9 capabilities are present on `dev`.
 
 ### MVP-009 — Accept, dismiss, and manage recommendations
@@ -330,7 +331,7 @@ An issue can move to Done only when:
 **Type:** Feature / Full stack  
 **Priority:** P0  
 **Branch:** `feature/organizer`  
-**Create branch:** Sep 8, from `dev` after M2 is complete  
+**Create branch:** After M2 is complete, from the latest `dev`
 **Dependencies:** MVP-008  
 **Spec:** UC-2; UC-3; FR-2.3–FR-2.4; FR-3.3–FR-3.4; FR-4; DR-3–DR-5
 
@@ -338,7 +339,7 @@ An issue can move to Done only when:
 
 - [ ] Write state-transition tests for pending, accepted, dismissed, and dismiss reasons.
 - [ ] Write tests proving acceptance creates exactly one corresponding task.
-- [ ] Write bidirectional synchronization tests for suggestion and Organizer stages.
+- [ ] Write tests proving both the suggestion view and Organizer display the same canonical `OrganizerItem.stage` value.
 - [ ] Write authorization tests for task and suggestion ownership.
 - [ ] Implement Accept/Dismiss actions and the one-tap reason picker.
 - [ ] Implement the Backlog, In Production, In Review, and Published board.
@@ -348,7 +349,7 @@ An issue can move to Done only when:
 **Acceptance criteria:**
 
 - Accepting creates one task; dismissing stores a reason and creates none.
-- Updating either a suggestion or its Organizer item keeps both stages synchronized.
+- Updating a task through either interface changes the same Organizer stage record and both views display it consistently.
 - The critical action workflow passes end to end.
 
 **Branch completion:** Merge `feature/organizer` into `dev` after MVP-009 passes; delete the branch.
@@ -358,7 +359,7 @@ An issue can move to Done only when:
 **Type:** Feature / Full stack  
 **Priority:** P1  
 **Branch:** `feature/technical-audit`  
-**Create branch:** Sep 9, from `dev` after `feature/organizer` is merged  
+**Create branch:** After `feature/organizer` is merged, from the latest `dev`
 **Dependencies:** MVP-005, MVP-007  
 **Spec:** UC-1; FR-5.6; FR-6
 
@@ -385,7 +386,7 @@ An issue can move to Done only when:
 **Type:** Feature / Full stack  
 **Priority:** P1  
 **Branch:** `feature/sem-strategy`  
-**Create branch:** Sep 10, from `dev` after `feature/technical-audit` is merged  
+**Create branch:** After `feature/technical-audit` is merged, from the latest `dev`
 **Dependencies:** MVP-005, MVP-007, MVP-009  
 **Spec:** UC-4; FR-8; DR-6–DR-9
 
@@ -412,7 +413,7 @@ An issue can move to Done only when:
 **Type:** Feature / Full stack  
 **Priority:** P1  
 **Branch:** `feature/health-reports`  
-**Create branch:** Sep 11, from `dev` after `feature/sem-strategy` is merged  
+**Create branch:** After `feature/sem-strategy` is merged, from the latest `dev`
 **Dependencies:** MVP-008–MVP-011  
 **Spec:** UC-5; FR-1.2; FR-7; DR-1
 
@@ -461,7 +462,7 @@ An issue can move to Done only when:
 ## 8. Milestone 4 — Deployed MVP Release
 
 **Sprint:** Sprint 3  
-**Due:** Monday, September 14  
+**Estimated window:** Weeks 19–20
 **Exit condition:** the definition of done in Section 5.2 of the specification passes against the deployed application.
 
 ### MVP-014 — Integrate and finish all six workspace views
@@ -469,7 +470,7 @@ An issue can move to Done only when:
 **Type:** Feature / Integration / Frontend  
 **Priority:** P0  
 **Branch:** `feature/ui-deployment`  
-**Create branch:** Sep 12, from `dev` after M3 is complete  
+**Create branch:** After M3 is complete, from the latest `dev`
 **Dependencies:** MVP-004–MVP-013  
 **Spec:** FR-1.2–FR-1.3; Section 4.1; NFR-4
 
@@ -494,7 +495,7 @@ An issue can move to Done only when:
 **Type:** Release / Testing / Accessibility / Deployment  
 **Priority:** P0  
 **Branch:** `feature/ui-deployment`  
-**Target:** Sep 13  
+**Target:** After MVP-014 passes
 **Dependencies:** MVP-014
 
 **Sub-issues:**
@@ -522,7 +523,7 @@ An issue can move to Done only when:
 **Type:** Release / Documentation  
 **Priority:** P0  
 **Branch:** no planned feature branch; use `fix/release-blockers` only if an acceptance blocker requires code changes  
-**Create blocker branch:** Sep 14 from the latest `dev`, only when a specific failed acceptance check has an issue; merge it back into `dev` after the focused regression test passes  
+**Create blocker branch:** From the latest `dev` only when a specific failed acceptance check has an issue; merge it back into `dev` after the focused regression test passes
 **Dependencies:** MVP-015  
 **Spec:** UC-1–UC-5; FR-1–FR-9; NFR-1–NFR-6; Section 5.2 definition of done
 
@@ -548,22 +549,22 @@ An issue can move to Done only when:
 - The `dev` → `main` pull request passes required checks.
 - Production is rechecked after the release merge.
 
-## 9. Branch creation and merge calendar
+## 9. Branch creation and merge sequence
 
 Do not create every branch on the first day. A branch must start from the newest tested `dev`, so create it only after the preceding branch has merged.
 
-| Date | Create branch from latest `dev` | Issues | Merge target | Merge gate |
+| Start when | Create branch from latest `dev` | Issues | Merge target | Merge gate |
 |---|---|---|---|---|
-| Sep 4 | `feature/test-foundation` | MVP-001–MVP-003 | `dev` | Test harness, schema/auth contracts, and CI pass |
-| Sep 5 | `feature/analysis-flow` | MVP-004–MVP-006 | `dev` | Workspace/analyze/result journey passes |
-| Sep 7 | `feature/recommendations` | MVP-007–MVP-008 | `dev` | Validated recommendations render correctly |
-| Sep 8 | `feature/organizer` | MVP-009 | `dev` | Accept/Dismiss/Organizer journey passes |
-| Sep 9 | `feature/technical-audit` | MVP-010 | `dev` | FR-6 tests and audit UI pass |
-| Sep 10 | `feature/sem-strategy` | MVP-011 | `dev` | FR-8 tests, disclosures, and Organizer link pass |
-| Sep 11 | `feature/health-reports` | MVP-012–MVP-013 | `dev` | Health/Report/rescan comparison tests pass |
-| Sep 12 | `feature/ui-deployment` | MVP-014–MVP-015 | `dev` | Full regression, accessibility, and deployed smoke checks pass |
-| Sep 14, only if needed | `fix/release-blockers` | Focused sub-issue under MVP-016 | `dev` | Failed acceptance test is fixed and full regression remains green |
-| Sep 14 | No new feature branch | MVP-016 | Pull request: `dev` → `main` | Complete production acceptance checklist passes |
+| Now | `feature/test-foundation` | MVP-001–MVP-003 | `dev` | Test harness, schema/auth contracts, and CI pass |
+| After M1 | `feature/analysis-flow` | MVP-004–MVP-006 | `dev` | Workspace/analyze/result journey passes |
+| After analysis flow | `feature/recommendations` | MVP-007–MVP-008 | `dev` | Validated recommendations render correctly |
+| After M2 | `feature/organizer` | MVP-009 | `dev` | Accept/Dismiss/Organizer journey passes |
+| After Organizer | `feature/technical-audit` | MVP-010 | `dev` | FR-6 tests and audit UI pass |
+| After technical audit | `feature/sem-strategy` | MVP-011 | `dev` | FR-8 tests, disclosures, and Organizer link pass |
+| After SEM | `feature/health-reports` | MVP-012–MVP-013 | `dev` | Health/Report/rescan comparison tests pass |
+| After M3 | `feature/ui-deployment` | MVP-014–MVP-015 | `dev` | Full regression, accessibility, and deployed smoke checks pass |
+| Only if needed | `fix/release-blockers` | Focused sub-issue under MVP-016 | `dev` | Failed acceptance test is fixed and full regression remains green |
+| After acceptance | No new feature branch | MVP-016 | Pull request: `dev` → `main` | Complete production acceptance checklist passes |
 
 Use this command sequence whenever a new planned branch begins:
 
@@ -585,7 +586,7 @@ The local delete command removes only the already-merged local copy. GitHub can 
 
 ## 10. Dependency chain and critical path
 
-The critical path is the sequence that directly controls whether the deadline can be met:
+The critical path is the sequence that directly controls when the feature-complete MVP can be released:
 
 ```text
 MVP-001 Test foundation
