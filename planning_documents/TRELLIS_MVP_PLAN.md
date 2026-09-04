@@ -176,8 +176,8 @@ An issue can move to Done only when:
 - [x] Add a GitHub Actions workflow for backend tests.
 - [x] Add a GitHub Actions workflow for frontend tests/build.
 - [x] Add safe test environment configuration.
-- [ ] Confirm a failing test makes CI fail.
-- [ ] Confirm passing tests allow the pull request to merge.
+- [x] Confirm a failing test makes CI fail.
+- [x] Confirm passing tests allow the pull request to merge.
 
 **Acceptance criteria:**
 
