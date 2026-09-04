@@ -10,7 +10,7 @@ Trellis follows this data flow:
 
 1. A **user** manages one or more **websites**.
 2. Each website can have many **analysis runs** over time.
-3. An analysis run captures **page snapshots** and discovers **keywords**, **suggestions**, and **technical findings**.
+3. An analysis run temporarily processes scraped pages and stores **keywords**, **suggestions**, and **technical findings**. It keeps page URLs as evidence, but not raw HTML or permanent page snapshots.
 4. A completed analysis run can produce one permanent **report**.
 5. When a user accepts a suggestion, it can become an **organizer item**.
 6. Trellis records every organizer item's progress in **organizer stage history**.
@@ -38,7 +38,6 @@ The model separates scan results from ongoing work. Scan results belong to a par
 flowchart TD
     U[USER] -->|manages 0..*| W[WEBSITE]
     W -->|has 0..*| AR[ANALYSIS_RUN]
-    AR -->|captures 0..*| PS[PAGE_SNAPSHOT]
     AR -->|discovers 0..*| K[KEYWORD]
     AR -->|generates 0..*| S[SUGGESTION]
     AR -->|detects 0..*| TF[TECHNICAL_FINDING]
@@ -49,8 +48,6 @@ flowchart TD
     OI -->|records 0..* changes| OSH[ORGANIZER_STAGE_HISTORY]
     S <-->|linked through SUGGESTION_KEYWORD| K
     S <-->|linked through SUGGESTION_TECHNICAL_FINDING| TF
-    PS -->|may receive suggestions| S
-    PS -->|may have findings| TF
     S -->|may identify a cheaper alternative| S
 ```
 
@@ -60,7 +57,7 @@ flowchart TD
 
 Stores each Trellis account.
 
-Important fields include `id`, `name`, `email`, `password_hash`, and `created_at`. The `email` must be unique so two accounts cannot use the same address.
+Important fields include `id`, `name`, `email`, and `created_at`. `id` matches the UUID issued by Supabase Auth, and `email` must be unique. Trellis never stores a password hash itself; Supabase Auth manages credentials securely.
 
 Relationship: one user may manage zero or many websites, but every website belongs to exactly one user.
 
@@ -82,26 +79,15 @@ Stores one attempt to scan and evaluate a website at a particular time. Keeping 
 
 Important fields include `id`, `website_id`, `status`, `pages_scanned_count`, `health_score`, `error_message`, `started_at`, and `completed_at`.
 
-Relationships: one analysis run may produce many page snapshots, keywords, suggestions, and technical findings, but no more than one report.
+Relationships: one analysis run may produce many keywords, suggestions, and technical findings, but no more than one report.
 
-### `page_snapshots`
-
-Stores the version of a page that Trellis saw during one analysis run. This preserves the source material used to make recommendations.
-
-Important fields include `id`, `analysis_run_id`, `url`, `page_title`, `extracted_content`, `raw_html`, `word_count`, `http_status`, and `scraped_at`.
-
-Relationships:
-
-- Every snapshot belongs to exactly one analysis run.
-- A snapshot may be connected to many suggestions.
-- A snapshot may be connected to many technical findings.
-- A technical finding may optionally compare this snapshot with a second snapshot.
+Scraped HTML and extracted page text exist only while an analysis stage is running. This keeps the database small, avoids retaining unnecessary third-party content, and reduces privacy and security exposure. `pages_scanned_count` records scan breadth; page-specific results keep the relevant URL directly on the suggestion or finding.
 
 ### `keywords`
 
 Stores keyword candidates discovered during an analysis run.
 
-Important fields include `id`, `analysis_run_id`, `phrase`, `frequency`, `trend_score`, and `search_intent`. The combination of `analysis_run_id` and `phrase` must be unique so the same phrase is not stored twice for one run.
+Important fields include `id`, `analysis_run_id`, `phrase`, `frequency`, `tfidf_score`, and `search_intent`. The combination of `analysis_run_id` and `phrase` must be unique so the same phrase is not stored twice for one run.
 
 Relationship: an analysis run may discover many keywords. Suggestions and keywords have a many-to-many relationship through `suggestion_keywords`.
 
@@ -109,12 +95,12 @@ Relationship: an analysis run may discover many keywords. Suggestions and keywor
 
 Stores Trellis recommendations for AEO, SEO/content, and SEM work.
 
-Important fields include the recommendation's category, title, description, starter outline, rationale, priority, acceptance status, dismissal reason, and work stage. SEM-only fields store cost tier, ad-group guidance, ad-copy direction, landing-page fit, targeting notes, and negative keywords.
+Important fields include the recommendation's category, title, description, starter outline, rationale, priority, acceptance status, dismissal reason, and optional `affected_page_url`. SEM-only fields store cost tier, ad-group guidance, ad-copy direction, landing-page fit, targeting notes, and negative keywords.
 
 Relationships:
 
 - Every suggestion belongs to one analysis run.
-- A suggestion may optionally concern one page snapshot.
+- A suggestion may optionally identify one affected page URL.
 - A suggestion may target many keywords through `suggestion_keywords`.
 - A suggestion may address many technical findings through `suggestion_technical_finding`.
 - An accepted suggestion may create one organizer item.
@@ -130,13 +116,13 @@ Its combined primary key is `suggestion_id` plus `keyword_id`, which prevents th
 
 Stores technical SEO problems found during an analysis run.
 
-Important fields include `finding_type`, `severity`, `explanation`, `resolution_status`, `resolved_at`, and `created_at`.
+Important fields include `finding_type`, `severity`, `explanation`, `affected_page_url`, `related_page_url`, `resolution_status`, `resolved_at`, and `created_at`.
 
 A finding may be:
 
-- **Sitewide:** both page foreign keys are empty.
-- **Page-specific:** `page_snapshot_id` points to one saved page.
-- **A comparison:** `page_snapshot_id` and `related_page_snapshot_id` point to two saved pages.
+- **Sitewide:** both page URL fields are empty.
+- **Page-specific:** `affected_page_url` identifies the page.
+- **A comparison:** `affected_page_url` and `related_page_url` identify the two pages.
 
 One finding may support many suggestions, and one suggestion may address many findings. The `suggestion_technical_finding` bridge table represents that connection.
 
@@ -179,7 +165,6 @@ Relationship: one organizer item may have zero or many stage-history records; ev
 |---|---|---:|---|---|
 | `users` | `websites` | 1 to 0..* | `websites.user_id -> users.id` | A user may manage many websites; every website has one user. |
 | `websites` | `analysis_runs` | 1 to 0..* | `analysis_runs.website_id -> websites.id` | A website may be scanned many times; every run belongs to one website. |
-| `analysis_runs` | `page_snapshots` | 1 to 0..* | `page_snapshots.analysis_run_id -> analysis_runs.id` | One run stores every page captured during that scan. |
 | `analysis_runs` | `keywords` | 1 to 0..* | `keywords.analysis_run_id -> analysis_runs.id` | One run may discover many keyword candidates. |
 | `analysis_runs` | `suggestions` | 1 to 0..* | `suggestions.analysis_run_id -> analysis_runs.id` | One run may generate many AEO, SEO/content, and SEM suggestions. |
 | `analysis_runs` | `technical_findings` | 1 to 0..* | `technical_findings.analysis_run_id -> analysis_runs.id` | One run may detect many technical issues. |
@@ -190,15 +175,13 @@ Relationship: one organizer item may have zero or many stage-history records; ev
 | `organizer_items` | `organizer_stage_history` | 1 to 0..* | `organizer_stage_history.organizer_item_id -> organizer_items.id` | Every task can record many stage changes over time. |
 | `suggestions` + `keywords` | `suggestion_keywords` | many to many | Composite PK: `suggestion_id` + `keyword_id` | A suggestion can target many keywords; a keyword can support many suggestions. |
 | `suggestions` + `technical_findings` | `suggestion_technical_finding` | many to many | Composite PK: `suggestion_id` + `technical_finding_id` | A suggestion can address many findings and vice versa. |
-| `page_snapshots` | `suggestions` | 1 to 0..* | `suggestions.page_snapshot_id` is a nullable FK | A suggestion may concern one saved page; a page may have many suggestions. |
-| `page_snapshots` | `technical_findings` | 1 to 0..* | Two nullable page-snapshot FKs | A finding may be sitewide, page-specific, or compare two saved pages. |
 | `suggestions` | `suggestions` | 1 to 0..* | `cheaper_alternative_to_id` is a nullable self-FK | A lower-cost SEM suggestion can point to the expensive suggestion it replaces. |
 
 ## Rules the application must enforce
 
-1. Keep `acceptance_status` separate from `work_stage`. Accepting a recommendation is not the same as completing the work.
+1. Keep `suggestions.acceptance_status` separate from `organizer_items.stage`. Accepting a recommendation is not the same as completing the resulting work.
 2. Valid acceptance statuses are `pending`, `accepted`, and `dismissed`.
-3. Valid work stages are `backlog`, `in_production`, `in_review`, and `published`. Set `published_at` when work enters `published`.
+3. Valid Organizer stages are `backlog`, `in_production`, `in_review`, and `published`. `organizer_items.stage` is the only stored task stage. Set `published_at` when work enters `published`.
 4. Valid suggestion categories are `aeo`, `seo_content`, and `sem`. Cost and advertising fields remain empty unless the category is `sem`.
 5. Valid dismissal reasons are `not_relevant`, `too_much_work`, `already_doing_this`, and `other`. A reason is required only when a suggestion is dismissed.
 6. Constrain `health_score` to an integer from 0 through 100.
@@ -221,13 +204,13 @@ Suppose a user adds `example.com` and starts a scan:
 
 1. Trellis creates one row in `websites` for `example.com`.
 2. It creates a new row in `analysis_runs` for that scan.
-3. Each scanned page becomes a `page_snapshots` row.
+3. Trellis processes each page temporarily, then discards its raw HTML and extracted text.
 4. Discovered phrases become `keywords` rows.
-5. Problems such as missing metadata become `technical_findings` rows.
-6. Recommended improvements become `suggestions` rows.
+5. Problems such as missing metadata become `technical_findings` rows with the affected page URL.
+6. Recommended improvements become `suggestions` rows with an affected page URL when applicable.
 7. Bridge-table rows connect each suggestion to its supporting keywords and technical findings.
 8. When the run finishes, Trellis creates one `reports` row.
-9. If the user accepts a suggestion, Trellis may create one `organizer_items` row.
-10. As the task moves from backlog to published, each change becomes an `organizer_stage_history` row.
+9. If the user accepts a suggestion, Trellis may create one `organizer_items` row whose `item_type` is AEO, SEO/content, or SEM.
+10. As the task moves from backlog to published, its one canonical stage changes and each change becomes an `organizer_stage_history` row.
 
 That structure lets Trellis explain where a recommendation came from, manage the resulting work, and measure improvement across later scans.

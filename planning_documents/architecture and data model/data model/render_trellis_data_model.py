@@ -19,15 +19,14 @@ WHITE = colors.white
 
 ENTITIES = {
     "USER": [
-        ("int", "id", "PK"),
+        ("uuid", "id", "PK,FK"),
         ("string", "name", ""),
         ("string", "email", ""),
-        ("string", "password_hash", ""),
         ("datetime", "created_at", ""),
     ],
     "WEBSITE": [
         ("int", "id", "PK"),
-        ("int", "user_id", "FK"),
+        ("uuid", "user_id", "FK"),
         ("string", "url", ""),
         ("string", "business_name", ""),
         ("text", "business_context", ""),
@@ -43,29 +42,18 @@ ENTITIES = {
         ("datetime", "started_at", ""),
         ("datetime", "completed_at", ""),
     ],
-    "PAGE_SNAPSHOT": [
-        ("int", "id", "PK"),
-        ("int", "analysis_run_id", "FK"),
-        ("string", "url", ""),
-        ("string", "page_title", ""),
-        ("text", "extracted_content", ""),
-        ("text", "raw_html", ""),
-        ("int", "word_count", ""),
-        ("int", "http_status", ""),
-        ("datetime", "scraped_at", ""),
-    ],
     "KEYWORD": [
         ("int", "id", "PK"),
         ("int", "analysis_run_id", "FK"),
         ("string", "phrase", ""),
         ("int", "frequency", ""),
-        ("decimal", "trend_score", ""),
+        ("decimal", "tfidf_score", ""),
         ("string", "search_intent", ""),
     ],
     "SUGGESTION": [
         ("int", "id", "PK"),
         ("int", "analysis_run_id", "FK"),
-        ("int", "page_snapshot_id", "FK?"),
+        ("string", "affected_page_url", ""),
         ("string", "category", ""),
         ("string", "title", ""),
         ("text", "description", ""),
@@ -74,7 +62,6 @@ ENTITIES = {
         ("string", "priority", ""),
         ("string", "acceptance_status", ""),
         ("string", "dismiss_reason", ""),
-        ("string", "work_stage", ""),
         ("string", "cost_tier", ""),
         ("string", "ad_group_label", ""),
         ("text", "ad_copy_angle", ""),
@@ -88,8 +75,8 @@ ENTITIES = {
     "TECHNICAL_FINDING": [
         ("int", "id", "PK"),
         ("int", "analysis_run_id", "FK"),
-        ("int", "page_snapshot_id", "FK?"),
-        ("int", "related_page_snapshot_id", "FK?"),
+        ("string", "affected_page_url", ""),
+        ("string", "related_page_url", ""),
         ("string", "finding_type", ""),
         ("string", "severity", ""),
         ("text", "explanation", ""),
@@ -152,8 +139,7 @@ BOXES = {
     "USER": (535, 710, 154),
     "WEBSITE": (515, 575, 194),
     "ANALYSIS_RUN": (500, 415, 224),
-    "PAGE_SNAPSHOT": (18, 205, 188),
-    "KEYWORD": (222, 225, 158),
+    "KEYWORD": (150, 225, 158),
     "SUGGESTION": (397, 92, 216),
     "TECHNICAL_FINDING": (630, 205, 180),
     "REPORT": (826, 106, 205),
@@ -260,7 +246,6 @@ def draw_reference_page(c):
         ("Parent table", "Child table", "Cardinality", "Foreign key / constraint", "What it means"),
         ("users", "websites", "1 to 0..*", "websites.user_id -> users.id", "A user may manage many websites; every website has one user."),
         ("websites", "analysis_runs", "1 to 0..*", "analysis_runs.website_id -> websites.id", "A website may be scanned many times; every run belongs to one website."),
-        ("analysis_runs", "page_snapshots", "1 to 0..*", "page_snapshots.analysis_run_id -> analysis_runs.id", "One run stores every page captured during that scan."),
         ("analysis_runs", "keywords", "1 to 0..*", "keywords.analysis_run_id -> analysis_runs.id", "One run may discover many keyword candidates."),
         ("analysis_runs", "suggestions", "1 to 0..*", "suggestions.analysis_run_id -> analysis_runs.id", "One run may generate many AEO, SEO/content, and SEM suggestions."),
         ("analysis_runs", "technical_findings", "1 to 0..*", "technical_findings.analysis_run_id -> analysis_runs.id", "One run may detect many technical issues."),
@@ -271,8 +256,6 @@ def draw_reference_page(c):
         ("organizer_items", "organizer_stage_history", "1 to 0..*", "stage_history.organizer_item_id -> organizer_items.id", "Every task can record many stage changes over time."),
         ("suggestions + keywords", "suggestion_keywords", "many to many", "composite PK: suggestion_id + keyword_id", "A suggestion can target many keywords; a keyword can support many suggestions."),
         ("suggestions + findings", "suggestion_technical_finding", "many to many", "composite PK: suggestion_id + finding_id", "A suggestion can address many findings and vice versa."),
-        ("page_snapshots", "suggestions", "1 to 0..*", "suggestions.page_snapshot_id nullable FK", "A suggestion may concern one saved page; a page may have many suggestions."),
-        ("page_snapshots", "technical_findings", "1 to 0..*", "page_snapshot_id / related_page_snapshot_id nullable FKs", "A finding may be sitewide, page-specific, or compare two saved pages."),
         ("suggestions", "suggestions", "1 to 0..*", "cheaper_alternative_to_id nullable self-FK", "A lower-cost SEM suggestion can point back to the expensive suggestion it replaces."),
     ]
 
@@ -305,13 +288,13 @@ def draw_reference_page(c):
     c.drawString(46, 150, "IMPLEMENTATION RULES")
     c.setFont("Helvetica", 7)
     rules = [
-        "1. Keep acceptance_status separate from work_stage: accepting work is not the same as completing it.",
-        "2. Valid organizer stages: backlog, in_production, in_review, published. Set published_at when entering Published.",
+        "1. Keep suggestions.acceptance_status separate from organizer_items.stage: accepting work is not completing it.",
+        "2. organizer_items.stage is the only stored work stage: backlog, in_production, in_review, published.",
         "3. Valid suggestion categories: aeo, seo_content, sem. Cost and ad fields remain NULL unless category = sem.",
         "4. Dismiss reasons: not_relevant, too_much_work, already_doing_this, other. Require a reason only when dismissed.",
         "5. Constrain health_score to 0-100 and enforce the unique rules listed on page 1.",
         "6. Reports are snapshots: never recalculate an old report when scoring logic changes; comparisons are computed from two saved rows.",
-        "7. Organizer work survives later scans because it belongs to WEBSITE; its source SUGGESTION preserves where the task originated.",
+        "7. Process scraped content temporarily; store affected URLs on suggestions/findings, never raw HTML or page snapshots.",
     ]
     yy = 134
     for rule in rules:
@@ -346,7 +329,7 @@ def render():
     c.drawRightString(PAGE_W - 24, 750, "PK = primary key     FK = foreign key     UQ = unique")
 
     # Relationship paths. The shared horizontal line under ANALYSIS_RUN makes its
-    # five direct outputs visually explicit.
+    # four direct outputs visually explicit.
     user_b = anchor("USER", "bottom")
     website_t = anchor("WEBSITE", "top")
     website_b = anchor("WEBSITE", "bottom")
@@ -357,7 +340,7 @@ def render():
 
     bus_y = 385
     child_tops = [anchor(n, "top") for n in (
-        "PAGE_SNAPSHOT", "KEYWORD", "SUGGESTION", "TECHNICAL_FINDING", "REPORT"
+        "KEYWORD", "SUGGESTION", "TECHNICAL_FINDING", "REPORT"
     )]
     polyline(c, [analysis_b, (analysis_b[0], bus_y), (child_tops[0][0], bus_y)])
     polyline(c, [(child_tops[0][0], bus_y), (child_tops[-1][0], bus_y)])
@@ -393,8 +376,8 @@ def render():
     draw_cardinality(c, analysis_t[0], analysis_t[1] + 10, "0..*")
     relation_label(c, website_b[0] + 30, (website_b[1] + analysis_t[1]) / 2, "has runs")
 
-    child_cards = ["0..*", "0..*", "0..*", "0..*", "0..1"]
-    child_labels = ["captures pages", "discovers", "generates", "detects", "produces"]
+    child_cards = ["0..*", "0..*", "0..*", "0..1"]
+    child_labels = ["discovers", "generates", "detects", "produces"]
     for top, card, label in zip(child_tops, child_cards, child_labels):
         draw_cardinality(c, top[0], top[1] + 9, card)
         relation_label(c, top[0], bus_y - 8, label)
