@@ -1,6 +1,7 @@
 import os
-from dataclasses import dataclass, field
 from urllib.parse import urlsplit
+
+from config.application import Config
 
 
 IN_MEMORY_TEST_DATABASE_URL = "sqlite+pysqlite:///:memory:"
@@ -43,11 +44,10 @@ def load_test_database_url() -> str:
     return test_database_url
 
 
-@dataclass(frozen=True)
-class TestConfig:
+class TestConfig(Config):
     """Settings used only while running automated backend tests."""
 
-    TESTING: bool = True
-    SQLALCHEMY_TRACK_MODIFICATIONS: bool = False
-    ALLOW_EXTERNAL_REQUESTS: bool = False
-    SQLALCHEMY_DATABASE_URI: str = field(default_factory=load_test_database_url)
+    TESTING = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    ALLOW_EXTERNAL_REQUESTS = False
+    SQLALCHEMY_DATABASE_URI = load_test_database_url()
