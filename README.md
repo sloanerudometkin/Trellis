@@ -152,7 +152,7 @@ If the terminal reports that `backend/.venv/bin/python` is missing, repeat the P
 
 ### Continuous integration
 
-GitHub Actions automatically runs the backend and frontend test workflows for pull requests into `dev` and for pushes to development branches. CI uses an in-memory test database, disables external backend requests, and does not require Supabase or third-party API secrets.
+GitHub Actions automatically runs the backend and frontend test workflows for pull requests into `dev` and for direct pushes to `dev` or `main`. CI uses an in-memory test database, disables external backend requests, and does not require Supabase or third-party API secrets.
 
 A pull request is ready to merge only when both the `pytest` and `vitest-build-playwright` checks pass. A red check means the branch must be fixed before it satisfies the Trellis definition of done.
 
