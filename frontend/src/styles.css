@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #1d2a20;
+  --color-moss: #2c4e35;
+  --color-paper: #f7f3e8;
+  --font-sans: "Public Sans", sans-serif;
+  --font-display: "Fraunces", serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+:root {
+  color: var(--color-ink);
+  background: var(--color-paper);
+  font-family: var(--font-sans);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}

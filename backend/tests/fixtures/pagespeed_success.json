@@ -1,0 +1,18 @@
+{
+  "id": "https://example.com/",
+  "lighthouseResult": {
+    "categories": {
+      "performance": {
+        "score": 0.91
+      }
+    },
+    "audits": {
+      "largest-contentful-paint": {
+        "numericValue": 1800
+      },
+      "cumulative-layout-shift": {
+        "numericValue": 0.05
+      }
+    }
+  }
+}

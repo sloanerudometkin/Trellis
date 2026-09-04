@@ -146,16 +146,16 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Write model/constraint tests for the MVP entities and relationships.
-- [ ] Write tests for required enums, nullable rules, unique rules, and foreign keys.
-- [ ] Scaffold the React/TypeScript frontend and Flask backend.
-- [ ] Configure SQLAlchemy and Alembic.
-- [ ] Implement the MVP database schema from the approved data model: one Organizer item table, one canonical Organizer stage, affected-page URLs instead of permanent page snapshots/raw HTML, and Supabase Auth UUID ownership.
-- [ ] Define the initial REST API request/response contracts.
-- [ ] Configure Supabase Auth and JWT validation.
-- [ ] Add and test per-user row-level security boundaries.
-- [ ] Add environment-variable examples without real secrets.
-- [ ] Add baseline rate-limiting and secure error responses.
+- [x] Write model/constraint tests for the MVP entities and relationships.
+- [x] Write tests for required enums, nullable rules, unique rules, and foreign keys.
+- [x] Scaffold the React/TypeScript frontend and Flask backend.
+- [x] Configure SQLAlchemy and Alembic.
+- [x] Implement the MVP database schema from the approved data model: one Organizer item table, one canonical Organizer stage, affected-page URLs instead of permanent page snapshots/raw HTML, and Supabase Auth UUID ownership.
+- [x] Define the initial REST API request/response contracts.
+- [x] Configure Supabase Auth and JWT validation.
+- [x] Add and test per-user row-level security boundaries.
+- [x] Add environment-variable examples without real secrets.
+- [x] Add baseline rate-limiting and secure error responses.
 
 **Acceptance criteria:**
 
@@ -173,11 +173,11 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Add a GitHub Actions workflow for backend tests.
-- [ ] Add a GitHub Actions workflow for frontend tests/build.
-- [ ] Add safe test environment configuration.
-- [ ] Confirm a failing test makes CI fail.
-- [ ] Confirm passing tests allow the pull request to merge.
+- [x] Add a GitHub Actions workflow for backend tests.
+- [x] Add a GitHub Actions workflow for frontend tests/build.
+- [x] Add safe test environment configuration.
+- [x] Confirm a failing test makes CI fail.
+- [x] Confirm passing tests allow the pull request to merge.
 
 **Acceptance criteria:**
 

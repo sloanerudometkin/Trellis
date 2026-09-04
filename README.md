@@ -77,7 +77,7 @@ Every layer runs on a free tier or open-source software — no credit card requi
 
 ## Project Status
 
-Trellis is currently in the **specification and design phase** — the requirements, data model, and brand identity are written, but application code hasn't started yet. This repository is the source of truth while that's being built:
+Trellis is currently in **early MVP development**. The requirements, data model, brand identity, and automated test foundation exist, but product features have not been implemented yet. This repository is the source of truth while the application is built:
 
 | Path | What's in it |
 |---|---|
@@ -86,6 +86,75 @@ Trellis is currently in the **specification and design phase** — the requireme
 | [`architecture and data model/`](architecture%20and%20data%20model) | The database/data model design (`Trellis_Data_Model.md`, plus a rendered PDF). |
 | [`Branding/`](Branding) | The brand brief, identity guide, design-system tokens, and logo/favicon assets. |
 | [`new feature proposals/`](new%20feature%20proposals) | Design-history proposals that informed the current SEM strategy and reporting requirements. |
+
+## Running the Application Locally
+
+Complete the one-time test setup below first. The backend defaults to a local SQLite development database so the scaffold can start without credentials; setting `DATABASE_URL` switches it to the planned Supabase PostgreSQL database.
+
+Create local environment files from the safe templates:
+
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
+
+Replace the placeholders in `backend/.env` only when your Supabase project is ready. These local `.env` files may contain secrets and are ignored by Git.
+
+Create or update the development database tables:
+
+```bash
+make db-upgrade
+```
+
+Start the backend in one Terminal window:
+
+```bash
+make dev-backend
+```
+
+Start the frontend in a second Terminal window:
+
+```bash
+make dev-frontend
+```
+
+Open `http://127.0.0.1:5173` in a browser. The backend health contract is available at `http://127.0.0.1:5000/api/v1/health`; protected endpoints require a valid Supabase Bearer token.
+
+## Running Tests Locally
+
+The test foundation uses pytest for the Python backend, Vitest for frontend units and components, and Playwright for complete browser journeys. Run the commands below from the repository's top-level `PassionProject` folder.
+
+### One-time setup
+
+Install Python 3.12, Node.js 24, npm, and `make`, then run:
+
+```bash
+python3 -m venv backend/.venv
+backend/.venv/bin/python -m pip install -r backend/requirements-dev.txt
+npm install --prefix frontend
+npm exec --prefix frontend playwright install chromium
+```
+
+The Python virtual environment and downloaded npm packages stay on your computer and are ignored by Git. Repeat the install commands whenever the dependency files change.
+
+### Test commands
+
+| Command | What it runs |
+|---|---|
+| `make test-backend` | Backend pytest tests from `backend/tests`. |
+| `make test-frontend` | Frontend Vitest tests from `frontend/tests`. |
+| `make test-e2e` | Playwright browser journeys from `frontend/e2e`. |
+| `make test` | All three suites in the order shown above. |
+
+A successful command ends with a passing-test count and returns to the terminal prompt without a `make` error. The backend uses a disposable in-memory database by default, and tests use local mock responses instead of calling live external services.
+
+If the terminal reports that `backend/.venv/bin/python` is missing, repeat the Python setup commands. If Playwright reports that Chromium is missing, repeat the Playwright install command.
+
+### Continuous integration
+
+GitHub Actions automatically runs the backend and frontend test workflows for pull requests into `dev` and for direct pushes to `dev` or `main`. CI uses an in-memory test database, disables external backend requests, and does not require Supabase or third-party API secrets.
+
+A pull request is ready to merge only when both the `pytest` and `vitest-build-playwright` checks pass. A red check means the branch must be fixed before it satisfies the Trellis definition of done.
 
 ## Roadmap
 
