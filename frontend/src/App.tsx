@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 
 import { ApiRequestError, createWebsite, getAnalysis, retryAnalysis, startAnalysis } from "./api/client";
 import type { AnalysisRunResponse, AnalysisStatus, WebsiteResponse } from "./api/contracts";
+import { RecommendationView } from "./RecommendationView";
 
 const views = ["Overview", "AEO", "SEO/Content", "SEM", "Reports", "Organizer"] as const;
 type View = (typeof views)[number];
@@ -148,6 +149,8 @@ function Workspace({ website }: { website: WebsiteResponse }) {
                 </div>
               )}
             </section>
+          ) : activeView === "AEO" || activeView === "SEO/Content" ? (
+            <RecommendationView analysis={analysis} kind={activeView === "AEO" ? "aeo" : "seo_content"} requestError={analysisError} />
           ) : (
             <section className="empty-state" aria-labelledby="view-state-title"><p className="font-mono text-xs uppercase tracking-[0.16em] text-moss">Workspace ready</p><h2 id="view-state-title" className="mt-3 font-display text-2xl">{activeView} data will appear as later MVP features are completed.</h2></section>
           )}

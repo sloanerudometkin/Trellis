@@ -128,3 +128,29 @@ describe("MVP-006 visible analysis flow", () => {
     expect(await screen.findByRole("status")).toHaveTextContent("queued");
   });
 });
+
+describe("MVP-008 persisted recommendation views", () => {
+  beforeEach(() => window.localStorage.setItem("trellis_access_token", "test-token"));
+  afterEach(() => { vi.unstubAllGlobals(); window.localStorage.clear(); });
+
+  it("loads completed AEO and SEO/content suggestions into their workspace views", async () => {
+    const completed = {
+      id: 20, website_id: 7, status: "completed", last_completed_stage: "generating", pages_scanned_count: 3,
+      error_message: null, started_at: "2026-09-06T12:00:00Z", completed_at: "2026-09-06T12:01:00Z", keywords: [],
+      suggestions: [
+        { id: 1, category: "aeo", title: "Add a direct answer", description: "Answer the main question clearly.", rationale: "It makes this page easier for answer engines to interpret.", priority: "high", stage: "suggested", status: "pending", affected_page_url: "https://example.com/", starter_outline: null, target_keywords: [] },
+        { id: 2, category: "seo_content", title: "Publish a garden guide", description: "Create a useful gardening resource.", rationale: "It fills a gap in the existing website content.", priority: "medium", stage: "suggested", status: "pending", affected_page_url: null, starter_outline: ["Choose plants"], target_keywords: [{ phrase: "community garden", recommended_usage_count: 4 }] },
+      ],
+    };
+    const responses = [{ data: website }, { data: completed }];
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(async () => ({ ok: true, json: async () => responses.shift() })));
+    render(<App />); fillRequiredFields(); fireEvent.click(screen.getByRole("button", { name: "Create workspace" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Analyze website" }));
+    await screen.findByTestId("analysis-results");
+    fireEvent.click(screen.getByRole("button", { name: "AEO" }));
+    expect(screen.getByText("Add a direct answer")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "SEO/Content" }));
+    expect(screen.getByText("Publish a garden guide")).toBeInTheDocument();
+    expect(screen.getByText("Use about 4×")).toBeInTheDocument();
+  });
+});

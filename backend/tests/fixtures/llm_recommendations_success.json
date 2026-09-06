@@ -17,6 +17,12 @@
         "Prepare the garden bed",
         "Create a weekly care plan"
       ],
+      "target_keywords": [
+        {
+          "phrase": "community garden",
+          "recommended_usage_count": 4
+        }
+      ],
       "rationale": "The guide addresses a relevant topic that is not covered by the current homepage.",
       "priority": "medium",
       "affected_page_url": null

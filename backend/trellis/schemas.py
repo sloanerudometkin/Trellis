@@ -41,6 +41,25 @@ class KeywordResponse(BaseModel):
     tfidf_score: float
 
 
+class SuggestionKeywordResponse(BaseModel):
+    phrase: str
+    recommended_usage_count: int
+
+
+class SuggestionResponse(BaseModel):
+    id: int
+    category: Literal["aeo", "seo_content", "sem"]
+    title: str
+    description: str
+    starter_outline: list[str] | None
+    rationale: str
+    priority: Literal["low", "medium", "high"]
+    status: Literal["pending", "accepted", "dismissed"]
+    stage: str
+    affected_page_url: str | None
+    target_keywords: list[SuggestionKeywordResponse]
+
+
 class AnalysisRunResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -53,3 +72,4 @@ class AnalysisRunResponse(BaseModel):
     started_at: datetime
     completed_at: datetime | None
     keywords: list[KeywordResponse]
+    suggestions: list[SuggestionResponse]

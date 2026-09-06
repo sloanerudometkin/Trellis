@@ -28,6 +28,10 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
     started_at: "2026-09-06T12:00:00Z",
     completed_at: status === "completed" ? "2026-09-06T12:01:00Z" : null,
     keywords: status === "completed" ? [{ phrase: "design studio", frequency: 4, tfidf_score: 0.9 }] : [],
+    suggestions: status === "completed" ? [
+      { id: 1, category: "aeo", title: "Answer the core design question", description: "Add a concise answer below the homepage heading.", rationale: "A direct answer helps visitors and answer engines understand the studio.", priority: "high", stage: "suggested", status: "pending", affected_page_url: "https://example.com/", starter_outline: null, target_keywords: [] },
+      { id: 2, category: "seo_content", title: "Publish a design process guide", description: "Explain the studio’s process in a practical guide.", rationale: "This fills an information gap for prospective clients.", priority: "medium", stage: "suggested", status: "pending", affected_page_url: null, starter_outline: ["Discovery", "Design", "Delivery"], target_keywords: [{ phrase: "design studio", recommended_usage_count: 4 }] },
+    ] : [],
   });
   await page.route("**/api/v1/websites/12/analysis-runs", async (route) => {
     await route.fulfill({ status: 202, contentType: "application/json", body: JSON.stringify({ data: analysis("queued") }) });
@@ -42,6 +46,7 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
   await page.getByLabel("Website URL").fill("example.com");
   await page.getByLabel("Business or organization name").fill("Example Studio");
   await page.getByLabel(/Business context/).fill("Independent design studio");
+  const actionPlanTimerStartedAt = Date.now();
   await page.getByRole("button", { name: "Create workspace" }).click();
 
   await expect(page.getByRole("navigation", { name: "Workspace views" })).toBeVisible();
@@ -49,4 +54,10 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
   await expect(page.getByRole("status")).toContainText("queued");
   await expect(page.getByTestId("analysis-results")).toContainText("2 pages analyzed", { timeout: 6000 });
   await expect(page.getByTestId("analysis-results")).toContainText("design studio ×4");
+  await page.getByRole("button", { name: "AEO" }).click();
+  await expect(page.getByText("Answer the core design question")).toBeVisible();
+  expect(Date.now() - actionPlanTimerStartedAt).toBeLessThan(5 * 60 * 1000);
+  await page.getByRole("button", { name: "SEO/Content" }).click();
+  await expect(page.getByRole("region", { name: "Starter outline" })).toContainText("Discovery");
+  await expect(page.getByRole("region", { name: "Target keywords" })).toContainText("Use about 4×");
 });

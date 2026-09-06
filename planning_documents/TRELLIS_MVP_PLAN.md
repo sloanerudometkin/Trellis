@@ -279,14 +279,14 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Define and test the structured Pydantic response schema.
-- [ ] Write unit tests for each plain-Python pipeline stage.
-- [ ] Write tests for prompt input, including PII removal and site context.
-- [ ] Mock Groq success, malformed JSON, rate limit, and outage responses.
-- [ ] Mock Gemini fallback behavior.
-- [ ] Test one automatic retry after schema-validation failure.
-- [ ] Implement the single structured-output LLM call.
-- [ ] Persist validated suggestions with rationale, priority, category, status, and stage.
+- [x] Define and test the structured Pydantic response schema.
+- [x] Write unit tests for each plain-Python pipeline stage.
+- [x] Write tests for prompt input, including PII removal and site context.
+- [x] Mock Groq success, malformed JSON, rate limit, and outage responses.
+- [x] Mock Gemini fallback behavior.
+- [x] Test one automatic retry after schema-validation failure.
+- [x] Implement the single structured-output LLM call.
+- [x] Persist validated suggestions with rationale, priority, category, status, and stage.
 
 **Acceptance criteria:**
 
