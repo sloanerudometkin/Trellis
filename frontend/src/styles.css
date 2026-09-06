@@ -26,6 +26,15 @@ button, input, textarea { font: inherit; }
 .panel { @apply rounded-3xl border border-moss/15 bg-white/70 p-6 shadow-[0_24px_80px_rgba(29,42,32,0.08)] sm:p-8; }
 .field-label { @apply mt-6 mb-2 block text-sm font-semibold text-ink; }
 input, textarea { @apply box-border w-full rounded-xl border border-moss/25 bg-paper px-4 py-3 text-ink outline-none transition placeholder:text-ink/35 focus:border-moss focus:ring-3 focus:ring-moss/10 disabled:cursor-wait disabled:opacity-60; }
+.recommendation-card { @apply rounded-2xl border border-moss/15 bg-paper p-5 shadow-sm sm:p-7; }
+.badge { @apply rounded-full px-3 py-1 font-mono text-xs font-semibold uppercase tracking-wide; }
+.priority-high { @apply bg-[#d7835f]/20 text-ink; }
+.priority-medium { @apply bg-[#d2a84a]/25 text-ink; }
+.priority-low { @apply bg-moss/10 text-moss; }
+.stage-badge { @apply border border-moss/20 bg-white text-moss; }
+.check-marker { @apply inline-block h-5 w-5 rounded-md border-2 border-moss/45 bg-white; }
+.rationale-box { @apply mt-5 rounded-xl border-l-4 border-moss bg-moss/5 px-4 py-3; }
+.keyword-row { @apply flex flex-wrap items-center justify-between gap-2 rounded-xl border border-moss/15 bg-white px-4 py-3; }
 textarea { resize: vertical; }
 .primary-button { @apply mt-6 w-full rounded-xl bg-moss px-5 py-3 font-semibold text-white transition hover:bg-[#203d29] focus:outline-none focus:ring-3 focus:ring-moss/25 disabled:cursor-not-allowed disabled:opacity-55; }
 .error-box { @apply mt-5 rounded-xl border border-red-800/20 bg-red-50 px-4 py-3 text-sm text-red-900; }

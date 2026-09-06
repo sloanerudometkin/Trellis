@@ -150,6 +150,10 @@ A successful command ends with a passing-test count and returns to the terminal 
 
 If the terminal reports that `backend/.venv/bin/python` is missing, repeat the Python setup commands. If Playwright reports that Chromium is missing, repeat the Playwright install command.
 
+### MVP action-plan timing check
+
+The Playwright journey times URL submission through the first visible AEO action and fails if it takes five minutes or longer. This automated check uses mocked providers so it is stable and free to run. For a deployed Render free service, begin the acceptance timer after the sleeping backend has responded to its cold-start request; the documented free-host cold start is excluded, but all scraping, analysis, generation, persistence, polling, and rendering time is included.
+
 ### Continuous integration
 
 GitHub Actions automatically runs the backend and frontend test workflows for pull requests into `dev` and for direct pushes to `dev` or `main`. CI uses an in-memory test database, disables external backend requests, and does not require Supabase or third-party API secrets.

@@ -32,6 +32,25 @@ export interface KeywordResponse {
   tfidf_score: number;
 }
 
+export interface SuggestionKeywordResponse {
+  phrase: string;
+  recommended_usage_count: number;
+}
+
+export interface SuggestionResponse {
+  id: number;
+  category: "aeo" | "seo_content" | "sem";
+  title: string;
+  description: string;
+  starter_outline: string[] | null;
+  rationale: string;
+  priority: "low" | "medium" | "high";
+  status: "pending" | "accepted" | "dismissed";
+  stage: string;
+  affected_page_url: string | null;
+  target_keywords: SuggestionKeywordResponse[];
+}
+
 export interface AnalysisRunResponse {
   id: number;
   website_id: number;
@@ -42,6 +61,7 @@ export interface AnalysisRunResponse {
   started_at: string;
   completed_at: string | null;
   keywords: KeywordResponse[];
+  suggestions: SuggestionResponse[];
 }
 
 export interface AnalysisEnvelope {

@@ -36,3 +36,15 @@ def test_schema_forbids_unexpected_model_fields() -> None:
     payload["suggestions"][0]["invented_field"] = "unsafe"
     with pytest.raises(ValidationError):
         RecommendationBatch.model_validate(payload)
+
+
+def test_seo_content_requires_unique_target_keywords_and_usage_counts() -> None:
+    payload = load_json_fixture("llm_recommendations_success.json")
+    del payload["suggestions"][1]["target_keywords"]
+    with pytest.raises(ValidationError, match="target keywords"):
+        RecommendationBatch.model_validate(payload)
+
+    payload = load_json_fixture("llm_recommendations_success.json")
+    payload["suggestions"][1]["target_keywords"][0]["recommended_usage_count"] = 0
+    with pytest.raises(ValidationError):
+        RecommendationBatch.model_validate(payload)

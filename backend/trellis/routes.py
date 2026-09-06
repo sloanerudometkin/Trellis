@@ -58,7 +58,41 @@ def owned_analysis(analysis_id: int) -> AnalysisRun | None:
 
 
 def analysis_response(analysis: AnalysisRun) -> dict:
-    return serialize(AnalysisRunResponse.model_validate(analysis))
+    suggestions = []
+    for suggestion in analysis.suggestions:
+        organizer_stage = suggestion.organizer_item.stage.value if suggestion.organizer_item else "suggested"
+        suggestions.append({
+            "id": suggestion.id,
+            "category": suggestion.category.value,
+            "title": suggestion.title,
+            "description": suggestion.description,
+            "starter_outline": suggestion.starter_outline,
+            "rationale": suggestion.rationale,
+            "priority": suggestion.priority.value,
+            "status": suggestion.acceptance_status.value,
+            "stage": organizer_stage,
+            "affected_page_url": suggestion.affected_page_url,
+            "target_keywords": [
+                {
+                    "phrase": link.keyword.phrase,
+                    "recommended_usage_count": link.recommended_usage_count,
+                }
+                for link in suggestion.keyword_links
+            ],
+        })
+    payload = {
+        "id": analysis.id,
+        "website_id": analysis.website_id,
+        "status": analysis.status.value,
+        "last_completed_stage": analysis.last_completed_stage,
+        "pages_scanned_count": analysis.pages_scanned_count,
+        "error_message": analysis.error_message,
+        "started_at": analysis.started_at,
+        "completed_at": analysis.completed_at,
+        "keywords": analysis.keywords,
+        "suggestions": suggestions,
+    }
+    return serialize(AnalysisRunResponse.model_validate(payload))
 
 
 def start_analysis_job(analysis_id: int) -> None:

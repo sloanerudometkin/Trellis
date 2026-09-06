@@ -47,6 +47,7 @@ def test_prompt_contains_site_context_keywords_and_removes_pii(app) -> None:
     assert "community garden" in prompt
     assert "pat@example.com" not in prompt and "302-555-0199" not in prompt
     assert "[redacted email]" in prompt and "[redacted phone]" in prompt
+    assert "exactly from the ranked site keywords" in prompt
     assert "Required JSON schema" in prompt
 
 
@@ -123,6 +124,8 @@ def test_only_validated_recommendations_are_persisted_with_required_state(app) -
     assert len(saved) == 3
     assert all(item.rationale and item.priority and item.category for item in saved)
     assert all(item.acceptance_status == AcceptanceStatus.PENDING for item in saved)
+    content = next(item for item in saved if item.category.value == "seo_content")
+    assert [(link.keyword.phrase, link.recommended_usage_count) for link in content.keyword_links] == [("community garden", 4)]
     assert "stage" not in db.metadata.tables["suggestions"].columns
 
 

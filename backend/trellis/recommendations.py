@@ -11,7 +11,7 @@ from pydantic import ValidationError
 from sqlalchemy import null
 
 from trellis.extensions import db
-from trellis.models import AcceptanceStatus, AnalysisRun, Suggestion
+from trellis.models import AcceptanceStatus, AnalysisRun, Suggestion, SuggestionKeyword
 from trellis.recommendation_schemas import RecommendationBatch
 
 
@@ -50,7 +50,8 @@ def build_recommendation_prompt(analysis: AnalysisRun) -> str:
         f"Pages analyzed: {analysis.pages_scanned_count}\n"
         f"Ranked site keywords: {keywords}\n\n"
         "Produce a balanced batch containing AEO, SEO/content, and SEM actions. "
-        "Use only the supplied site evidence; do not invent private facts.\n"
+        "Use only the supplied site evidence; do not invent private facts. "
+        "For each SEO/content action, select target keyword phrases exactly from the ranked site keywords and give a realistic recommended usage count.\n"
         f"Required JSON schema: {json.dumps(RecommendationBatch.model_json_schema(), separators=(',', ':'))}"
     )
     return remove_pii(prompt)
@@ -132,25 +133,39 @@ def generate_recommendations(prompt: str, *, client: httpx.Client, groq_api_key:
 
 
 def persist_recommendations(analysis: AnalysisRun, batch: RecommendationBatch) -> None:
-    analysis.suggestions.clear()
-    db.session.flush()
-    for item in batch.suggestions:
-        analysis.suggestions.append(Suggestion(
-            category=item.category,
-            title=item.title,
-            description=item.description,
-            starter_outline=item.starter_outline,
-            rationale=item.rationale,
-            priority=item.priority,
-            affected_page_url=str(item.affected_page_url) if item.affected_page_url else None,
-            acceptance_status=AcceptanceStatus.PENDING,
-            cost_tier=item.cost_tier,
-            ad_group_label=item.ad_group_guidance,
-            landing_page_match=item.landing_page_fit,
-            targeting_notes=item.targeting_notes,
-            negative_keywords=item.negative_keywords if item.category == "sem" else null(),
-        ))
-    db.session.commit()
+    keywords_by_phrase = {keyword.phrase.casefold(): keyword for keyword in analysis.keywords}
+    try:
+        analysis.suggestions.clear()
+        db.session.flush()
+        for item in batch.suggestions:
+            suggestion = Suggestion(
+                category=item.category,
+                title=item.title,
+                description=item.description,
+                starter_outline=item.starter_outline,
+                rationale=item.rationale,
+                priority=item.priority,
+                affected_page_url=str(item.affected_page_url) if item.affected_page_url else None,
+                acceptance_status=AcceptanceStatus.PENDING,
+                cost_tier=item.cost_tier,
+                ad_group_label=item.ad_group_guidance,
+                landing_page_match=item.landing_page_fit,
+                targeting_notes=item.targeting_notes,
+                negative_keywords=item.negative_keywords if item.category == "sem" else null(),
+            )
+            for target in item.target_keywords or []:
+                keyword = keywords_by_phrase.get(target.phrase.casefold())
+                if keyword is None:
+                    raise ValueError(f"Recommendation target keyword was not found in the analysis: {target.phrase}")
+                suggestion.keyword_links.append(SuggestionKeyword(
+                    keyword=keyword,
+                    recommended_usage_count=target.recommended_usage_count,
+                ))
+            analysis.suggestions.append(suggestion)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        raise
 
 
 def generate_and_persist_recommendations(

@@ -171,3 +171,34 @@ def test_completed_analysis_retry_returns_same_run_without_launching(client, app
     response = client.post(f"/api/v1/analysis-runs/{run['id']}/retry", headers=user_one_headers)
     assert response.status_code == 200
     assert response.get_json()["data"]["id"] == run["id"]
+
+
+def test_owner_loads_persisted_aeo_and_seo_content_recommendations(client, app, user_one_headers, user_two_headers) -> None:
+    website = client.post(
+        "/api/v1/websites", headers=user_one_headers,
+        json={"url": "https://example.com", "business_name": "Example"},
+    ).get_json()["data"]
+    run = client.post(f"/api/v1/websites/{website['id']}/analysis-runs", headers=user_one_headers).get_json()["data"]
+
+    from decimal import Decimal
+    from trellis.extensions import db
+    from trellis.models import AnalysisRun, AnalysisStatus, Keyword
+    from trellis.recommendation_schemas import RecommendationBatch
+    from trellis.recommendations import persist_recommendations
+    from conftest import load_json_fixture
+    with app.app_context():
+        saved = db.session.get(AnalysisRun, run["id"])
+        saved.keywords.append(Keyword(phrase="community garden", frequency=5, tfidf_score=Decimal("0.8")))
+        saved.status = AnalysisStatus.COMPLETED
+        saved.last_completed_stage = AnalysisStatus.GENERATING.value
+        persist_recommendations(saved, RecommendationBatch.model_validate(load_json_fixture("llm_recommendations_success.json")))
+
+    response = client.get(f"/api/v1/analysis-runs/{run['id']}", headers=user_one_headers)
+    assert response.status_code == 200
+    data = response.get_json()["data"]
+    aeo = next(item for item in data["suggestions"] if item["category"] == "aeo")
+    content = next(item for item in data["suggestions"] if item["category"] == "seo_content")
+    assert (aeo["priority"], aeo["stage"], aeo["status"]) == ("high", "suggested", "pending")
+    assert content["starter_outline"]
+    assert content["target_keywords"] == [{"phrase": "community garden", "recommended_usage_count": 4}]
+    assert client.get(f"/api/v1/analysis-runs/{run['id']}", headers=user_two_headers).status_code == 404
