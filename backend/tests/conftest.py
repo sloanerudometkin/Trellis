@@ -100,6 +100,7 @@ def app():
         RATELIMIT_ENABLED = False
         ALLOW_EXTERNAL_REQUESTS = False
         URL_RESOLVER = staticmethod(public_test_resolver)
+        ANALYSIS_JOB_LAUNCHER = staticmethod(lambda _app, _analysis_id: None)
 
     test_app = create_app(RuntimeTestConfig)
     with test_app.app_context():

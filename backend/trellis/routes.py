@@ -4,9 +4,11 @@ import uuid
 from flask import Blueprint, current_app, g, jsonify, request
 
 from trellis.auth import require_auth, token_rate_limit_key
+from trellis.analysis_jobs import launch_analysis
+from trellis.analysis_pipeline import create_analysis_run
 from trellis.extensions import db, limiter
-from trellis.models import User, Website
-from trellis.schemas import HealthResponse, WebsiteCreateRequest, WebsiteResponse
+from trellis.models import AnalysisRun, AnalysisStatus, User, Website
+from trellis.schemas import AnalysisRunResponse, HealthResponse, WebsiteCreateRequest, WebsiteResponse
 from trellis.url_safety import validate_public_url
 
 
@@ -43,6 +45,26 @@ def ensure_current_user() -> User:
         db.session.add(user)
         db.session.flush()
     return user
+
+
+def owned_website(website_id: int) -> Website | None:
+    return db.session.scalar(db.select(Website).where(Website.id == website_id, Website.user_id == current_user_id()))
+
+
+def owned_analysis(analysis_id: int) -> AnalysisRun | None:
+    return db.session.scalar(
+        db.select(AnalysisRun).join(Website).where(AnalysisRun.id == analysis_id, Website.user_id == current_user_id())
+    )
+
+
+def analysis_response(analysis: AnalysisRun) -> dict:
+    return serialize(AnalysisRunResponse.model_validate(analysis))
+
+
+def start_analysis_job(analysis_id: int) -> None:
+    app = current_app._get_current_object()
+    launcher = app.config.get("ANALYSIS_JOB_LAUNCHER") or launch_analysis
+    launcher(app, analysis_id)
 
 
 @api.after_request
@@ -104,12 +126,60 @@ def create_website():
 @limiter.limit("20 per minute", key_func=token_rate_limit_key)
 @require_auth
 def get_website(website_id: int):
-    website = db.session.scalar(
-        db.select(Website).where(
-            Website.id == website_id,
-            Website.user_id == current_user_id(),
-        )
-    )
+    website = owned_website(website_id)
     if website is None:
         return jsonify(error="not_found", message="Website workspace not found."), 404
     return jsonify(data=serialize(WebsiteResponse.model_validate(website)))
+
+
+@api.post("/websites/<int:website_id>/analysis-runs")
+@limiter.limit("5 per minute", key_func=token_rate_limit_key)
+@require_auth
+def create_website_analysis(website_id: int):
+    website = owned_website(website_id)
+    if website is None:
+        return jsonify(error="not_found", message="Website workspace not found."), 404
+    active = db.session.scalar(
+        db.select(AnalysisRun).where(
+            AnalysisRun.website_id == website.id,
+            AnalysisRun.status.in_([
+                AnalysisStatus.QUEUED,
+                AnalysisStatus.SCRAPING,
+                AnalysisStatus.ANALYZING,
+                AnalysisStatus.GENERATING,
+            ]),
+        ).order_by(AnalysisRun.id.desc())
+    )
+    analysis = active or create_analysis_run(website)
+    if active is None:
+        start_analysis_job(analysis.id)
+    return jsonify(data=analysis_response(analysis)), 202
+
+
+@api.get("/analysis-runs/<int:analysis_id>")
+@limiter.limit("60 per minute", key_func=token_rate_limit_key)
+@require_auth
+def get_analysis(analysis_id: int):
+    analysis = owned_analysis(analysis_id)
+    if analysis is None:
+        return jsonify(error="not_found", message="Analysis run not found."), 404
+    return jsonify(data=analysis_response(analysis))
+
+
+@api.post("/analysis-runs/<int:analysis_id>/retry")
+@limiter.limit("5 per minute", key_func=token_rate_limit_key)
+@require_auth
+def retry_analysis(analysis_id: int):
+    analysis = owned_analysis(analysis_id)
+    if analysis is None:
+        return jsonify(error="not_found", message="Analysis run not found."), 404
+    if analysis.status == AnalysisStatus.COMPLETED:
+        return jsonify(data=analysis_response(analysis)), 200
+    if analysis.status != AnalysisStatus.FAILED:
+        return jsonify(error="conflict", message="Only a failed analysis can be retried."), 409
+    analysis.status = AnalysisStatus.QUEUED
+    analysis.error_message = None
+    analysis.completed_at = None
+    db.session.commit()
+    start_analysis_job(analysis.id)
+    return jsonify(data=analysis_response(analysis)), 202

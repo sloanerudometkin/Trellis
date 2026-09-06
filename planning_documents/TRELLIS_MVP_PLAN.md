@@ -253,12 +253,12 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Write state-transition tests for queued, scraping, analyzing, generating, completed, and failed.
-- [ ] Write an integration test that resumes after a failed completed stage.
-- [ ] Implement stage persistence and restart rules.
-- [ ] Add frontend polling and understandable progress messages.
-- [ ] Add retry behavior that does not duplicate completed data.
-- [ ] Create the first Playwright journey: sign in → add website → analyze → view results.
+- [x] Write state-transition tests for queued, scraping, analyzing, generating, completed, and failed.
+- [x] Write an integration test that resumes after a failed completed stage.
+- [x] Implement stage persistence and restart rules.
+- [x] Add frontend polling and understandable progress messages.
+- [x] Add retry behavior that does not duplicate completed data.
+- [x] Create the first Playwright journey: sign in → add website → analyze → view results.
 
 **Acceptance criteria:**
 

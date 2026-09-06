@@ -78,3 +78,53 @@ describe("MVP-004 website workspace", () => {
     await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent(expected));
   });
 });
+
+describe("MVP-006 visible analysis flow", () => {
+  beforeEach(() => window.localStorage.setItem("trellis_access_token", "test-token"));
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    window.localStorage.clear();
+  });
+
+  it("polls understandable stages and displays persisted results", async () => {
+    const run = (status: string) => ({
+      id: 20, website_id: 7, status, last_completed_stage: null,
+      pages_scanned_count: status === "completed" ? 3 : 0,
+      error_message: null, started_at: "2026-09-06T12:00:00Z",
+      completed_at: status === "completed" ? "2026-09-06T12:01:00Z" : null,
+      keywords: status === "completed" ? [{ phrase: "community garden", frequency: 5, tfidf_score: 0.8 }] : [],
+    });
+    const responses = [
+      { data: website },
+      { data: run("queued") },
+      { data: run("scraping") },
+      { data: run("analyzing") },
+      { data: run("generating") },
+      { data: run("completed") },
+    ];
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(async () => ({ ok: true, json: async () => responses.shift() })));
+    render(<App />);
+    fillRequiredFields();
+    fireEvent.click(screen.getByRole("button", { name: "Create workspace" }));
+    await screen.findByRole("button", { name: "Analyze website" });
+    fireEvent.click(screen.getByRole("button", { name: "Analyze website" }));
+    expect(await screen.findByRole("status")).toHaveTextContent("queued");
+    expect(await screen.findByTestId("analysis-results", {}, { timeout: 5000 })).toHaveTextContent("3 pages analyzed");
+    expect(screen.getByTestId("analysis-results")).toHaveTextContent("community garden ×5");
+  });
+
+  it("offers retry after a failed run", async () => {
+    const failed = { id: 20, website_id: 7, status: "failed", last_completed_stage: "analyzing", pages_scanned_count: 2, error_message: "The site timed out.", started_at: "2026-09-06T12:00:00Z", completed_at: "2026-09-06T12:01:00Z", keywords: [] };
+    const queued = { ...failed, status: "queued", error_message: null, completed_at: null };
+    const responses = [{ data: website }, { data: failed }, { data: queued }];
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(async () => ({ ok: true, json: async () => responses.shift() })));
+    render(<App />);
+    fillRequiredFields();
+    fireEvent.click(screen.getByRole("button", { name: "Create workspace" }));
+    await screen.findByRole("button", { name: "Analyze website" });
+    fireEvent.click(screen.getByRole("button", { name: "Analyze website" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("The site timed out.");
+    fireEvent.click(screen.getByRole("button", { name: "Retry analysis" }));
+    expect(await screen.findByRole("status")).toHaveTextContent("queued");
+  });
+});

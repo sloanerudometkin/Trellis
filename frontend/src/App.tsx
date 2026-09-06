@@ -1,7 +1,7 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
-import { ApiRequestError, createWebsite } from "./api/client";
-import type { WebsiteResponse } from "./api/contracts";
+import { ApiRequestError, createWebsite, getAnalysis, retryAnalysis, startAnalysis } from "./api/client";
+import type { AnalysisRunResponse, AnalysisStatus, WebsiteResponse } from "./api/contracts";
 
 const views = ["Overview", "AEO", "SEO/Content", "SEM", "Reports", "Organizer"] as const;
 type View = (typeof views)[number];
@@ -74,6 +74,49 @@ function AddWebsiteForm({ onCreated }: { onCreated: (website: WebsiteResponse) =
 
 function Workspace({ website }: { website: WebsiteResponse }) {
   const [activeView, setActiveView] = useState<View>("Overview");
+  const [analysis, setAnalysis] = useState<AnalysisRunResponse | null>(null);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const accessToken = window.localStorage.getItem("trellis_access_token") ?? "";
+
+  useEffect(() => {
+    if (!analysis || analysis.status === "completed" || analysis.status === "failed") return;
+    const timer = window.setTimeout(async () => {
+      try {
+        setAnalysis(await getAnalysis(analysis.id, accessToken));
+      } catch {
+        setAnalysisError("We lost contact with the analysis. Please try again.");
+      }
+    }, 750);
+    return () => window.clearTimeout(timer);
+  }, [analysis, accessToken]);
+
+  async function beginAnalysis() {
+    setAnalysisError(null);
+    try {
+      setAnalysis(await startAnalysis(website.id, accessToken));
+    } catch {
+      setAnalysisError("We couldn't start the analysis. Please try again.");
+    }
+  }
+
+  async function retryFailedAnalysis() {
+    if (!analysis) return;
+    setAnalysisError(null);
+    try {
+      setAnalysis(await retryAnalysis(analysis.id, accessToken));
+    } catch {
+      setAnalysisError("We couldn't retry the analysis. Please try again.");
+    }
+  }
+
+  const progressMessages: Record<AnalysisStatus, string> = {
+    queued: "Your analysis is queued and will begin shortly.",
+    scraping: "Reading the public pages Trellis is allowed to visit…",
+    analyzing: "Finding meaningful keywords and filtering repeated boilerplate…",
+    generating: "Preparing your analysis results…",
+    completed: "Analysis complete.",
+    failed: analysis?.error_message ?? "The analysis could not be completed.",
+  };
   return (
     <div className="min-h-screen bg-[#f3efe3]">
       <header className="border-b border-moss/15 bg-paper px-5 py-4 sm:px-8">
@@ -88,7 +131,26 @@ function Workspace({ website }: { website: WebsiteResponse }) {
         </nav>
         <main className="p-5 sm:p-8 lg:p-12">
           <p className="eyebrow">{website.business_name}</p><h1 className="mt-2 font-display text-4xl">{activeView}</h1>
-          <section className="empty-state" aria-labelledby="view-state-title"><p className="font-mono text-xs uppercase tracking-[0.16em] text-moss">Workspace ready</p><h2 id="view-state-title" className="mt-3 font-display text-2xl">{activeView} data will appear after analysis.</h2><p className="mt-3 max-w-xl leading-7 text-ink/65">Your website was saved securely. The next MVP step will analyze it and fill this view with site-specific guidance.</p></section>
+          {activeView === "Overview" ? (
+            <section className="empty-state" aria-labelledby="analysis-title">
+              <p className="font-mono text-xs uppercase tracking-[0.16em] text-moss">Website analysis</p>
+              <h2 id="analysis-title" className="mt-3 font-display text-2xl">{analysis?.status === "completed" ? "Your first results are ready." : "Turn your website into a starting strategy."}</h2>
+              {!analysis && <p className="mt-3 max-w-xl leading-7 text-ink/65">Trellis will safely read up to 15 public pages and identify the language your website emphasizes.</p>}
+              {analysis && <p className="mt-3 max-w-xl leading-7 text-ink/70" role={analysis.status === "failed" ? "alert" : "status"} aria-live="polite">{progressMessages[analysis.status]}</p>}
+              {analysisError && <div className="error-box" role="alert">{analysisError}</div>}
+              {!analysis && <button className="primary-button sm:w-auto" onClick={beginAnalysis}>Analyze website</button>}
+              {analysis?.status === "failed" && <button className="primary-button sm:w-auto" onClick={retryFailedAnalysis}>Retry analysis</button>}
+              {analysis?.status === "completed" && (
+                <div className="mt-7" data-testid="analysis-results">
+                  <p className="text-sm font-semibold">{analysis.pages_scanned_count} {analysis.pages_scanned_count === 1 ? "page" : "pages"} analyzed</p>
+                  <h3 className="mt-5 font-display text-xl">Top keywords</h3>
+                  <ul className="mt-3 flex flex-wrap gap-2">{analysis.keywords.slice(0, 10).map((keyword) => <li className="rounded-full border border-moss/20 bg-white px-3 py-1.5 text-sm" key={keyword.phrase}>{keyword.phrase} <span className="text-ink/45">×{keyword.frequency}</span></li>)}</ul>
+                </div>
+              )}
+            </section>
+          ) : (
+            <section className="empty-state" aria-labelledby="view-state-title"><p className="font-mono text-xs uppercase tracking-[0.16em] text-moss">Workspace ready</p><h2 id="view-state-title" className="mt-3 font-display text-2xl">{activeView} data will appear as later MVP features are completed.</h2></section>
+          )}
         </main>
       </div>
     </div>

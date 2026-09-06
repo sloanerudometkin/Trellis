@@ -126,3 +126,48 @@ def test_unknown_route_uses_json_error_contract(client) -> None:
     assert response.status_code == 404
     assert response.is_json
     assert response.get_json()["error"] == "not_found"
+
+
+def test_analysis_start_status_retry_and_user_isolation(client, app, user_one_headers, user_two_headers) -> None:
+    website = client.post(
+        "/api/v1/websites",
+        headers=user_one_headers,
+        json={"url": "https://example.com", "business_name": "Example"},
+    ).get_json()["data"]
+    started = client.post(f"/api/v1/websites/{website['id']}/analysis-runs", headers=user_one_headers)
+    assert started.status_code == 202
+    run = started.get_json()["data"]
+    assert run["status"] == "queued"
+    assert run["keywords"] == []
+
+    assert client.get(f"/api/v1/analysis-runs/{run['id']}", headers=user_one_headers).status_code == 200
+    assert client.get(f"/api/v1/analysis-runs/{run['id']}", headers=user_two_headers).status_code == 404
+
+    from trellis.extensions import db
+    from trellis.models import AnalysisRun, AnalysisStatus
+    with app.app_context():
+        saved = db.session.get(AnalysisRun, run["id"])
+        saved.status = AnalysisStatus.FAILED
+        saved.last_completed_stage = AnalysisStatus.ANALYZING.value
+        saved.error_message = "interrupted"
+        db.session.commit()
+    retried = client.post(f"/api/v1/analysis-runs/{run['id']}/retry", headers=user_one_headers)
+    assert retried.status_code == 202
+    assert retried.get_json()["data"]["status"] == "queued"
+
+
+def test_completed_analysis_retry_returns_same_run_without_launching(client, app, user_one_headers) -> None:
+    website = client.post(
+        "/api/v1/websites", headers=user_one_headers,
+        json={"url": "https://example.com", "business_name": "Example"},
+    ).get_json()["data"]
+    run = client.post(f"/api/v1/websites/{website['id']}/analysis-runs", headers=user_one_headers).get_json()["data"]
+    from trellis.extensions import db
+    from trellis.models import AnalysisRun, AnalysisStatus
+    with app.app_context():
+        saved = db.session.get(AnalysisRun, run["id"])
+        saved.status = AnalysisStatus.COMPLETED
+        db.session.commit()
+    response = client.post(f"/api/v1/analysis-runs/{run['id']}/retry", headers=user_one_headers)
+    assert response.status_code == 200
+    assert response.get_json()["data"]["id"] == run["id"]
