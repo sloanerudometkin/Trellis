@@ -30,6 +30,8 @@ class Config:
     JWT_DECODER = None
     ALLOW_EXTERNAL_REQUESTS = True
     RATELIMIT_STORAGE_URI = "memory://"
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 
 
 class DevelopmentConfig(Config):

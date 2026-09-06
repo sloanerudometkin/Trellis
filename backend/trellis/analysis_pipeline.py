@@ -10,6 +10,7 @@ from trellis.models import AnalysisRun, AnalysisStatus, Keyword, Website, utc_no
 from trellis.scraping import CrawlError, crawl_site
 
 StageHook = Callable[[AnalysisStatus, AnalysisRun], None]
+RecommendationGenerator = Callable[[AnalysisRun], None]
 
 def create_analysis_run(website: Website) -> AnalysisRun:
     analysis = AnalysisRun(website=website, status=AnalysisStatus.QUEUED)
@@ -24,7 +25,7 @@ def _enter_stage(analysis: AnalysisRun, status: AnalysisStatus, hook: StageHook 
     if hook:
         hook(status, analysis)
 
-def execute_analysis_run(analysis: AnalysisRun, *, client: httpx.Client | None = None, resolver=socket.getaddrinfo, stage_hook: StageHook | None = None) -> AnalysisRun:
+def execute_analysis_run(analysis: AnalysisRun, *, client: httpx.Client | None = None, resolver=socket.getaddrinfo, stage_hook: StageHook | None = None, recommendation_generator: RecommendationGenerator | None = None) -> AnalysisRun:
     """Execute or resume a run from its last durable completed stage."""
     if analysis.status == AnalysisStatus.COMPLETED:
         return analysis
@@ -55,7 +56,8 @@ def execute_analysis_run(analysis: AnalysisRun, *, client: httpx.Client | None =
 
         if analysis.last_completed_stage != AnalysisStatus.GENERATING.value:
             _enter_stage(analysis, AnalysisStatus.GENERATING, stage_hook)
-            # MVP-007 adds validated recommendation generation inside this stage.
+            if recommendation_generator:
+                recommendation_generator(analysis)
             analysis.last_completed_stage = AnalysisStatus.GENERATING.value
             db.session.commit()
 
