@@ -42,6 +42,10 @@ def load_json_fixture(filename: str) -> dict[str, Any]:
         return json.load(fixture_file)
 
 
+def load_text_fixture(filename: str) -> str:
+    return (FIXTURES_DIR / filename).read_text(encoding="utf-8")
+
+
 @pytest.fixture
 def sample_user_id() -> str:
     return str(USER_ONE_ID)

@@ -228,14 +228,14 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Create fixed HTML fixtures representing normal, empty, duplicate, and malformed pages.
-- [ ] Write unit tests for robots.txt handling, HTML sanitization, text extraction, and page limits.
-- [ ] Write unit tests for unigrams, bigrams, trigrams, frequency ranking, and TF-IDF filtering.
-- [ ] Write integration tests for success, timeout, retry, partial failure, and blocked-site behavior.
-- [ ] Implement HTTPX/BeautifulSoup scraping with the required clear user agent.
-- [ ] Add bounded page crawling and cache/reuse behavior.
-- [ ] Implement keyword extraction and multi-page TF-IDF boilerplate filtering.
-- [ ] Persist page count, keywords, and `AnalysisRun` state without permanent raw-HTML storage.
+- [x] Create fixed HTML fixtures representing normal, empty, duplicate, and malformed pages.
+- [x] Write unit tests for robots.txt handling, HTML sanitization, text extraction, and page limits.
+- [x] Write unit tests for unigrams, bigrams, trigrams, frequency ranking, and TF-IDF filtering.
+- [x] Write integration tests for success, timeout, retry, partial failure, and blocked-site behavior.
+- [x] Implement HTTPX/BeautifulSoup scraping with the required clear user agent.
+- [x] Add bounded page crawling and cache/reuse behavior.
+- [x] Implement keyword extraction and multi-page TF-IDF boilerplate filtering.
+- [x] Persist page count, keywords, and `AnalysisRun` state without permanent raw-HTML storage.
 
 **Acceptance criteria:**
 
