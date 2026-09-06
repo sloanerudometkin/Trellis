@@ -20,6 +20,8 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
     });
   });
   let pollCount = 0;
+  let accepted = false;
+  let organizerStage = "backlog";
   const analysis = (status: string) => ({
     id: 31, website_id: 12, status,
     last_completed_stage: status === "completed" ? "generating" : null,
@@ -29,8 +31,8 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
     completed_at: status === "completed" ? "2026-09-06T12:01:00Z" : null,
     keywords: status === "completed" ? [{ phrase: "design studio", frequency: 4, tfidf_score: 0.9 }] : [],
     suggestions: status === "completed" ? [
-      { id: 1, category: "aeo", title: "Answer the core design question", description: "Add a concise answer below the homepage heading.", rationale: "A direct answer helps visitors and answer engines understand the studio.", priority: "high", stage: "suggested", status: "pending", affected_page_url: "https://example.com/", starter_outline: null, target_keywords: [] },
-      { id: 2, category: "seo_content", title: "Publish a design process guide", description: "Explain the studio’s process in a practical guide.", rationale: "This fills an information gap for prospective clients.", priority: "medium", stage: "suggested", status: "pending", affected_page_url: null, starter_outline: ["Discovery", "Design", "Delivery"], target_keywords: [{ phrase: "design studio", recommended_usage_count: 4 }] },
+      { id: 1, category: "aeo", title: "Answer the core design question", description: "Add a concise answer below the homepage heading.", rationale: "A direct answer helps visitors and answer engines understand the studio.", priority: "high", stage: "suggested", status: "pending", dismiss_reason: null, organizer_item_id: null, affected_page_url: "https://example.com/", starter_outline: null, target_keywords: [] },
+      { id: 2, category: "seo_content", title: "Publish a design process guide", description: "Explain the studio’s process in a practical guide.", rationale: "This fills an information gap for prospective clients.", priority: "medium", stage: accepted ? organizerStage : "suggested", status: accepted ? "accepted" : "pending", dismiss_reason: null, organizer_item_id: accepted ? 22 : null, affected_page_url: null, starter_outline: ["Discovery", "Design", "Delivery"], target_keywords: [{ phrase: "design studio", recommended_usage_count: 4 }] },
     ] : [],
   });
   await page.route("**/api/v1/websites/12/analysis-runs", async (route) => {
@@ -40,6 +42,18 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
     const statuses = ["scraping", "analyzing", "generating", "completed"];
     const status = statuses[Math.min(pollCount++, statuses.length - 1)];
     await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ data: analysis(status) }) });
+  });
+  await page.route("**/api/v1/suggestions/2/decision", async (route) => {
+    accepted = true;
+    const suggestion = analysis("completed").suggestions[1];
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ data: suggestion }) });
+  });
+  await page.route("**/api/v1/websites/12/organizer-items", async (route) => {
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ data: accepted ? [{ id: 22, website_id: 12, suggestion_id: 2, item_type: "seo_content", title: "Publish a design process guide", stage: organizerStage, published_at: organizerStage === "published" ? "2026-09-06T12:05:00Z" : null }] : [] }) });
+  });
+  await page.route("**/api/v1/organizer-items/22", async (route) => {
+    organizerStage = (await route.request().postDataJSON()).stage;
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ data: { id: 22, website_id: 12, suggestion_id: 2, item_type: "seo_content", title: "Publish a design process guide", stage: organizerStage, published_at: "2026-09-06T12:05:00Z" } }) });
   });
 
   await page.goto("/");
@@ -60,4 +74,12 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
   await page.getByRole("button", { name: "SEO/Content" }).click();
   await expect(page.getByRole("region", { name: "Starter outline" })).toContainText("Discovery");
   await expect(page.getByRole("region", { name: "Target keywords" })).toContainText("Use about 4×");
+  await page.getByRole("button", { name: "Accept" }).click();
+  await expect(page.getByLabel("Stage for Publish a design process guide")).toHaveValue("backlog");
+  await page.getByRole("button", { name: "Organizer" }).click();
+  await expect(page.getByRole("region", { name: "Backlog" })).toContainText("Publish a design process guide");
+  await page.getByLabel("Stage for Publish a design process guide").selectOption("published");
+  await expect(page.getByRole("region", { name: "Published" })).toContainText("Publish a design process guide");
+  await page.getByRole("button", { name: "SEO/Content" }).click();
+  await expect(page.getByLabel("Stage for Publish a design process guide")).toHaveValue("published");
 });

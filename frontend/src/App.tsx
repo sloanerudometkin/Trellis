@@ -1,8 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
 
-import { ApiRequestError, createWebsite, getAnalysis, retryAnalysis, startAnalysis } from "./api/client";
-import type { AnalysisRunResponse, AnalysisStatus, WebsiteResponse } from "./api/contracts";
+import { ApiRequestError, createWebsite, decideSuggestion, getAnalysis, getOrganizerItems, retryAnalysis, startAnalysis, updateOrganizerItem, updateSuggestionStage } from "./api/client";
+import type { AnalysisRunResponse, AnalysisStatus, DismissReason, OrganizerItemResponse, OrganizerStage, SuggestionResponse, WebsiteResponse } from "./api/contracts";
 import { RecommendationView } from "./RecommendationView";
+import { OrganizerView } from "./OrganizerView";
 
 const views = ["Overview", "AEO", "SEO/Content", "SEM", "Reports", "Organizer"] as const;
 type View = (typeof views)[number];
@@ -77,6 +78,9 @@ function Workspace({ website }: { website: WebsiteResponse }) {
   const [activeView, setActiveView] = useState<View>("Overview");
   const [analysis, setAnalysis] = useState<AnalysisRunResponse | null>(null);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [organizerItems, setOrganizerItems] = useState<OrganizerItemResponse[]>([]);
+  const [organizerLoading, setOrganizerLoading] = useState(false);
+  const [organizerError, setOrganizerError] = useState<string | null>(null);
   const accessToken = window.localStorage.getItem("trellis_access_token") ?? "";
 
   useEffect(() => {
@@ -109,6 +113,35 @@ function Workspace({ website }: { website: WebsiteResponse }) {
       setAnalysisError("We couldn't retry the analysis. Please try again.");
     }
   }
+
+  function replaceSuggestion(updated: SuggestionResponse) {
+    setAnalysis((current) => current ? { ...current, suggestions: current.suggestions.map((item) => item.id === updated.id ? updated : item) } : current);
+  }
+
+  async function refreshOrganizer() {
+    setOrganizerLoading(true); setOrganizerError(null);
+    try { setOrganizerItems(await getOrganizerItems(website.id, accessToken)); }
+    catch { setOrganizerError("We couldn’t load your Organizer. Please try again."); }
+    finally { setOrganizerLoading(false); }
+  }
+
+  async function handleDecision(suggestion: SuggestionResponse, status: "accepted" | "dismissed", reason?: DismissReason) {
+    replaceSuggestion(await decideSuggestion(suggestion.id, status, accessToken, reason));
+    await refreshOrganizer();
+  }
+
+  async function handleSuggestionStage(suggestion: SuggestionResponse, stage: OrganizerStage) {
+    replaceSuggestion(await updateSuggestionStage(suggestion.id, stage, accessToken));
+    setOrganizerItems((items) => items.map((item) => item.suggestion_id === suggestion.id ? { ...item, stage } : item));
+  }
+
+  async function handleOrganizerStage(item: OrganizerItemResponse, stage: OrganizerStage) {
+    const updated = await updateOrganizerItem(item.id, stage, accessToken);
+    setOrganizerItems((items) => items.map((candidate) => candidate.id === updated.id ? updated : candidate));
+    if (analysis && item.suggestion_id) setAnalysis(await getAnalysis(analysis.id, accessToken));
+  }
+
+  useEffect(() => { if (activeView === "Organizer") void refreshOrganizer(); }, [activeView]);
 
   const progressMessages: Record<AnalysisStatus, string> = {
     queued: "Your analysis is queued and will begin shortly.",
@@ -150,7 +183,9 @@ function Workspace({ website }: { website: WebsiteResponse }) {
               )}
             </section>
           ) : activeView === "AEO" || activeView === "SEO/Content" ? (
-            <RecommendationView analysis={analysis} kind={activeView === "AEO" ? "aeo" : "seo_content"} requestError={analysisError} />
+            <RecommendationView analysis={analysis} kind={activeView === "AEO" ? "aeo" : "seo_content"} requestError={analysisError} onDecision={handleDecision} onStageChange={handleSuggestionStage} />
+          ) : activeView === "Organizer" ? (
+            <OrganizerView items={organizerItems} loading={organizerLoading} error={organizerError} onStageChange={handleOrganizerStage} />
           ) : (
             <section className="empty-state" aria-labelledby="view-state-title"><p className="font-mono text-xs uppercase tracking-[0.16em] text-moss">Workspace ready</p><h2 id="view-state-title" className="mt-3 font-display text-2xl">{activeView} data will appear as later MVP features are completed.</h2></section>
           )}
