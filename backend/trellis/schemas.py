@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, HttpUrl
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ErrorResponse(BaseModel):
@@ -16,7 +16,7 @@ class HealthResponse(BaseModel):
 class WebsiteCreateRequest(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
 
-    url: HttpUrl
+    url: str = Field(min_length=1, max_length=2048)
     business_name: str = Field(min_length=1, max_length=200)
     business_context: str | None = Field(default=None, max_length=5000)
 

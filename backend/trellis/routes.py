@@ -1,3 +1,4 @@
+import socket
 import uuid
 
 from flask import Blueprint, current_app, g, jsonify, request
@@ -6,6 +7,7 @@ from trellis.auth import require_auth, token_rate_limit_key
 from trellis.extensions import db, limiter
 from trellis.models import User, Website
 from trellis.schemas import HealthResponse, WebsiteCreateRequest, WebsiteResponse
+from trellis.url_safety import validate_public_url
 
 
 api = Blueprint("api", __name__)
@@ -83,12 +85,31 @@ def list_websites():
 def create_website():
     payload = WebsiteCreateRequest.model_validate(request.get_json(silent=False))
     user = ensure_current_user()
+    normalized_url = validate_public_url(
+        payload.url,
+        resolver=current_app.config.get("URL_RESOLVER") or socket.getaddrinfo,
+    )
     website = Website(
         user_id=user.id,
-        url=str(payload.url),
+        url=normalized_url,
         business_name=payload.business_name,
         business_context=payload.business_context,
     )
     db.session.add(website)
     db.session.commit()
     return jsonify(data=serialize(WebsiteResponse.model_validate(website))), 201
+
+
+@api.get("/websites/<int:website_id>")
+@limiter.limit("20 per minute", key_func=token_rate_limit_key)
+@require_auth
+def get_website(website_id: int):
+    website = db.session.scalar(
+        db.select(Website).where(
+            Website.id == website_id,
+            Website.user_id == current_user_id(),
+        )
+    )
+    if website is None:
+        return jsonify(error="not_found", message="Website workspace not found."), 404
+    return jsonify(data=serialize(WebsiteResponse.model_validate(website)))

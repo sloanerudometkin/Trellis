@@ -203,13 +203,13 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Write unit tests for URL normalization and validation.
-- [ ] Write security tests that reject private/internal addresses (SSRF protection).
-- [ ] Write integration tests for authenticated workspace creation and user isolation.
-- [ ] Build the Add Website form with optional business context.
-- [ ] Create and persist the Website record.
-- [ ] Create the workspace shell and six-view navigation.
-- [ ] Add invalid URL, duplicate, loading, and failure states.
+- [x] Write unit tests for URL normalization and validation.
+- [x] Write security tests that reject private/internal addresses (SSRF protection).
+- [x] Write integration tests for authenticated workspace creation and user isolation.
+- [x] Build the Add Website form with optional business context.
+- [x] Create and persist the Website record.
+- [x] Create the workspace shell and six-view navigation.
+- [x] Add invalid URL, duplicate, loading, and failure states.
 
 **Acceptance criteria:**
 

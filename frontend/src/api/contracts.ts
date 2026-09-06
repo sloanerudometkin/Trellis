@@ -14,6 +14,10 @@ export interface WebsiteCreateRequest {
   business_context?: string;
 }
 
+export interface WebsiteEnvelope {
+  data: WebsiteResponse;
+}
+
 export interface WebsiteResponse extends WebsiteCreateRequest {
   id: number;
   google_ads_connected: boolean;

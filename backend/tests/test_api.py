@@ -83,6 +83,10 @@ def test_each_user_sees_only_their_own_websites(
     assert [website["business_name"] for website in first_list["data"]] == ["One"]
     assert [website["business_name"] for website in second_list["data"]] == ["Two"]
 
+    first_id = first.get_json()["data"]["id"]
+    assert client.get(f"/api/v1/websites/{first_id}", headers=user_one_headers).status_code == 200
+    assert client.get(f"/api/v1/websites/{first_id}", headers=user_two_headers).status_code == 404
+
 
 def test_duplicate_website_returns_conflict(client, user_one_headers) -> None:
     payload = {"url": "https://example.com", "business_name": "Example"}
@@ -92,6 +96,28 @@ def test_duplicate_website_returns_conflict(client, user_one_headers) -> None:
 
     assert response.status_code == 409
     assert response.get_json()["error"] == "conflict"
+
+
+def test_equivalent_urls_normalize_before_duplicate_check(client, user_one_headers) -> None:
+    first = {"url": "Example.COM", "business_name": "Example"}
+    duplicate = {"url": "https://example.com:443/", "business_name": "Example again"}
+
+    response = client.post("/api/v1/websites", headers=user_one_headers, json=first)
+    assert response.status_code == 201
+    assert response.get_json()["data"]["url"] == "https://example.com"
+    assert client.post("/api/v1/websites", headers=user_one_headers, json=duplicate).status_code == 409
+
+
+def test_private_url_is_rejected_before_persistence(client, user_one_headers) -> None:
+    response = client.post(
+        "/api/v1/websites",
+        headers=user_one_headers,
+        json={"url": "http://169.254.169.254/latest", "business_name": "Unsafe"},
+    )
+
+    assert response.status_code == 422
+    assert response.get_json()["error"] == "invalid_url"
+    assert client.get("/api/v1/websites", headers=user_one_headers).get_json()["data"] == []
 
 
 def test_unknown_route_uses_json_error_contract(client) -> None:

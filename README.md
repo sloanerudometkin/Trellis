@@ -118,7 +118,7 @@ Start the frontend in a second Terminal window:
 make dev-frontend
 ```
 
-Open `http://127.0.0.1:5173` in a browser. The backend health contract is available at `http://127.0.0.1:5000/api/v1/health`; protected endpoints require a valid Supabase Bearer token.
+Open `http://localhost:5173` in a browser. The backend health contract is available at `http://127.0.0.1:5000/api/v1/health`; protected endpoints require a valid Supabase Bearer token.
 
 ## Running Tests Locally
 
