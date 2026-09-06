@@ -116,11 +116,13 @@ class AnalysisRun(db.Model):
     __table_args__ = (
         CheckConstraint("health_score IS NULL OR (health_score >= 0 AND health_score <= 100)", name="health_score_range"),
         CheckConstraint("pages_scanned_count >= 0", name="pages_scanned_nonnegative"),
+        CheckConstraint("last_completed_stage IS NULL OR last_completed_stage IN ('scraping', 'analyzing', 'generating')", name="analysis_checkpoint_valid"),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     website_id: Mapped[int] = mapped_column(ForeignKey("websites.id", ondelete="CASCADE"), nullable=False, index=True)
     status: Mapped[AnalysisStatus] = mapped_column(enum_type(AnalysisStatus, "analysis_status"), default=AnalysisStatus.QUEUED, nullable=False)
+    last_completed_stage: Mapped[str | None] = mapped_column(String(20))
     pages_scanned_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     health_score: Mapped[int | None] = mapped_column(Integer)
     error_message: Mapped[str | None] = mapped_column(Text)

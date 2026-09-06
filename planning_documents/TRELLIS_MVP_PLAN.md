@@ -203,13 +203,13 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Write unit tests for URL normalization and validation.
-- [ ] Write security tests that reject private/internal addresses (SSRF protection).
-- [ ] Write integration tests for authenticated workspace creation and user isolation.
-- [ ] Build the Add Website form with optional business context.
-- [ ] Create and persist the Website record.
-- [ ] Create the workspace shell and six-view navigation.
-- [ ] Add invalid URL, duplicate, loading, and failure states.
+- [x] Write unit tests for URL normalization and validation.
+- [x] Write security tests that reject private/internal addresses (SSRF protection).
+- [x] Write integration tests for authenticated workspace creation and user isolation.
+- [x] Build the Add Website form with optional business context.
+- [x] Create and persist the Website record.
+- [x] Create the workspace shell and six-view navigation.
+- [x] Add invalid URL, duplicate, loading, and failure states.
 
 **Acceptance criteria:**
 
@@ -228,14 +228,14 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Create fixed HTML fixtures representing normal, empty, duplicate, and malformed pages.
-- [ ] Write unit tests for robots.txt handling, HTML sanitization, text extraction, and page limits.
-- [ ] Write unit tests for unigrams, bigrams, trigrams, frequency ranking, and TF-IDF filtering.
-- [ ] Write integration tests for success, timeout, retry, partial failure, and blocked-site behavior.
-- [ ] Implement HTTPX/BeautifulSoup scraping with the required clear user agent.
-- [ ] Add bounded page crawling and cache/reuse behavior.
-- [ ] Implement keyword extraction and multi-page TF-IDF boilerplate filtering.
-- [ ] Persist page count, keywords, and `AnalysisRun` state without permanent raw-HTML storage.
+- [x] Create fixed HTML fixtures representing normal, empty, duplicate, and malformed pages.
+- [x] Write unit tests for robots.txt handling, HTML sanitization, text extraction, and page limits.
+- [x] Write unit tests for unigrams, bigrams, trigrams, frequency ranking, and TF-IDF filtering.
+- [x] Write integration tests for success, timeout, retry, partial failure, and blocked-site behavior.
+- [x] Implement HTTPX/BeautifulSoup scraping with the required clear user agent.
+- [x] Add bounded page crawling and cache/reuse behavior.
+- [x] Implement keyword extraction and multi-page TF-IDF boilerplate filtering.
+- [x] Persist page count, keywords, and `AnalysisRun` state without permanent raw-HTML storage.
 
 **Acceptance criteria:**
 
@@ -253,12 +253,12 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Write state-transition tests for queued, scraping, analyzing, generating, completed, and failed.
-- [ ] Write an integration test that resumes after a failed completed stage.
-- [ ] Implement stage persistence and restart rules.
-- [ ] Add frontend polling and understandable progress messages.
-- [ ] Add retry behavior that does not duplicate completed data.
-- [ ] Create the first Playwright journey: sign in → add website → analyze → view results.
+- [x] Write state-transition tests for queued, scraping, analyzing, generating, completed, and failed.
+- [x] Write an integration test that resumes after a failed completed stage.
+- [x] Implement stage persistence and restart rules.
+- [x] Add frontend polling and understandable progress messages.
+- [x] Add retry behavior that does not duplicate completed data.
+- [x] Create the first Playwright journey: sign in → add website → analyze → view results.
 
 **Acceptance criteria:**
 

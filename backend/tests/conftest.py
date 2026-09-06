@@ -42,6 +42,10 @@ def load_json_fixture(filename: str) -> dict[str, Any]:
         return json.load(fixture_file)
 
 
+def load_text_fixture(filename: str) -> str:
+    return (FIXTURES_DIR / filename).read_text(encoding="utf-8")
+
+
 @pytest.fixture
 def sample_user_id() -> str:
     return str(USER_ONE_ID)
@@ -80,6 +84,12 @@ def fake_jwt_decoder(token: str) -> dict[str, Any]:
     return users[token]
 
 
+def public_test_resolver(hostname: str, port: int):
+    """Resolve test domains without making a real DNS/network request."""
+
+    return [(2, 1, 6, "", ("93.184.216.34", port))]
+
+
 @pytest.fixture
 def app():
     class RuntimeTestConfig:
@@ -89,6 +99,8 @@ def app():
         JWT_DECODER = staticmethod(fake_jwt_decoder)
         RATELIMIT_ENABLED = False
         ALLOW_EXTERNAL_REQUESTS = False
+        URL_RESOLVER = staticmethod(public_test_resolver)
+        ANALYSIS_JOB_LAUNCHER = staticmethod(lambda _app, _analysis_id: None)
 
     test_app = create_app(RuntimeTestConfig)
     with test_app.app_context():

@@ -5,6 +5,7 @@ from werkzeug.exceptions import HTTPException
 
 from trellis.auth import AuthenticationError
 from trellis.extensions import db
+from trellis.url_safety import UnsafeUrlError
 
 
 def register_error_handlers(app: Flask) -> None:
@@ -16,6 +17,10 @@ def register_error_handlers(app: Flask) -> None:
     def handle_validation_error(error: ValidationError):
         first_error = error.errors()[0]
         return jsonify(error="validation_error", message=first_error["msg"]), 422
+
+    @app.errorhandler(UnsafeUrlError)
+    def handle_unsafe_url(error: UnsafeUrlError):
+        return jsonify(error="invalid_url", message=str(error)), 422
 
     @app.errorhandler(IntegrityError)
     def handle_integrity_error(_error: IntegrityError):
