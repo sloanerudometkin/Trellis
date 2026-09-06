@@ -337,14 +337,14 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Write state-transition tests for pending, accepted, dismissed, and dismiss reasons.
-- [ ] Write tests proving acceptance creates exactly one corresponding task.
-- [ ] Write tests proving both the suggestion view and Organizer display the same canonical `OrganizerItem.stage` value.
-- [ ] Write authorization tests for task and suggestion ownership.
-- [ ] Implement Accept/Dismiss actions and the one-tap reason picker.
-- [ ] Implement the Backlog, In Production, In Review, and Published board.
-- [ ] Implement the separate AEO checklist and combined SEO task view.
-- [ ] Extend Playwright coverage through accept → Organizer → Published.
+- [x] Write state-transition tests for pending, accepted, dismissed, and dismiss reasons.
+- [x] Write tests proving acceptance creates exactly one corresponding task.
+- [x] Write tests proving both the suggestion view and Organizer display the same canonical `OrganizerItem.stage` value.
+- [x] Write authorization tests for task and suggestion ownership.
+- [x] Implement Accept/Dismiss actions and the one-tap reason picker.
+- [x] Implement the Backlog, In Production, In Review, and Published board.
+- [x] Implement the separate AEO checklist and combined SEO task view.
+- [x] Extend Playwright coverage through accept → Organizer → Published.
 
 **Acceptance criteria:**
 

@@ -1,4 +1,5 @@
-import type { AnalysisRunResponse, SuggestionResponse } from "./api/contracts";
+import { useState } from "react";
+import type { AnalysisRunResponse, DismissReason, OrganizerStage, SuggestionResponse } from "./api/contracts";
 
 type RecommendationKind = "aeo" | "seo_content";
 
@@ -11,7 +12,22 @@ function displayStage(stage: string) {
   return stage.replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
-function RecommendationCard({ suggestion, checklist }: { suggestion: SuggestionResponse; checklist: boolean }) {
+const dismissReasons: { value: DismissReason; label: string }[] = [
+  { value: "not_relevant", label: "Not relevant" },
+  { value: "too_much_work", label: "Too much work right now" },
+  { value: "already_doing_this", label: "Already doing this" },
+  { value: "other", label: "Another reason" },
+];
+const stages: { value: OrganizerStage; label: string }[] = [
+  { value: "backlog", label: "Backlog" }, { value: "in_production", label: "In Production" },
+  { value: "in_review", label: "In Review" }, { value: "published", label: "Published" },
+];
+
+function RecommendationCard({ suggestion, checklist, onDecision, onStageChange }: { suggestion: SuggestionResponse; checklist: boolean; onDecision?: (suggestion: SuggestionResponse, status: "accepted" | "dismissed", reason?: DismissReason) => Promise<void>; onStageChange?: (suggestion: SuggestionResponse, stage: OrganizerStage) => Promise<void> }) {
+  const [choosingReason, setChoosingReason] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  async function act(action: () => Promise<void>) { setBusy(true); setError(null); try { await action(); setChoosingReason(false); } catch { setError("We couldn’t update this recommendation. Please try again."); } finally { setBusy(false); } }
   return (
     <article className="recommendation-card" data-testid="recommendation-card">
       <div className="flex flex-wrap items-center gap-2">
@@ -40,11 +56,19 @@ function RecommendationCard({ suggestion, checklist }: { suggestion: SuggestionR
           ))}</ul>
         </section>
       )}
+      <div className="action-row">
+        {suggestion.status !== "accepted" && <button className="primary-button action-button" disabled={busy} onClick={() => onDecision && act(() => onDecision(suggestion, "accepted"))}>Accept</button>}
+        {suggestion.status !== "dismissed" && <button className="secondary-button" disabled={busy} onClick={() => setChoosingReason(true)}>Dismiss</button>}
+        {suggestion.status === "accepted" && <label className="stage-control">Stage<select aria-label={`Stage for ${suggestion.title}`} value={suggestion.stage} disabled={busy} onChange={(event) => onStageChange && act(() => onStageChange(suggestion, event.target.value as OrganizerStage))}>{stages.map((stage) => <option key={stage.value} value={stage.value}>{stage.label}</option>)}</select></label>}
+      </div>
+      {choosingReason && <div className="reason-picker" role="group" aria-label={`Dismiss reason for ${suggestion.title}`}><p className="text-sm font-semibold">Why are you dismissing this?</p><div className="mt-3 flex flex-wrap gap-2">{dismissReasons.map((reason) => <button className="reason-button" disabled={busy} key={reason.value} onClick={() => onDecision && act(() => onDecision(suggestion, "dismissed", reason.value))}>{reason.label}</button>)}</div></div>}
+      {suggestion.status === "dismissed" && <p className="mt-5 text-sm text-ink/60">Dismissed: {displayStage(suggestion.dismiss_reason ?? "other")}</p>}
+      {error && <div className="error-box" role="alert">{error}</div>}
     </article>
   );
 }
 
-export function RecommendationView({ analysis, kind, requestError }: { analysis: AnalysisRunResponse | null; kind: RecommendationKind; requestError?: string | null }) {
+export function RecommendationView({ analysis, kind, requestError, onDecision, onStageChange }: { analysis: AnalysisRunResponse | null; kind: RecommendationKind; requestError?: string | null; onDecision?: (suggestion: SuggestionResponse, status: "accepted" | "dismissed", reason?: DismissReason) => Promise<void>; onStageChange?: (suggestion: SuggestionResponse, stage: OrganizerStage) => Promise<void> }) {
   const copy = labels[kind];
   if (requestError) return <section className="empty-state" role="alert"><p className="eyebrow">Couldn’t load recommendations</p><h2 className="mt-3 font-display text-2xl">{requestError}</h2><p className="mt-3 text-ink/65">Return to Overview and try the analysis again.</p></section>;
   if (!analysis) return <section className="empty-state"><p className="eyebrow">Analysis needed</p><h2 className="mt-3 font-display text-2xl">Run your first website analysis from Overview.</h2><p className="mt-3 text-ink/65">Your persisted recommendations will appear here when it completes.</p></section>;
@@ -53,5 +77,5 @@ export function RecommendationView({ analysis, kind, requestError }: { analysis:
 
   const suggestions = analysis.suggestions.filter((suggestion) => suggestion.category === kind);
   if (suggestions.length === 0) return <section className="empty-state"><p className="eyebrow">{copy.eyebrow}</p><h2 className="mt-3 font-display text-2xl">{copy.empty}</h2><p className="mt-3 text-ink/65">Your completed analysis is saved; run another analysis later to check again.</p></section>;
-  return <section className="mt-7" aria-label={copy.eyebrow}><p className="mb-5 max-w-2xl text-ink/65">These site-specific actions are saved with this analysis, so you can return to them anytime.</p><div className="grid gap-5">{suggestions.map((suggestion) => <RecommendationCard key={suggestion.id} suggestion={suggestion} checklist={kind === "aeo"} />)}</div></section>;
+  return <section className="mt-7" aria-label={copy.eyebrow}><p className="mb-5 max-w-2xl text-ink/65">These site-specific actions are saved with this analysis, so you can return to them anytime.</p><div className="grid gap-5">{suggestions.map((suggestion) => <RecommendationCard key={suggestion.id} suggestion={suggestion} checklist={kind === "aeo"} onDecision={onDecision} onStageChange={onStageChange} />)}</div></section>;
 }

@@ -55,7 +55,9 @@ class SuggestionResponse(BaseModel):
     rationale: str
     priority: Literal["low", "medium", "high"]
     status: Literal["pending", "accepted", "dismissed"]
+    dismiss_reason: Literal["not_relevant", "too_much_work", "already_doing_this", "other"] | None
     stage: str
+    organizer_item_id: int | None
     affected_page_url: str | None
     target_keywords: list[SuggestionKeywordResponse]
 
@@ -73,3 +75,28 @@ class AnalysisRunResponse(BaseModel):
     completed_at: datetime | None
     keywords: list[KeywordResponse]
     suggestions: list[SuggestionResponse]
+
+
+class SuggestionDecisionRequest(BaseModel):
+    status: Literal["accepted", "dismissed"]
+    dismiss_reason: Literal["not_relevant", "too_much_work", "already_doing_this", "other"] | None = None
+
+    def model_post_init(self, __context) -> None:
+        if self.status == "dismissed" and self.dismiss_reason is None:
+            raise ValueError("A dismiss reason is required when dismissing a suggestion.")
+        if self.status == "accepted" and self.dismiss_reason is not None:
+            raise ValueError("An accepted suggestion cannot have a dismiss reason.")
+
+
+class OrganizerStageRequest(BaseModel):
+    stage: Literal["backlog", "in_production", "in_review", "published"]
+
+
+class OrganizerItemResponse(BaseModel):
+    id: int
+    website_id: int
+    suggestion_id: int | None
+    item_type: Literal["aeo", "seo_content", "sem"]
+    title: str
+    stage: Literal["backlog", "in_production", "in_review", "published"]
+    published_at: datetime | None

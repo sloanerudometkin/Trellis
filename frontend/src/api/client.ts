@@ -1,4 +1,4 @@
-import type { AnalysisEnvelope, AnalysisRunResponse, ApiError, HealthResponse, WebsiteCreateRequest, WebsiteEnvelope, WebsiteResponse } from "./contracts";
+import type { AnalysisEnvelope, AnalysisRunResponse, ApiError, DismissReason, HealthResponse, OrganizerEnvelope, OrganizerItemEnvelope, OrganizerItemResponse, OrganizerStage, SuggestionEnvelope, SuggestionResponse, WebsiteCreateRequest, WebsiteEnvelope, WebsiteResponse } from "./contracts";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:5000/api/v1";
@@ -49,4 +49,38 @@ export function getAnalysis(analysisId: number, accessToken: string) {
 
 export function retryAnalysis(analysisId: number, accessToken: string) {
   return analysisRequest(`/analysis-runs/${analysisId}/retry`, accessToken, "POST");
+}
+
+async function authenticatedRequest<T>(path: string, accessToken: string, options: RequestInit = {}): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...options,
+    headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json", ...options.headers },
+  });
+  if (!response.ok) {
+    const error = (await response.json().catch(() => null)) as ApiError | null;
+    throw new ApiRequestError(error?.error ?? "request_failed", error?.message ?? "Trellis could not update your plan.");
+  }
+  return response.json() as Promise<T>;
+}
+
+export async function decideSuggestion(suggestionId: number, status: "accepted" | "dismissed", accessToken: string, dismissReason?: DismissReason): Promise<SuggestionResponse> {
+  const envelope = await authenticatedRequest<SuggestionEnvelope>(`/suggestions/${suggestionId}/decision`, accessToken, {
+    method: "PATCH", body: JSON.stringify({ status, ...(dismissReason ? { dismiss_reason: dismissReason } : {}) }),
+  });
+  return envelope.data;
+}
+
+export async function updateSuggestionStage(suggestionId: number, stage: OrganizerStage, accessToken: string): Promise<SuggestionResponse> {
+  const envelope = await authenticatedRequest<SuggestionEnvelope>(`/suggestions/${suggestionId}/stage`, accessToken, { method: "PATCH", body: JSON.stringify({ stage }) });
+  return envelope.data;
+}
+
+export async function getOrganizerItems(websiteId: number, accessToken: string): Promise<OrganizerItemResponse[]> {
+  const envelope = await authenticatedRequest<OrganizerEnvelope>(`/websites/${websiteId}/organizer-items`, accessToken);
+  return envelope.data;
+}
+
+export async function updateOrganizerItem(itemId: number, stage: OrganizerStage, accessToken: string): Promise<OrganizerItemResponse> {
+  const envelope = await authenticatedRequest<OrganizerItemEnvelope>(`/organizer-items/${itemId}`, accessToken, { method: "PATCH", body: JSON.stringify({ stage }) });
+  return envelope.data;
 }

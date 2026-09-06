@@ -21,7 +21,7 @@ body {
   min-height: 100vh;
 }
 
-button, input, textarea { font: inherit; }
+button, input, textarea, select { font: inherit; }
 .eyebrow { @apply font-mono text-xs font-semibold uppercase tracking-[0.18em] text-moss; }
 .panel { @apply rounded-3xl border border-moss/15 bg-white/70 p-6 shadow-[0_24px_80px_rgba(29,42,32,0.08)] sm:p-8; }
 .field-label { @apply mt-6 mb-2 block text-sm font-semibold text-ink; }
@@ -41,3 +41,16 @@ textarea { resize: vertical; }
 .nav-button { @apply w-max rounded-lg px-3 py-2 text-left text-sm font-medium text-ink/65 transition hover:bg-moss/5 hover:text-moss md:w-full; }
 .nav-button-active { @apply bg-moss text-white hover:bg-moss hover:text-white; }
 .empty-state { @apply mt-8 rounded-2xl border border-dashed border-moss/25 bg-paper p-6 sm:p-10; }
+.action-row { @apply mt-6 flex flex-wrap items-end gap-3 border-t border-moss/10 pt-5; }
+.action-button { @apply mt-0 w-auto; }
+.secondary-button { @apply rounded-xl border border-moss/30 bg-white px-5 py-3 font-semibold text-moss transition hover:bg-moss/5 disabled:opacity-55; }
+.reason-picker { @apply mt-4 rounded-xl bg-white p-4; }
+.reason-button { @apply rounded-full border border-moss/25 px-3 py-2 text-sm font-semibold text-moss hover:bg-moss/5; }
+.stage-control { @apply ml-auto grid gap-1 text-xs font-semibold uppercase tracking-wide text-ink/55; }
+.stage-control select { @apply rounded-lg border border-moss/25 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-ink; }
+.kanban-board { @apply grid gap-4 xl:grid-cols-4; }
+.kanban-column { @apply min-h-48 rounded-2xl border border-moss/15 bg-paper p-4; }
+.organizer-card { @apply rounded-xl border border-moss/15 bg-white p-4 shadow-sm; }
+.organizer-card .stage-control { @apply mt-4 ml-0; }
+.checklist-task { @apply flex flex-wrap items-center gap-3 rounded-xl border border-moss/15 bg-paper p-4; }
+.checklist-task > input { @apply h-5 w-5 accent-moss; }

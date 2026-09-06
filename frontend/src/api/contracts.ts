@@ -46,10 +46,29 @@ export interface SuggestionResponse {
   rationale: string;
   priority: "low" | "medium" | "high";
   status: "pending" | "accepted" | "dismissed";
+  dismiss_reason: DismissReason | null;
   stage: string;
+  organizer_item_id: number | null;
   affected_page_url: string | null;
   target_keywords: SuggestionKeywordResponse[];
 }
+
+export type DismissReason = "not_relevant" | "too_much_work" | "already_doing_this" | "other";
+export type OrganizerStage = "backlog" | "in_production" | "in_review" | "published";
+
+export interface OrganizerItemResponse {
+  id: number;
+  website_id: number;
+  suggestion_id: number | null;
+  item_type: "aeo" | "seo_content" | "sem";
+  title: string;
+  stage: OrganizerStage;
+  published_at: string | null;
+}
+
+export interface OrganizerEnvelope { data: OrganizerItemResponse[]; }
+export interface OrganizerItemEnvelope { data: OrganizerItemResponse; }
+export interface SuggestionEnvelope { data: SuggestionResponse; }
 
 export interface AnalysisRunResponse {
   id: number;
