@@ -182,7 +182,7 @@ def test_owner_loads_persisted_aeo_and_seo_content_recommendations(client, app, 
 
     from decimal import Decimal
     from trellis.extensions import db
-    from trellis.models import AnalysisRun, AnalysisStatus, Keyword
+    from trellis.models import AnalysisRun, AnalysisStatus, FindingSeverity, Keyword, TechnicalFinding
     from trellis.recommendation_schemas import RecommendationBatch
     from trellis.recommendations import persist_recommendations
     from conftest import load_json_fixture
@@ -192,6 +192,11 @@ def test_owner_loads_persisted_aeo_and_seo_content_recommendations(client, app, 
         saved.status = AnalysisStatus.COMPLETED
         saved.last_completed_stage = AnalysisStatus.GENERATING.value
         persist_recommendations(saved, RecommendationBatch.model_validate(load_json_fixture("llm_recommendations_success.json")))
+        saved.technical_findings.extend([
+            TechnicalFinding(finding_type="thin_content", severity=FindingSeverity.MEDIUM, explanation="Add useful original detail.", affected_page_url="https://example.com/about"),
+            TechnicalFinding(finding_type="missing_h1", severity=FindingSeverity.HIGH, explanation="Add one clear H1 heading.", affected_page_url="https://example.com/"),
+        ])
+        db.session.commit()
 
     response = client.get(f"/api/v1/analysis-runs/{run['id']}", headers=user_one_headers)
     assert response.status_code == 200
@@ -201,4 +206,6 @@ def test_owner_loads_persisted_aeo_and_seo_content_recommendations(client, app, 
     assert (aeo["priority"], aeo["stage"], aeo["status"]) == ("high", "suggested", "pending")
     assert content["starter_outline"]
     assert content["target_keywords"] == [{"phrase": "community garden", "recommended_usage_count": 4}]
+    assert data["technical_audit"]["summary"].startswith("Fix first: Add one clear H1")
+    assert [finding["finding_type"] for finding in data["technical_audit"]["findings"]] == ["missing_h1", "thin_content"]
     assert client.get(f"/api/v1/analysis-runs/{run['id']}", headers=user_two_headers).status_code == 404

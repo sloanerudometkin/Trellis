@@ -32,6 +32,7 @@ class Config:
     RATELIMIT_STORAGE_URI = "memory://"
     GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+    PAGESPEED_API_KEY = os.getenv("PAGESPEED_API_KEY", "")
 
 
 class DevelopmentConfig(Config):

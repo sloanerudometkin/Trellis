@@ -2,10 +2,10 @@ from uuid import UUID
 
 import httpx
 
-from conftest import load_text_fixture
+from conftest import load_json_fixture, load_text_fixture
 from trellis.analysis import run_scrape_and_keyword_analysis
 from trellis.extensions import db
-from trellis.models import AnalysisRun, AnalysisStatus, Keyword, User, Website
+from trellis.models import AnalysisRun, AnalysisStatus, Keyword, TechnicalFinding, User, Website
 from trellis.scraping import clear_crawl_cache
 
 
@@ -77,9 +77,10 @@ def test_transient_timeout_retries_and_completes(app) -> None:
         nonlocal attempts
         if request.url.path == "/robots.txt":
             return httpx.Response(200, text=load_text_fixture("robots_allow.txt"), request=request)
-        attempts += 1
-        if attempts == 1:
-            raise httpx.ReadTimeout("temporary timeout", request=request)
+        if request.url.path in {"", "/"}:
+            attempts += 1
+            if attempts == 1:
+                raise httpx.ReadTimeout("temporary timeout", request=request)
         return httpx.Response(200, text=load_text_fixture("duplicate_page.html"), headers={"content-type": "text/html"}, request=request)
 
     with mock_client(handler) as client:
@@ -127,3 +128,28 @@ def test_robots_blocked_site_saves_failure_and_preserves_previous_run(app) -> No
     assert "robots.txt" in failed.error_message
     assert failed.keywords == []
     assert db.session.get(AnalysisRun, previous.id).keywords[0].phrase == "existing keyword"
+
+
+def test_analysis_pipeline_persists_local_audit_when_pagespeed_succeeds(app) -> None:
+    website = website_record()
+
+    def handler(request: httpx.Request):
+        if request.url.host == "www.googleapis.com":
+            return httpx.Response(200, json=load_json_fixture("pagespeed_success.json"), request=request)
+        if request.url.path == "/robots.txt":
+            return httpx.Response(200, text=load_text_fixture("robots_allow.txt"), request=request)
+        if request.url.path == "/sitemap.xml":
+            return httpx.Response(200, text=load_text_fixture("sitemap_valid.xml"), request=request)
+        return httpx.Response(200, text=load_text_fixture("technical_page_violations.html"), headers={"content-type": "text/html"}, request=request)
+
+    with mock_client(handler) as client:
+        analysis = run_scrape_and_keyword_analysis(website, client=client, resolver=public_resolver)
+
+    saved = db.session.scalars(
+        db.select(TechnicalFinding).where(TechnicalFinding.analysis_run_id == analysis.id)
+    ).all()
+    assert analysis.status == AnalysisStatus.COMPLETED
+    assert {finding.finding_type for finding in saved} >= {
+        "title_length", "missing_meta_description", "multiple_h1",
+        "heading_order", "missing_image_alt", "thin_content",
+    }

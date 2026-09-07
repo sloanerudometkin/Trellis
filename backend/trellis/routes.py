@@ -31,6 +31,7 @@ from trellis.schemas import (
     WebsiteResponse,
 )
 from trellis.url_safety import validate_public_url
+from trellis.technical_audit import SEVERITY_ORDER, build_fix_first_summary
 
 
 api = Blueprint("api", __name__)
@@ -131,6 +132,10 @@ def organizer_item_response(item: OrganizerItem) -> dict:
 
 def analysis_response(analysis: AnalysisRun) -> dict:
     suggestions = [suggestion_response(suggestion) for suggestion in analysis.suggestions]
+    technical_findings = sorted(
+        analysis.technical_findings,
+        key=lambda item: (SEVERITY_ORDER[item.severity.value], item.finding_type),
+    )
     payload = {
         "id": analysis.id,
         "website_id": analysis.website_id,
@@ -142,6 +147,21 @@ def analysis_response(analysis: AnalysisRun) -> dict:
         "completed_at": analysis.completed_at,
         "keywords": analysis.keywords,
         "suggestions": suggestions,
+        "technical_audit": {
+            "summary": build_fix_first_summary(technical_findings),
+            "findings": [
+                {
+                    "id": finding.id,
+                    "finding_type": finding.finding_type,
+                    "severity": finding.severity.value,
+                    "explanation": finding.explanation,
+                    "affected_page_url": finding.affected_page_url,
+                    "related_page_url": finding.related_page_url,
+                    "resolution_status": finding.resolution_status.value,
+                }
+                for finding in technical_findings
+            ],
+        },
     }
     return serialize(AnalysisRunResponse.model_validate(payload))
 

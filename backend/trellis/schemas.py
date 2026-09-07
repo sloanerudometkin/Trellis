@@ -46,6 +46,21 @@ class SuggestionKeywordResponse(BaseModel):
     recommended_usage_count: int
 
 
+class TechnicalFindingResponse(BaseModel):
+    id: int
+    finding_type: str
+    severity: Literal["low", "medium", "high", "critical"]
+    explanation: str
+    affected_page_url: str | None
+    related_page_url: str | None
+    resolution_status: Literal["open", "resolved"]
+
+
+class TechnicalAuditResponse(BaseModel):
+    summary: str
+    findings: list[TechnicalFindingResponse]
+
+
 class SuggestionResponse(BaseModel):
     id: int
     category: Literal["aeo", "seo_content", "sem"]
@@ -75,6 +90,7 @@ class AnalysisRunResponse(BaseModel):
     completed_at: datetime | None
     keywords: list[KeywordResponse]
     suggestions: list[SuggestionResponse]
+    technical_audit: TechnicalAuditResponse
 
 
 class SuggestionDecisionRequest(BaseModel):
