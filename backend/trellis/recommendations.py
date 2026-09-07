@@ -13,6 +13,7 @@ from sqlalchemy import null
 from trellis.extensions import db
 from trellis.models import AcceptanceStatus, AnalysisRun, Suggestion, SuggestionKeyword
 from trellis.recommendation_schemas import RecommendationBatch
+from trellis.sem_strategy import apply_sem_strategy
 
 
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
@@ -162,6 +163,7 @@ def persist_recommendations(analysis: AnalysisRun, batch: RecommendationBatch) -
                     recommended_usage_count=target.recommended_usage_count,
                 ))
             analysis.suggestions.append(suggestion)
+        apply_sem_strategy(analysis)
         db.session.commit()
     except Exception:
         db.session.rollback()

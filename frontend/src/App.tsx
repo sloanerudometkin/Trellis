@@ -5,6 +5,7 @@ import type { AnalysisRunResponse, AnalysisStatus, DismissReason, OrganizerItemR
 import { RecommendationView } from "./RecommendationView";
 import { OrganizerView } from "./OrganizerView";
 import { TechnicalAuditView } from "./TechnicalAuditView";
+import { SemView } from "./SemView";
 
 const views = ["Overview", "AEO", "SEO/Content", "SEM", "Reports", "Organizer"] as const;
 type View = (typeof views)[number];
@@ -116,7 +117,18 @@ function Workspace({ website }: { website: WebsiteResponse }) {
   }
 
   function replaceSuggestion(updated: SuggestionResponse) {
-    setAnalysis((current) => current ? { ...current, suggestions: current.suggestions.map((item) => item.id === updated.id ? updated : item) } : current);
+    setAnalysis((current) => {
+      if (!current) return current;
+      const suggestions = current.suggestions.map((item) => item.id === updated.id ? updated : item);
+      return {
+        ...current,
+        suggestions,
+        sem_summary: {
+          ...current.sem_summary,
+          accepted_count: suggestions.filter((item) => item.category === "sem" && item.status === "accepted").length,
+        },
+      };
+    });
   }
 
   async function refreshOrganizer() {
@@ -187,6 +199,8 @@ function Workspace({ website }: { website: WebsiteResponse }) {
             <RecommendationView analysis={analysis} kind="aeo" requestError={analysisError} onDecision={handleDecision} onStageChange={handleSuggestionStage} />
           ) : activeView === "SEO/Content" ? (
             <><RecommendationView analysis={analysis} kind="seo_content" requestError={analysisError} onDecision={handleDecision} onStageChange={handleSuggestionStage} />{analysis?.status === "completed" && <TechnicalAuditView audit={analysis.technical_audit} />}</>
+          ) : activeView === "SEM" ? (
+            <SemView analysis={analysis} requestError={analysisError} onDecision={handleDecision} onStageChange={handleSuggestionStage} />
           ) : activeView === "Organizer" ? (
             <OrganizerView items={organizerItems} loading={organizerLoading} error={organizerError} onStageChange={handleOrganizerStage} />
           ) : (

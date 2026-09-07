@@ -32,6 +32,7 @@ from trellis.schemas import (
 )
 from trellis.url_safety import validate_public_url
 from trellis.technical_audit import SEVERITY_ORDER, build_fix_first_summary
+from trellis.sem_strategy import CAMPAIGN_BOUNDARY, COST_TIER_DISCLOSURE
 
 
 api = Blueprint("api", __name__)
@@ -97,6 +98,7 @@ def owned_organizer_item(item_id: int) -> OrganizerItem | None:
 
 
 def suggestion_response(suggestion: Suggestion) -> dict:
+    is_sem = suggestion.category.value == "sem"
     payload = {
         "id": suggestion.id,
         "category": suggestion.category.value,
@@ -114,6 +116,16 @@ def suggestion_response(suggestion: Suggestion) -> dict:
             {"phrase": link.keyword.phrase, "recommended_usage_count": link.recommended_usage_count}
             for link in suggestion.keyword_links
         ],
+        "cost_tier": suggestion.cost_tier.value if suggestion.cost_tier else None,
+        "cost_tier_disclosure": COST_TIER_DISCLOSURE if suggestion.cost_tier else None,
+        "sem_keyword": suggestion.keyword_links[0].keyword.phrase if is_sem and suggestion.keyword_links else None,
+        "ad_group_label": suggestion.ad_group_label,
+        "ad_copy_angle": suggestion.ad_copy_angle,
+        "landing_page_match": suggestion.landing_page_match,
+        "targeting_notes": suggestion.targeting_notes,
+        "negative_keywords": suggestion.negative_keywords if is_sem else None,
+        "cheaper_alternative_to_id": suggestion.cheaper_alternative_to_id,
+        "campaign_boundary": CAMPAIGN_BOUNDARY if is_sem else None,
     }
     return serialize(SuggestionResponse.model_validate(payload))
 
@@ -136,6 +148,9 @@ def analysis_response(analysis: AnalysisRun) -> dict:
         analysis.technical_findings,
         key=lambda item: (SEVERITY_ORDER[item.severity.value], item.finding_type),
     )
+    sem_suggestions = [item for item in analysis.suggestions if item.category.value == "sem"]
+    cost_tier_counts = {tier: sum(item.cost_tier is not None and item.cost_tier.value == tier for item in sem_suggestions) for tier in ("low", "medium", "high")}
+    present_tiers = [tier for tier in ("low", "medium", "high") if cost_tier_counts[tier]]
     payload = {
         "id": analysis.id,
         "website_id": analysis.website_id,
@@ -161,6 +176,14 @@ def analysis_response(analysis: AnalysisRun) -> dict:
                 }
                 for finding in technical_findings
             ],
+        },
+        "sem_summary": {
+            "candidate_count": len(sem_suggestions),
+            "accepted_count": sum(item.acceptance_status.value == "accepted" for item in sem_suggestions),
+            "cost_tier_counts": cost_tier_counts,
+            "estimated_cost_range": f"{present_tiers[0].title()}–{present_tiers[-1].title()} heuristic Cost Tier" if present_tiers else None,
+            "cost_tier_disclosure": COST_TIER_DISCLOSURE,
+            "campaign_boundary": CAMPAIGN_BOUNDARY,
         },
     }
     return serialize(AnalysisRunResponse.model_validate(payload))

@@ -8,7 +8,7 @@ import pytest
 from conftest import load_json_fixture
 from trellis.extensions import db
 from trellis.analysis_pipeline import execute_analysis_run
-from trellis.models import AcceptanceStatus, AnalysisRun, AnalysisStatus, Keyword, Suggestion, User, Website
+from trellis.models import AcceptanceStatus, AnalysisRun, AnalysisStatus, Keyword, Suggestion, SuggestionCategory, User, Website
 from trellis.recommendation_schemas import RecommendationBatch
 from trellis.recommendations import (
     RecommendationProviderError,
@@ -121,7 +121,8 @@ def test_only_validated_recommendations_are_persisted_with_required_state(app) -
     batch = RecommendationBatch.model_validate(SUCCESS)
     persist_recommendations(analysis, batch)
     saved = db.session.scalars(db.select(Suggestion).where(Suggestion.analysis_run_id == analysis.id)).all()
-    assert len(saved) == 3
+    assert len(saved) >= 3
+    assert len([item for item in saved if item.category != SuggestionCategory.SEM]) == 2
     assert all(item.rationale and item.priority and item.category for item in saved)
     assert all(item.acceptance_status == AcceptanceStatus.PENDING for item in saved)
     content = next(item for item in saved if item.category.value == "seo_content")
@@ -151,7 +152,7 @@ def test_generating_pipeline_stage_persists_validated_suggestions(app) -> None:
     )
     assert completed.status == AnalysisStatus.COMPLETED
     assert completed.last_completed_stage == AnalysisStatus.GENERATING.value
-    assert len(completed.suggestions) == 3
+    assert len(completed.suggestions) >= 3
 
 
 def test_invalid_generation_marks_run_failed_without_saving_suggestions(app) -> None:

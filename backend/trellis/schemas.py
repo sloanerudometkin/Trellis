@@ -43,7 +43,7 @@ class KeywordResponse(BaseModel):
 
 class SuggestionKeywordResponse(BaseModel):
     phrase: str
-    recommended_usage_count: int
+    recommended_usage_count: int | None
 
 
 class TechnicalFindingResponse(BaseModel):
@@ -75,6 +75,25 @@ class SuggestionResponse(BaseModel):
     organizer_item_id: int | None
     affected_page_url: str | None
     target_keywords: list[SuggestionKeywordResponse]
+    cost_tier: Literal["low", "medium", "high"] | None
+    cost_tier_disclosure: str | None
+    sem_keyword: str | None
+    ad_group_label: str | None
+    ad_copy_angle: str | None
+    landing_page_match: str | None
+    targeting_notes: str | None
+    negative_keywords: list[str] | None
+    cheaper_alternative_to_id: int | None
+    campaign_boundary: str | None
+
+
+class SemSummaryResponse(BaseModel):
+    candidate_count: int
+    accepted_count: int
+    cost_tier_counts: dict[str, int]
+    estimated_cost_range: str | None
+    cost_tier_disclosure: str
+    campaign_boundary: str
 
 
 class AnalysisRunResponse(BaseModel):
@@ -91,6 +110,7 @@ class AnalysisRunResponse(BaseModel):
     keywords: list[KeywordResponse]
     suggestions: list[SuggestionResponse]
     technical_audit: TechnicalAuditResponse
+    sem_summary: SemSummaryResponse
 
 
 class SuggestionDecisionRequest(BaseModel):
