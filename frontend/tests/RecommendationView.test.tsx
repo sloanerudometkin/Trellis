@@ -8,6 +8,7 @@ const completed: AnalysisRunResponse = {
   id: 31, website_id: 12, status: "completed", last_completed_stage: "generating",
   pages_scanned_count: 2, error_message: null, started_at: "2026-09-06T12:00:00Z",
   completed_at: "2026-09-06T12:01:00Z", keywords: [],
+  technical_audit: { summary: "No problems found.", findings: [] },
   suggestions: [
     { id: 1, category: "aeo", title: "Add a direct answer", description: "Answer the visitor’s main question below the heading.", rationale: "This helps answer engines understand the page.", priority: "high", stage: "suggested", status: "pending", dismiss_reason: null, organizer_item_id: null, affected_page_url: "https://example.com/", starter_outline: null, target_keywords: [] },
     { id: 2, category: "seo_content", title: "Publish a planting guide", description: "Create a useful guide for local gardeners.", rationale: "The website does not currently answer this search need.", priority: "medium", stage: "suggested", status: "pending", dismiss_reason: null, organizer_item_id: null, affected_page_url: null, starter_outline: ["Choose plants", "Prepare the bed"], target_keywords: [{ phrase: "community garden", recommended_usage_count: 4 }] },

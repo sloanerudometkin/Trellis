@@ -54,3 +54,7 @@ textarea { resize: vertical; }
 .organizer-card .stage-control { @apply mt-4 ml-0; }
 .checklist-task { @apply flex flex-wrap items-center gap-3 rounded-xl border border-moss/15 bg-paper p-4; }
 .checklist-task > input { @apply h-5 w-5 accent-moss; }
+.technical-finding { @apply rounded-xl border border-moss/15 bg-paper p-5; }
+.severity-critical, .severity-high { @apply bg-[#d7835f]/20 text-ink; }
+.severity-medium { @apply bg-[#d2a84a]/25 text-ink; }
+.severity-low { @apply bg-moss/10 text-moss; }

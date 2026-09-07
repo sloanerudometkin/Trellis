@@ -18,6 +18,7 @@ def launch_analysis(app: Flask, analysis_id: int) -> None:
                     analysis,
                     client=client,
                     resolver=app.config.get("URL_RESOLVER") or __import__("socket").getaddrinfo,
+                    pagespeed_api_key=app.config.get("PAGESPEED_API_KEY", ""),
                     recommendation_generator=lambda run: generate_and_persist_recommendations(
                         run,
                         client=client,

@@ -8,6 +8,7 @@ from trellis.extensions import db
 from trellis.keywords import extract_keywords
 from trellis.models import AnalysisRun, AnalysisStatus, Keyword, Website, utc_now
 from trellis.scraping import CrawlError, crawl_site
+from trellis.technical_audit import persist_technical_findings, run_technical_audit
 
 StageHook = Callable[[AnalysisStatus, AnalysisRun], None]
 RecommendationGenerator = Callable[[AnalysisRun], None]
@@ -25,7 +26,7 @@ def _enter_stage(analysis: AnalysisRun, status: AnalysisStatus, hook: StageHook 
     if hook:
         hook(status, analysis)
 
-def execute_analysis_run(analysis: AnalysisRun, *, client: httpx.Client | None = None, resolver=socket.getaddrinfo, stage_hook: StageHook | None = None, recommendation_generator: RecommendationGenerator | None = None) -> AnalysisRun:
+def execute_analysis_run(analysis: AnalysisRun, *, client: httpx.Client | None = None, resolver=socket.getaddrinfo, stage_hook: StageHook | None = None, recommendation_generator: RecommendationGenerator | None = None, pagespeed_api_key: str = "") -> AnalysisRun:
     """Execute or resume a run from its last durable completed stage."""
     if analysis.status == AnalysisStatus.COMPLETED:
         return analysis
@@ -51,6 +52,15 @@ def execute_analysis_run(analysis: AnalysisRun, *, client: httpx.Client | None =
             db.session.flush()
             for result in results:
                 analysis.keywords.append(Keyword(phrase=result.phrase, frequency=result.frequency, tfidf_score=Decimal(str(round(result.tfidf_score, 6)))))
+            persist_technical_findings(
+                analysis,
+                run_technical_audit(
+                    crawl,
+                    analysis.website.url,
+                    client=request_client,
+                    pagespeed_api_key=pagespeed_api_key,
+                ),
+            )
             analysis.last_completed_stage = AnalysisStatus.ANALYZING.value
             db.session.commit()
 

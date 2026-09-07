@@ -141,6 +141,7 @@ describe("MVP-008 persisted recommendation views", () => {
         { id: 1, category: "aeo", title: "Add a direct answer", description: "Answer the main question clearly.", rationale: "It makes this page easier for answer engines to interpret.", priority: "high", stage: "suggested", status: "pending", dismiss_reason: null, organizer_item_id: null, affected_page_url: "https://example.com/", starter_outline: null, target_keywords: [] },
         { id: 2, category: "seo_content", title: "Publish a garden guide", description: "Create a useful gardening resource.", rationale: "It fills a gap in the existing website content.", priority: "medium", stage: "suggested", status: "pending", dismiss_reason: null, organizer_item_id: null, affected_page_url: null, starter_outline: ["Choose plants"], target_keywords: [{ phrase: "community garden", recommended_usage_count: 4 }] },
       ],
+      technical_audit: { summary: "Fix first: Add one clear H1 heading.", findings: [] },
     };
     const responses = [{ data: website }, { data: completed }];
     vi.stubGlobal("fetch", vi.fn().mockImplementation(async () => ({ ok: true, json: async () => responses.shift() })));

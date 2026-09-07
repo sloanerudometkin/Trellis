@@ -12,6 +12,9 @@
       },
       "cumulative-layout-shift": {
         "numericValue": 0.05
+      },
+      "interaction-to-next-paint": {
+        "numericValue": 160
       }
     }
   }

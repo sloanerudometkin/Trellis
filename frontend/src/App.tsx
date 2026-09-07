@@ -4,6 +4,7 @@ import { ApiRequestError, createWebsite, decideSuggestion, getAnalysis, getOrgan
 import type { AnalysisRunResponse, AnalysisStatus, DismissReason, OrganizerItemResponse, OrganizerStage, SuggestionResponse, WebsiteResponse } from "./api/contracts";
 import { RecommendationView } from "./RecommendationView";
 import { OrganizerView } from "./OrganizerView";
+import { TechnicalAuditView } from "./TechnicalAuditView";
 
 const views = ["Overview", "AEO", "SEO/Content", "SEM", "Reports", "Organizer"] as const;
 type View = (typeof views)[number];
@@ -182,8 +183,10 @@ function Workspace({ website }: { website: WebsiteResponse }) {
                 </div>
               )}
             </section>
-          ) : activeView === "AEO" || activeView === "SEO/Content" ? (
-            <RecommendationView analysis={analysis} kind={activeView === "AEO" ? "aeo" : "seo_content"} requestError={analysisError} onDecision={handleDecision} onStageChange={handleSuggestionStage} />
+          ) : activeView === "AEO" ? (
+            <RecommendationView analysis={analysis} kind="aeo" requestError={analysisError} onDecision={handleDecision} onStageChange={handleSuggestionStage} />
+          ) : activeView === "SEO/Content" ? (
+            <><RecommendationView analysis={analysis} kind="seo_content" requestError={analysisError} onDecision={handleDecision} onStageChange={handleSuggestionStage} />{analysis?.status === "completed" && <TechnicalAuditView audit={analysis.technical_audit} />}</>
           ) : activeView === "Organizer" ? (
             <OrganizerView items={organizerItems} loading={organizerLoading} error={organizerError} onStageChange={handleOrganizerStage} />
           ) : (

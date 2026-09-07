@@ -34,6 +34,7 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
       { id: 1, category: "aeo", title: "Answer the core design question", description: "Add a concise answer below the homepage heading.", rationale: "A direct answer helps visitors and answer engines understand the studio.", priority: "high", stage: "suggested", status: "pending", dismiss_reason: null, organizer_item_id: null, affected_page_url: "https://example.com/", starter_outline: null, target_keywords: [] },
       { id: 2, category: "seo_content", title: "Publish a design process guide", description: "Explain the studio’s process in a practical guide.", rationale: "This fills an information gap for prospective clients.", priority: "medium", stage: accepted ? organizerStage : "suggested", status: accepted ? "accepted" : "pending", dismiss_reason: null, organizer_item_id: accepted ? 22 : null, affected_page_url: null, starter_outline: ["Discovery", "Design", "Delivery"], target_keywords: [{ phrase: "design studio", recommended_usage_count: 4 }] },
     ] : [],
+    technical_audit: status === "completed" ? { summary: "Fix first: Add descriptive image alt text so the design work is understandable.", findings: [{ id: 90, finding_type: "missing_image_alt", severity: "medium", explanation: "Add useful alt text to 1 image.", affected_page_url: "https://example.com/", related_page_url: null, resolution_status: "open" }] } : { summary: "", findings: [] },
   });
   await page.route("**/api/v1/websites/12/analysis-runs", async (route) => {
     await route.fulfill({ status: 202, contentType: "application/json", body: JSON.stringify({ data: analysis("queued") }) });
@@ -74,6 +75,9 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
   await page.getByRole("button", { name: "SEO/Content" }).click();
   await expect(page.getByRole("region", { name: "Starter outline" })).toContainText("Discovery");
   await expect(page.getByRole("region", { name: "Target keywords" })).toContainText("Use about 4×");
+  await expect(page.getByRole("heading", { name: "Prioritized fix list" })).toBeVisible();
+  await expect(page.getByTestId("fix-first-summary")).toContainText("Fix first");
+  await expect(page.getByText("Image alt text", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Accept" }).click();
   await expect(page.getByLabel("Stage for Publish a design process guide")).toHaveValue("backlog");
   await page.getByRole("button", { name: "Organizer" }).click();

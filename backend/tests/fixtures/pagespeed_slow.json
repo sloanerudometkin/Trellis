@@ -1,0 +1,10 @@
+{
+  "lighthouseResult": {
+    "categories": {"performance": {"score": 0.42}},
+    "audits": {
+      "largest-contentful-paint": {"numericValue": 4100},
+      "cumulative-layout-shift": {"numericValue": 0.24},
+      "interaction-to-next-paint": {"numericValue": 380}
+    }
+  }
+}

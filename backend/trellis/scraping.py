@@ -34,6 +34,7 @@ class RobotsBlockedError(CrawlError):
 class ScrapedPage:
     url: str
     text: str
+    html: str = ""
 
 
 @dataclass
@@ -181,7 +182,7 @@ def crawl_site(
             total_bytes += body_size
             text = extract_text(response.text)
             if text:
-                pages.append(ScrapedPage(url=safe_url, text=text))
+                pages.append(ScrapedPage(url=safe_url, text=text, html=response.text))
             for link in extract_same_origin_links(response.text, safe_url, origin):
                 if link not in seen and link not in queue:
                     queue.append(link)

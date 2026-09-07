@@ -81,6 +81,22 @@ export interface AnalysisRunResponse {
   completed_at: string | null;
   keywords: KeywordResponse[];
   suggestions: SuggestionResponse[];
+  technical_audit: TechnicalAuditResponse;
+}
+
+export interface TechnicalFindingResponse {
+  id: number;
+  finding_type: string;
+  severity: "low" | "medium" | "high" | "critical";
+  explanation: string;
+  affected_page_url: string | null;
+  related_page_url: string | null;
+  resolution_status: "open" | "resolved";
+}
+
+export interface TechnicalAuditResponse {
+  summary: string;
+  findings: TechnicalFindingResponse[];
 }
 
 export interface AnalysisEnvelope {

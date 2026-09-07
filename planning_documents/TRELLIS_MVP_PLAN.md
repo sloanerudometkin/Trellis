@@ -365,13 +365,13 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Create fixed fixtures for every technical-audit rule.
-- [ ] Write PageSpeed success, timeout, quota, and malformed-response tests.
-- [ ] Write tests for crawl errors, sitemap, robots.txt, metadata, headings, and alt text.
-- [ ] Write tests for duplicate/thin content and TF-IDF similarity thresholds.
-- [ ] Implement the PageSpeed adapter and graceful failure behavior.
-- [ ] Implement all local technical checks and persist findings.
-- [ ] Build the prioritized fix list and plain-language “fix first” summary.
+- [x] Create fixed fixtures for every technical-audit rule.
+- [x] Write PageSpeed success, timeout, quota, and malformed-response tests.
+- [x] Write tests for crawl errors, sitemap, robots.txt, metadata, headings, and alt text.
+- [x] Write tests for duplicate/thin content and TF-IDF similarity thresholds.
+- [x] Implement the PageSpeed adapter and graceful failure behavior.
+- [x] Implement all local technical checks and persist findings.
+- [x] Build the prioritized fix list and plain-language “fix first” summary.
 
 **Acceptance criteria:**
 
