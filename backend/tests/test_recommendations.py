@@ -8,7 +8,7 @@ import pytest
 from conftest import load_json_fixture
 from trellis.extensions import db
 from trellis.analysis_pipeline import execute_analysis_run
-from trellis.models import AcceptanceStatus, AnalysisRun, AnalysisStatus, Keyword, Suggestion, SuggestionCategory, User, Website
+from trellis.models import AcceptanceStatus, AnalysisRun, AnalysisStatus, Keyword, OrganizerItem, OrganizerStage, Suggestion, SuggestionCategory, User, Website
 from trellis.recommendation_schemas import RecommendationBatch
 from trellis.recommendations import (
     RecommendationProviderError,
@@ -153,6 +153,15 @@ def test_generating_pipeline_stage_persists_validated_suggestions(app) -> None:
     assert completed.status == AnalysisStatus.COMPLETED
     assert completed.last_completed_stage == AnalysisStatus.GENERATING.value
     assert len(completed.suggestions) >= 3
+    assert completed.health_score == 35
+
+    # Publishing after completion must not rewrite this analysis's historical snapshot.
+    aeo = next(item for item in completed.suggestions if item.category == SuggestionCategory.AEO)
+    aeo.organizer_item = OrganizerItem(website=completed.website, item_type=SuggestionCategory.AEO, title=aeo.title, stage=OrganizerStage.PUBLISHED)
+    db.session.commit()
+    same_run = execute_analysis_run(completed)
+    assert same_run.health_score == 35
+    assert db.session.get(AnalysisRun, completed.id).health_score == 35
 
 
 def test_invalid_generation_marks_run_failed_without_saving_suggestions(app) -> None:

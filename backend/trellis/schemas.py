@@ -96,6 +96,49 @@ class SemSummaryResponse(BaseModel):
     campaign_boundary: str
 
 
+class HealthScoreHistoryResponse(BaseModel):
+    analysis_id: int
+    score: int
+    completed_at: datetime | None
+
+
+class ReportResponse(BaseModel):
+    id: int
+    website_id: int
+    analysis_run_id: int
+    generated_at: datetime
+    summary_text: str
+    health_score: int
+    health_score_delta: int | None
+    aeo_completion_pct: float
+    aeo_completion_delta: float | None
+    technical_findings_resolved: int
+    technical_findings_open: int
+    content_published_count: int
+    top_keywords: list[str]
+    sem_accepted_count: int
+    sem_cost_tier_breakdown: dict[str, int]
+    ad_groups_defined_count: int
+    organizer_stage_counts: dict[str, int]
+    disclosure: str
+
+
+class ReportDeltaResponse(BaseModel):
+    absolute: float | None
+    percentage: float | None
+
+
+class KeywordDeltaResponse(BaseModel):
+    added: list[str]
+    removed: list[str]
+
+
+class ReportComparisonResponse(BaseModel):
+    before: ReportResponse
+    after: ReportResponse
+    deltas: dict[str, ReportDeltaResponse | KeywordDeltaResponse]
+
+
 class AnalysisRunResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -111,6 +154,10 @@ class AnalysisRunResponse(BaseModel):
     suggestions: list[SuggestionResponse]
     technical_audit: TechnicalAuditResponse
     sem_summary: SemSummaryResponse
+    health_score: int | None
+    health_score_delta: int | None
+    health_score_history: list[HealthScoreHistoryResponse]
+    health_score_disclosure: str
 
 
 class SuggestionDecisionRequest(BaseModel):

@@ -5,7 +5,7 @@ import httpx
 from conftest import load_json_fixture, load_text_fixture
 from trellis.analysis import run_scrape_and_keyword_analysis
 from trellis.extensions import db
-from trellis.models import AnalysisRun, AnalysisStatus, Keyword, TechnicalFinding, User, Website
+from trellis.models import AnalysisRun, AnalysisStatus, Keyword, Report, TechnicalFinding, User, Website
 from trellis.scraping import clear_crawl_cache
 
 
@@ -44,6 +44,8 @@ def test_success_persists_page_count_keywords_and_completed_state(app) -> None:
     assert analysis.status == AnalysisStatus.COMPLETED
     assert analysis.pages_scanned_count == 2
     assert analysis.completed_at is not None
+    assert analysis.report is not None
+    assert db.session.scalar(db.select(db.func.count(Report.id)).where(Report.analysis_run_id == analysis.id)) == 1
     assert db.session.scalar(db.select(Keyword).where(Keyword.analysis_run_id == analysis.id)) is not None
     assert "page_snapshots" not in db.metadata.tables
     assert not any("html" in column.name for table in db.metadata.tables.values() for column in table.columns)

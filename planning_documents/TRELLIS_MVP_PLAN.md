@@ -442,14 +442,14 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Write tests for automatic Report creation after every completed analysis.
-- [ ] Write tests for every predefined organic, paid, and pipeline KPI.
-- [ ] Write immutability tests proving old snapshots do not change.
-- [ ] Write comparison tests for absolute/percentage delta and zero/empty cases.
-- [ ] Implement Report generation, summary text, history, reopening, and comparison.
-- [ ] Add clear grouping for Organic, Paid, and Pipeline KPIs.
-- [ ] Add the snapshot/scoring-change disclosure.
-- [ ] Add Playwright coverage for rescan → open history → compare two reports.
+- [x] Write tests for automatic Report creation after every completed analysis.
+- [x] Write tests for every predefined organic, paid, and pipeline KPI.
+- [x] Write immutability tests proving old snapshots do not change.
+- [x] Write comparison tests for absolute/percentage delta and zero/empty cases.
+- [x] Implement Report generation, summary text, history, reopening, and comparison.
+- [x] Add clear grouping for Organic, Paid, and Pipeline KPIs.
+- [x] Add the snapshot/scoring-change disclosure.
+- [x] Add Playwright coverage for rescan → open history → compare two reports.
 
 **Acceptance criteria:**
 

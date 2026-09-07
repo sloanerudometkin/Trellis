@@ -1,4 +1,4 @@
-import type { AnalysisEnvelope, AnalysisRunResponse, ApiError, DismissReason, HealthResponse, OrganizerEnvelope, OrganizerItemEnvelope, OrganizerItemResponse, OrganizerStage, SuggestionEnvelope, SuggestionResponse, WebsiteCreateRequest, WebsiteEnvelope, WebsiteResponse } from "./contracts";
+import type { AnalysisEnvelope, AnalysisRunResponse, ApiError, DismissReason, HealthResponse, OrganizerEnvelope, OrganizerItemEnvelope, OrganizerItemResponse, OrganizerStage, ReportComparisonEnvelope, ReportComparisonResponse, ReportsEnvelope, ReportResponse, SuggestionEnvelope, SuggestionResponse, WebsiteCreateRequest, WebsiteEnvelope, WebsiteResponse } from "./contracts";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:5000/api/v1";
@@ -83,4 +83,13 @@ export async function getOrganizerItems(websiteId: number, accessToken: string):
 export async function updateOrganizerItem(itemId: number, stage: OrganizerStage, accessToken: string): Promise<OrganizerItemResponse> {
   const envelope = await authenticatedRequest<OrganizerItemEnvelope>(`/organizer-items/${itemId}`, accessToken, { method: "PATCH", body: JSON.stringify({ stage }) });
   return envelope.data;
+}
+
+export async function getReports(websiteId: number, accessToken: string): Promise<ReportResponse[]> {
+  return (await authenticatedRequest<ReportsEnvelope>(`/websites/${websiteId}/reports`, accessToken)).data;
+}
+
+export async function compareReports(websiteId: number, beforeId: number, afterId: number, accessToken: string): Promise<ReportComparisonResponse> {
+  const query = new URLSearchParams({ before: String(beforeId), after: String(afterId) });
+  return (await authenticatedRequest<ReportComparisonEnvelope>(`/websites/${websiteId}/report-comparison?${query}`, accessToken)).data;
 }

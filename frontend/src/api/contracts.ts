@@ -93,6 +93,16 @@ export interface AnalysisRunResponse {
   suggestions: SuggestionResponse[];
   technical_audit: TechnicalAuditResponse;
   sem_summary: SemSummaryResponse;
+  health_score: number | null;
+  health_score_delta: number | null;
+  health_score_history: HealthScoreHistoryResponse[];
+  health_score_disclosure: string;
+}
+
+export interface HealthScoreHistoryResponse {
+  analysis_id: number;
+  score: number;
+  completed_at: string | null;
 }
 
 export interface SemSummaryResponse {
@@ -122,3 +132,16 @@ export interface TechnicalAuditResponse {
 export interface AnalysisEnvelope {
   data: AnalysisRunResponse;
 }
+
+export interface ReportResponse {
+  id: number; website_id: number; analysis_run_id: number; generated_at: string; summary_text: string;
+  health_score: number; health_score_delta: number | null; aeo_completion_pct: number; aeo_completion_delta: number | null;
+  technical_findings_resolved: number; technical_findings_open: number; content_published_count: number; top_keywords: string[];
+  sem_accepted_count: number; sem_cost_tier_breakdown: Record<"low" | "medium" | "high", number>; ad_groups_defined_count: number;
+  organizer_stage_counts: Record<OrganizerStage, number>; disclosure: string;
+}
+export interface NumericDelta { absolute: number | null; percentage: number | null; }
+export interface KeywordDelta { added: string[]; removed: string[]; }
+export interface ReportComparisonResponse { before: ReportResponse; after: ReportResponse; deltas: Record<string, NumericDelta | KeywordDelta>; }
+export interface ReportsEnvelope { data: ReportResponse[]; }
+export interface ReportComparisonEnvelope { data: ReportComparisonResponse; }

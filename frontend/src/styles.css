@@ -9,6 +9,58 @@
   --font-mono: "IBM Plex Mono", monospace;
 }
 
+.reports-view { @apply mt-6 space-y-6; }
+.report-history, .report-detail, .report-compare { @apply rounded-2xl border border-moss/15 bg-paper p-5; }
+.report-history h2, .report-compare h2 { @apply font-display text-2xl; }
+.report-history button { @apply mt-3 flex w-full flex-col rounded-xl border border-moss/15 bg-white p-4 text-left hover:border-moss/40; }
+.report-history button[aria-pressed="true"] { @apply border-moss bg-moss/10; }
+.report-history span { @apply mt-1 text-sm text-ink/65; }
+.report-summary { @apply font-display text-xl; }
+.report-disclosure { @apply mt-3 rounded-lg bg-[#d2a84a]/10 p-3 text-sm leading-6 text-ink/70; }
+.report-groups { @apply mt-5 grid gap-4 lg:grid-cols-3; }
+.report-group { @apply mt-4 rounded-xl border border-moss/10 bg-white p-4; }
+.report-group h3 { @apply font-display text-lg; }
+.report-group dl div { @apply mt-2 flex justify-between gap-4 border-t border-moss/10 pt-2; }
+.report-group dt { @apply text-sm text-ink/65; }
+.report-group dd { @apply font-semibold; }
+.compare-controls { @apply mt-4 grid gap-4 lg:grid-cols-3 lg:items-end; }
+.compare-controls label { @apply text-sm font-semibold; }
+.compare-controls select { @apply mt-1 block w-full rounded-lg border border-moss/20 bg-white p-3; }
+.comparison-table { @apply mt-5 overflow-x-auto; }
+.comparison-table table { @apply w-full border-collapse text-sm; }
+.comparison-table th, .comparison-table td { @apply border-b border-moss/10 p-3 text-left; }
+
+.health-score-card {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+  padding: 1.5rem;
+  border: 1px solid rgb(45 75 52 / 18%);
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 72%);
+}
+
+.health-score-value {
+  margin-top: .35rem;
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  line-height: 1;
+  color: #2d4b34;
+}
+
+.health-score-value span { font-size: 1rem; color: rgb(29 42 32 / 55%); }
+.health-score-delta { margin-top: .5rem; font-weight: 650; }
+.health-score-disclosure { max-width: 34rem; margin-top: .75rem; font-size: .78rem; line-height: 1.5; color: rgb(29 42 32 / 62%); }
+.health-score-trend-label { margin-bottom: .4rem; font-size: .8rem; font-weight: 700; color: rgb(29 42 32 / 65%); }
+.health-score-chart { width: 100%; max-width: 20rem; overflow: visible; }
+.health-score-chart line { stroke: rgb(45 75 52 / 20%); stroke-width: 1; }
+.health-score-chart polyline { fill: none; stroke: #2d4b34; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.health-score-chart circle { fill: #d58e56; stroke: #fff; stroke-width: 2; }
+
+@media (min-width: 700px) {
+  .health-score-card { grid-template-columns: minmax(0, 1.15fr) minmax(15rem, .85fr); align-items: center; }
+}
+
 :root {
   color: var(--color-ink);
   background: var(--color-paper);

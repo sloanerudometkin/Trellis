@@ -6,6 +6,8 @@ import { RecommendationView } from "./RecommendationView";
 import { OrganizerView } from "./OrganizerView";
 import { TechnicalAuditView } from "./TechnicalAuditView";
 import { SemView } from "./SemView";
+import { HealthScoreCard } from "./HealthScoreCard";
+import { ReportsView } from "./ReportsView";
 
 const views = ["Overview", "AEO", "SEO/Content", "SEM", "Reports", "Organizer"] as const;
 type View = (typeof views)[number];
@@ -189,9 +191,11 @@ function Workspace({ website }: { website: WebsiteResponse }) {
               {analysis?.status === "failed" && <button className="primary-button sm:w-auto" onClick={retryFailedAnalysis}>Retry analysis</button>}
               {analysis?.status === "completed" && (
                 <div className="mt-7" data-testid="analysis-results">
+                  {typeof analysis.health_score === "number" && <HealthScoreCard score={analysis.health_score} delta={analysis.health_score_delta ?? null} history={analysis.health_score_history ?? []} disclosure={analysis.health_score_disclosure} />}
                   <p className="text-sm font-semibold">{analysis.pages_scanned_count} {analysis.pages_scanned_count === 1 ? "page" : "pages"} analyzed</p>
                   <h3 className="mt-5 font-display text-xl">Top keywords</h3>
                   <ul className="mt-3 flex flex-wrap gap-2">{analysis.keywords.slice(0, 10).map((keyword) => <li className="rounded-full border border-moss/20 bg-white px-3 py-1.5 text-sm" key={keyword.phrase}>{keyword.phrase} <span className="text-ink/45">×{keyword.frequency}</span></li>)}</ul>
+                  <button className="secondary-button mt-6 sm:w-auto" onClick={beginAnalysis}>Rescan website</button>
                 </div>
               )}
             </section>
@@ -203,6 +207,8 @@ function Workspace({ website }: { website: WebsiteResponse }) {
             <SemView analysis={analysis} requestError={analysisError} onDecision={handleDecision} onStageChange={handleSuggestionStage} />
           ) : activeView === "Organizer" ? (
             <OrganizerView items={organizerItems} loading={organizerLoading} error={organizerError} onStageChange={handleOrganizerStage} />
+          ) : activeView === "Reports" ? (
+            <ReportsView websiteId={website.id} accessToken={accessToken} refreshKey={analysis?.id} />
           ) : (
             <section className="empty-state" aria-labelledby="view-state-title"><p className="font-mono text-xs uppercase tracking-[0.16em] text-moss">Workspace ready</p><h2 id="view-state-title" className="mt-3 font-display text-2xl">{activeView} data will appear as later MVP features are completed.</h2></section>
           )}
