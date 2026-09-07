@@ -10,6 +10,7 @@ from trellis.models import AnalysisRun, AnalysisStatus, Keyword, Website, utc_no
 from trellis.scraping import CrawlError, crawl_site
 from trellis.technical_audit import persist_technical_findings, run_technical_audit
 from trellis.health_score import persist_health_score
+from trellis.reports import create_report_snapshot
 
 StageHook = Callable[[AnalysisStatus, AnalysisRun], None]
 RecommendationGenerator = Callable[[AnalysisRun], None]
@@ -75,6 +76,7 @@ def execute_analysis_run(analysis: AnalysisRun, *, client: httpx.Client | None =
 
         analysis.status = AnalysisStatus.COMPLETED
         analysis.completed_at = utc_now()
+        create_report_snapshot(analysis)
         db.session.commit()
         if stage_hook:
             stage_hook(AnalysisStatus.COMPLETED, analysis)
