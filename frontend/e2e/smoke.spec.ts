@@ -21,6 +21,7 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
   });
   let pollCount = 0;
   let accepted = false;
+  let semAccepted = false;
   let organizerStage = "backlog";
   const analysis = (status: string) => ({
     id: 31, website_id: 12, status,
@@ -33,8 +34,10 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
     suggestions: status === "completed" ? [
       { id: 1, category: "aeo", title: "Answer the core design question", description: "Add a concise answer below the homepage heading.", rationale: "A direct answer helps visitors and answer engines understand the studio.", priority: "high", stage: "suggested", status: "pending", dismiss_reason: null, organizer_item_id: null, affected_page_url: "https://example.com/", starter_outline: null, target_keywords: [] },
       { id: 2, category: "seo_content", title: "Publish a design process guide", description: "Explain the studio’s process in a practical guide.", rationale: "This fills an information gap for prospective clients.", priority: "medium", stage: accepted ? organizerStage : "suggested", status: accepted ? "accepted" : "pending", dismiss_reason: null, organizer_item_id: accepted ? 22 : null, affected_page_url: null, starter_outline: ["Discovery", "Design", "Delivery"], target_keywords: [{ phrase: "design studio", recommended_usage_count: 4 }] },
+      { id: 3, category: "sem", title: "Test the keyword: design studio", description: "Create a tightly matched search ad group.", rationale: "Tight keyword, ad, and landing-page alignment supports Quality Score and helps control CPC.", priority: "medium", stage: semAccepted ? "backlog" : "suggested", status: semAccepted ? "accepted" : "pending", dismiss_reason: null, organizer_item_id: semAccepted ? 23 : null, affected_page_url: "https://example.com/", starter_outline: null, target_keywords: [], cost_tier: "medium", cost_tier_disclosure: "Heuristic estimate based on keyword shape and intent—not live Google Ads bid data.", sem_keyword: "design studio", ad_group_label: "Design Studio intent", ad_copy_angle: "Lead with a clear design outcome.", landing_page_match: "https://example.com/", targeting_notes: "Use the Google Search network for high-intent searches.", negative_keywords: ["jobs", "free"], cheaper_alternative_to_id: null, campaign_boundary: "Planning only: Trellis cannot create, launch, manage, bid on, or spend money on advertising campaigns." },
     ] : [],
     technical_audit: status === "completed" ? { summary: "Fix first: Add descriptive image alt text so the design work is understandable.", findings: [{ id: 90, finding_type: "missing_image_alt", severity: "medium", explanation: "Add useful alt text to 1 image.", affected_page_url: "https://example.com/", related_page_url: null, resolution_status: "open" }] } : { summary: "", findings: [] },
+    sem_summary: { candidate_count: 1, accepted_count: 0, cost_tier_counts: { low: 1, medium: 0, high: 0 }, estimated_cost_range: "Low–Low heuristic Cost Tier", cost_tier_disclosure: "Heuristic estimate based on keyword shape and intent—not live Google Ads bid data.", campaign_boundary: "Planning only: Trellis cannot create, launch, manage, bid on, or spend money on advertising campaigns." },
   });
   await page.route("**/api/v1/websites/12/analysis-runs", async (route) => {
     await route.fulfill({ status: 202, contentType: "application/json", body: JSON.stringify({ data: analysis("queued") }) });
@@ -49,8 +52,16 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
     const suggestion = analysis("completed").suggestions[1];
     await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ data: suggestion }) });
   });
+  await page.route("**/api/v1/suggestions/3/decision", async (route) => {
+    semAccepted = true;
+    const suggestion = analysis("completed").suggestions[2];
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ data: suggestion }) });
+  });
   await page.route("**/api/v1/websites/12/organizer-items", async (route) => {
-    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ data: accepted ? [{ id: 22, website_id: 12, suggestion_id: 2, item_type: "seo_content", title: "Publish a design process guide", stage: organizerStage, published_at: organizerStage === "published" ? "2026-09-06T12:05:00Z" : null }] : [] }) });
+    const items = [];
+    if (accepted) items.push({ id: 22, website_id: 12, suggestion_id: 2, item_type: "seo_content", title: "Publish a design process guide", stage: organizerStage, published_at: organizerStage === "published" ? "2026-09-06T12:05:00Z" : null });
+    if (semAccepted) items.push({ id: 23, website_id: 12, suggestion_id: 3, item_type: "sem", title: "Test the keyword: design studio", stage: "backlog", published_at: null });
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ data: items }) });
   });
   await page.route("**/api/v1/organizer-items/22", async (route) => {
     organizerStage = (await route.request().postDataJSON()).stage;
@@ -86,4 +97,11 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
   await expect(page.getByRole("region", { name: "Published" })).toContainText("Publish a design process guide");
   await page.getByRole("button", { name: "SEO/Content" }).click();
   await expect(page.getByLabel("Stage for Publish a design process guide")).toHaveValue("published");
+  await page.getByRole("button", { name: "SEM" }).click();
+  await expect(page.getByRole("region", { name: "SEM summary" })).toContainText("not live Google Ads bid data");
+  await expect(page.getByRole("region", { name: "Ad group details for Test the keyword: design studio" })).toContainText("Design Studio intent");
+  await page.getByRole("button", { name: "Accept" }).click();
+  await expect(page.getByRole("region", { name: "SEM summary" })).toContainText("1 accepted");
+  await page.getByRole("button", { name: "Organizer" }).click();
+  await expect(page.getByRole("region", { name: "Backlog" })).toContainText("Test the keyword: design studio");
 });

@@ -34,7 +34,7 @@ export interface KeywordResponse {
 
 export interface SuggestionKeywordResponse {
   phrase: string;
-  recommended_usage_count: number;
+  recommended_usage_count: number | null;
 }
 
 export interface SuggestionResponse {
@@ -42,7 +42,7 @@ export interface SuggestionResponse {
   category: "aeo" | "seo_content" | "sem";
   title: string;
   description: string;
-  starter_outline: string[] | null;
+  starter_outline?: string[] | null;
   rationale: string;
   priority: "low" | "medium" | "high";
   status: "pending" | "accepted" | "dismissed";
@@ -51,6 +51,16 @@ export interface SuggestionResponse {
   organizer_item_id: number | null;
   affected_page_url: string | null;
   target_keywords: SuggestionKeywordResponse[];
+  cost_tier?: "low" | "medium" | "high" | null;
+  cost_tier_disclosure?: string | null;
+  sem_keyword?: string | null;
+  ad_group_label?: string | null;
+  ad_copy_angle?: string | null;
+  landing_page_match?: string | null;
+  targeting_notes?: string | null;
+  negative_keywords?: string[] | null;
+  cheaper_alternative_to_id?: number | null;
+  campaign_boundary?: string | null;
 }
 
 export type DismissReason = "not_relevant" | "too_much_work" | "already_doing_this" | "other";
@@ -82,6 +92,16 @@ export interface AnalysisRunResponse {
   keywords: KeywordResponse[];
   suggestions: SuggestionResponse[];
   technical_audit: TechnicalAuditResponse;
+  sem_summary: SemSummaryResponse;
+}
+
+export interface SemSummaryResponse {
+  candidate_count: number;
+  accepted_count: number;
+  cost_tier_counts: Record<"low" | "medium" | "high", number>;
+  estimated_cost_range: string | null;
+  cost_tier_disclosure: string;
+  campaign_boundary: string;
 }
 
 export interface TechnicalFindingResponse {

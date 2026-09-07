@@ -219,3 +219,22 @@ def test_suggestion_and_task_routes_enforce_website_ownership(
         f"/api/v1/websites/{website['id']}/organizer-items",
         headers=user_two_headers,
     ).status_code == 404
+
+
+def test_accepting_sem_strategy_creates_a_sem_organizer_task(
+    client, app, user_one_headers
+):
+    website, _, suggestions = create_completed_plan(client, app, user_one_headers)
+    response = client.patch(
+        f"/api/v1/suggestions/{suggestions['sem']}/decision",
+        headers=user_one_headers,
+        json={"status": "accepted"},
+    )
+    assert response.status_code == 200
+    items = client.get(
+        f"/api/v1/websites/{website['id']}/organizer-items",
+        headers=user_one_headers,
+    ).get_json()["data"]
+    assert len(items) == 1
+    assert items[0]["item_type"] == "sem"
+    assert items[0]["stage"] == "backlog"

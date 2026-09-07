@@ -142,6 +142,7 @@ describe("MVP-008 persisted recommendation views", () => {
         { id: 2, category: "seo_content", title: "Publish a garden guide", description: "Create a useful gardening resource.", rationale: "It fills a gap in the existing website content.", priority: "medium", stage: "suggested", status: "pending", dismiss_reason: null, organizer_item_id: null, affected_page_url: null, starter_outline: ["Choose plants"], target_keywords: [{ phrase: "community garden", recommended_usage_count: 4 }] },
       ],
       technical_audit: { summary: "Fix first: Add one clear H1 heading.", findings: [] },
+      sem_summary: { candidate_count: 1, accepted_count: 0, cost_tier_counts: { low: 1, medium: 0, high: 0 }, estimated_cost_range: "Low–Low heuristic Cost Tier", cost_tier_disclosure: "Heuristic estimate based on keyword shape and intent—not live Google Ads bid data.", campaign_boundary: "Planning only: Trellis cannot create, launch, manage, bid on, or spend money on advertising campaigns." },
     };
     const responses = [{ data: website }, { data: completed }];
     vi.stubGlobal("fetch", vi.fn().mockImplementation(async () => ({ ok: true, json: async () => responses.shift() })));

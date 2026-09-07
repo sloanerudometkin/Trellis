@@ -58,3 +58,11 @@ textarea { resize: vertical; }
 .severity-critical, .severity-high { @apply bg-[#d7835f]/20 text-ink; }
 .severity-medium { @apply bg-[#d2a84a]/25 text-ink; }
 .severity-low { @apply bg-moss/10 text-moss; }
+.sem-summary { @apply mt-7 grid gap-5 rounded-2xl border border-moss/15 bg-paper p-6 lg:grid-cols-2; }
+.disclosure-box { @apply rounded-xl border border-[#d2a84a]/40 bg-[#d2a84a]/10 p-4 text-sm leading-6; }
+.sem-details { @apply mt-5 rounded-xl border border-moss/15 bg-white p-4; }
+.sem-details dt { @apply text-xs font-semibold uppercase tracking-wide text-moss; }
+.sem-details dd { @apply mt-1 text-sm leading-6 text-ink/75; }
+.cost-tier-badge { @apply bg-[#d2a84a]/20 text-ink; }
+.alternative-badge { @apply bg-moss text-white; }
+.negative-chip { @apply rounded-full bg-moss/10 px-3 py-1 text-sm text-moss; }

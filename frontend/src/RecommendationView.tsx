@@ -1,11 +1,12 @@
 import { useState } from "react";
 import type { AnalysisRunResponse, DismissReason, OrganizerStage, SuggestionResponse } from "./api/contracts";
 
-type RecommendationKind = "aeo" | "seo_content";
+type RecommendationKind = "aeo" | "seo_content" | "sem";
 
 const labels = {
   aeo: { eyebrow: "AEO checklist", empty: "No AEO actions were found for this analysis." },
   seo_content: { eyebrow: "SEO/content plan", empty: "No SEO/content actions were found for this analysis." },
+  sem: { eyebrow: "SEM strategy", empty: "No SEM keyword candidates were found for this analysis." },
 };
 
 function displayStage(stage: string) {
@@ -48,7 +49,7 @@ function RecommendationCard({ suggestion, checklist, onDecision, onStageChange }
           <ol className="mt-2 list-decimal space-y-2 pl-5 text-ink/75">{suggestion.starter_outline.map((item) => <li key={item}>{item}</li>)}</ol>
         </section>
       )}
-      {suggestion.target_keywords.length > 0 && (
+      {suggestion.category === "seo_content" && suggestion.target_keywords.length > 0 && (
         <section className="mt-5" aria-label="Target keywords">
           <h3 className="font-display text-xl">Target keywords</h3>
           <ul className="mt-2 space-y-2">{suggestion.target_keywords.map((keyword) => (
@@ -56,6 +57,21 @@ function RecommendationCard({ suggestion, checklist, onDecision, onStageChange }
           ))}</ul>
         </section>
       )}
+      {suggestion.category === "sem" && <section className="sem-details" aria-label={`Ad group details for ${suggestion.title}`}>
+        <div className="flex flex-wrap gap-2">
+          <span className="badge cost-tier-badge">Cost Tier: {displayStage(suggestion.cost_tier ?? "unknown")} · heuristic estimate</span>
+          {suggestion.cheaper_alternative_to_id && <span className="badge alternative-badge">Cheaper alternative</span>}
+        </div>
+        <p className="mt-2 text-xs text-ink/60">{suggestion.cost_tier_disclosure}</p>
+        {suggestion.sem_keyword && <p className="mt-4"><span className="font-semibold">Keyword:</span> {suggestion.sem_keyword}</p>}
+        <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div><dt>Ad group</dt><dd>{suggestion.ad_group_label}</dd></div>
+          <div><dt>Ad angle</dt><dd>{suggestion.ad_copy_angle}</dd></div>
+          <div><dt>Landing page</dt><dd>{suggestion.landing_page_match}</dd></div>
+          <div><dt>Targeting</dt><dd>{suggestion.targeting_notes}</dd></div>
+        </dl>
+        <div className="mt-4"><h3 className="text-sm font-semibold">Starter negative keywords</h3><div className="mt-2 flex flex-wrap gap-2">{suggestion.negative_keywords?.map((keyword) => <span className="negative-chip" key={keyword}>{keyword}</span>)}</div></div>
+      </section>}
       <div className="action-row">
         {suggestion.status !== "accepted" && <button className="primary-button action-button" disabled={busy} onClick={() => onDecision && act(() => onDecision(suggestion, "accepted"))}>Accept</button>}
         {suggestion.status !== "dismissed" && <button className="secondary-button" disabled={busy} onClick={() => setChoosingReason(true)}>Dismiss</button>}

@@ -392,13 +392,13 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Write deterministic tests for Cost Tier boundaries and commercial-intent modifiers.
-- [ ] Write tests for long-tail alternatives, ad groups, targeting, landing pages, and negative keywords.
-- [ ] Write tests requiring the heuristic-estimate disclosure wherever Cost Tier appears.
-- [ ] Write a boundary test proving no campaign-launch or spending action exists.
-- [ ] Implement SEM candidate ranking and persisted SEM fields.
-- [ ] Build the SEM view, ad-group presentation, cheaper-alternative chip, and summary.
-- [ ] Connect SEM Accept/Dismiss actions to the Organizer.
+- [x] Write deterministic tests for Cost Tier boundaries and commercial-intent modifiers.
+- [x] Write tests for long-tail alternatives, ad groups, targeting, landing pages, and negative keywords.
+- [x] Write tests requiring the heuristic-estimate disclosure wherever Cost Tier appears.
+- [x] Write a boundary test proving no campaign-launch or spending action exists.
+- [x] Implement SEM candidate ranking and persisted SEM fields.
+- [x] Build the SEM view, ad-group presentation, cheaper-alternative chip, and summary.
+- [x] Connect SEM Accept/Dismiss actions to the Organizer.
 
 **Acceptance criteria:**
 

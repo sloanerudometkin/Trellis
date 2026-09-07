@@ -203,9 +203,15 @@ def test_owner_loads_persisted_aeo_and_seo_content_recommendations(client, app, 
     data = response.get_json()["data"]
     aeo = next(item for item in data["suggestions"] if item["category"] == "aeo")
     content = next(item for item in data["suggestions"] if item["category"] == "seo_content")
+    sem = [item for item in data["suggestions"] if item["category"] == "sem"]
     assert (aeo["priority"], aeo["stage"], aeo["status"]) == ("high", "suggested", "pending")
     assert content["starter_outline"]
     assert content["target_keywords"] == [{"phrase": "community garden", "recommended_usage_count": 4}]
+    assert sem
+    assert all(item["cost_tier"] and "heuristic estimate" in item["cost_tier_disclosure"].lower() for item in sem)
+    assert all("cannot create, launch" in item["campaign_boundary"] for item in sem)
+    assert data["sem_summary"]["candidate_count"] == len(sem)
+    assert "not live Google Ads bid data" in data["sem_summary"]["cost_tier_disclosure"]
     assert data["technical_audit"]["summary"].startswith("Fix first: Add one clear H1")
     assert [finding["finding_type"] for finding in data["technical_audit"]["findings"]] == ["missing_h1", "thin_content"]
     assert client.get(f"/api/v1/analysis-runs/{run['id']}", headers=user_two_headers).status_code == 404
