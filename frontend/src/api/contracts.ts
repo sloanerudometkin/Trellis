@@ -93,6 +93,16 @@ export interface AnalysisRunResponse {
   suggestions: SuggestionResponse[];
   technical_audit: TechnicalAuditResponse;
   sem_summary: SemSummaryResponse;
+  health_score: number | null;
+  health_score_delta: number | null;
+  health_score_history: HealthScoreHistoryResponse[];
+  health_score_disclosure: string;
+}
+
+export interface HealthScoreHistoryResponse {
+  analysis_id: number;
+  score: number;
+  completed_at: string | null;
 }
 
 export interface SemSummaryResponse {

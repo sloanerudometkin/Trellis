@@ -33,6 +33,7 @@ from trellis.schemas import (
 from trellis.url_safety import validate_public_url
 from trellis.technical_audit import SEVERITY_ORDER, build_fix_first_summary
 from trellis.sem_strategy import CAMPAIGN_BOUNDARY, COST_TIER_DISCLOSURE
+from trellis.health_score import SCORING_DISCLOSURE, completed_health_history, previous_health_score
 
 
 api = Blueprint("api", __name__)
@@ -151,6 +152,8 @@ def analysis_response(analysis: AnalysisRun) -> dict:
     sem_suggestions = [item for item in analysis.suggestions if item.category.value == "sem"]
     cost_tier_counts = {tier: sum(item.cost_tier is not None and item.cost_tier.value == tier for item in sem_suggestions) for tier in ("low", "medium", "high")}
     present_tiers = [tier for tier in ("low", "medium", "high") if cost_tier_counts[tier]]
+    previous_score = previous_health_score(analysis) if analysis.health_score is not None else None
+    health_history = completed_health_history(analysis)
     payload = {
         "id": analysis.id,
         "website_id": analysis.website_id,
@@ -185,6 +188,13 @@ def analysis_response(analysis: AnalysisRun) -> dict:
             "cost_tier_disclosure": COST_TIER_DISCLOSURE,
             "campaign_boundary": CAMPAIGN_BOUNDARY,
         },
+        "health_score": analysis.health_score,
+        "health_score_delta": analysis.health_score - previous_score if analysis.health_score is not None and previous_score is not None else None,
+        "health_score_history": [
+            {"analysis_id": item.id, "score": item.health_score, "completed_at": item.completed_at}
+            for item in health_history
+        ],
+        "health_score_disclosure": SCORING_DISCLOSURE,
     }
     return serialize(AnalysisRunResponse.model_validate(payload))
 

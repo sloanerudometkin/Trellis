@@ -9,6 +9,37 @@
   --font-mono: "IBM Plex Mono", monospace;
 }
 
+.health-score-card {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+  padding: 1.5rem;
+  border: 1px solid rgb(45 75 52 / 18%);
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 72%);
+}
+
+.health-score-value {
+  margin-top: .35rem;
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  line-height: 1;
+  color: #2d4b34;
+}
+
+.health-score-value span { font-size: 1rem; color: rgb(29 42 32 / 55%); }
+.health-score-delta { margin-top: .5rem; font-weight: 650; }
+.health-score-disclosure { max-width: 34rem; margin-top: .75rem; font-size: .78rem; line-height: 1.5; color: rgb(29 42 32 / 62%); }
+.health-score-trend-label { margin-bottom: .4rem; font-size: .8rem; font-weight: 700; color: rgb(29 42 32 / 65%); }
+.health-score-chart { width: 100%; max-width: 20rem; overflow: visible; }
+.health-score-chart line { stroke: rgb(45 75 52 / 20%); stroke-width: 1; }
+.health-score-chart polyline { fill: none; stroke: #2d4b34; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.health-score-chart circle { fill: #d58e56; stroke: #fff; stroke-width: 2; }
+
+@media (min-width: 700px) {
+  .health-score-card { grid-template-columns: minmax(0, 1.15fr) minmax(15rem, .85fr); align-items: center; }
+}
+
 :root {
   color: var(--color-ink);
   background: var(--color-paper);

@@ -9,6 +9,7 @@ from trellis.keywords import extract_keywords
 from trellis.models import AnalysisRun, AnalysisStatus, Keyword, Website, utc_now
 from trellis.scraping import CrawlError, crawl_site
 from trellis.technical_audit import persist_technical_findings, run_technical_audit
+from trellis.health_score import persist_health_score
 
 StageHook = Callable[[AnalysisStatus, AnalysisRun], None]
 RecommendationGenerator = Callable[[AnalysisRun], None]
@@ -68,6 +69,7 @@ def execute_analysis_run(analysis: AnalysisRun, *, client: httpx.Client | None =
             _enter_stage(analysis, AnalysisStatus.GENERATING, stage_hook)
             if recommendation_generator:
                 recommendation_generator(analysis)
+            persist_health_score(analysis)
             analysis.last_completed_stage = AnalysisStatus.GENERATING.value
             db.session.commit()
 

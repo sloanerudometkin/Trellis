@@ -38,6 +38,10 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
     ] : [],
     technical_audit: status === "completed" ? { summary: "Fix first: Add descriptive image alt text so the design work is understandable.", findings: [{ id: 90, finding_type: "missing_image_alt", severity: "medium", explanation: "Add useful alt text to 1 image.", affected_page_url: "https://example.com/", related_page_url: null, resolution_status: "open" }] } : { summary: "", findings: [] },
     sem_summary: { candidate_count: 1, accepted_count: 0, cost_tier_counts: { low: 1, medium: 0, high: 0 }, estimated_cost_range: "Low–Low heuristic Cost Tier", cost_tier_disclosure: "Heuristic estimate based on keyword shape and intent—not live Google Ads bid data.", campaign_boundary: "Planning only: Trellis cannot create, launch, manage, bid on, or spend money on advertising campaigns." },
+    health_score: status === "completed" ? 41 : null,
+    health_score_delta: status === "completed" ? 6 : null,
+    health_score_history: status === "completed" ? [{ analysis_id: 30, score: 35, completed_at: "2026-08-30T12:01:00Z" }, { analysis_id: 31, score: 41, completed_at: "2026-09-06T12:01:00Z" }] : [],
+    health_score_disclosure: "Organic snapshot: 35% AEO completion, 35% resolved technical findings, and 30% published SEO/content work. SEM is excluded.",
   });
   await page.route("**/api/v1/websites/12/analysis-runs", async (route) => {
     await route.fulfill({ status: 202, contentType: "application/json", body: JSON.stringify({ data: analysis("queued") }) });
@@ -80,6 +84,10 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
   await expect(page.getByRole("status")).toContainText("queued");
   await expect(page.getByTestId("analysis-results")).toContainText("2 pages analyzed", { timeout: 6000 });
   await expect(page.getByTestId("analysis-results")).toContainText("design studio ×4");
+  await expect(page.getByRole("heading", { name: "41/100" })).toBeVisible();
+  await expect(page.getByText("+6 points since prior scan")).toBeVisible();
+  await expect(page.getByRole("img", { name: "Organic Health Score trend: 35, 41" })).toBeVisible();
+  await expect(page.getByText(/SEM is excluded/)).toBeVisible();
   await page.getByRole("button", { name: "AEO" }).click();
   await expect(page.getByText("Answer the core design question")).toBeVisible();
   expect(Date.now() - actionPlanTimerStartedAt).toBeLessThan(5 * 60 * 1000);

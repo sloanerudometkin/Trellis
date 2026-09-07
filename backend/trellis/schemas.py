@@ -96,6 +96,12 @@ class SemSummaryResponse(BaseModel):
     campaign_boundary: str
 
 
+class HealthScoreHistoryResponse(BaseModel):
+    analysis_id: int
+    score: int
+    completed_at: datetime | None
+
+
 class AnalysisRunResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -111,6 +117,10 @@ class AnalysisRunResponse(BaseModel):
     suggestions: list[SuggestionResponse]
     technical_audit: TechnicalAuditResponse
     sem_summary: SemSummaryResponse
+    health_score: int | None
+    health_score_delta: int | None
+    health_score_history: list[HealthScoreHistoryResponse]
+    health_score_disclosure: str
 
 
 class SuggestionDecisionRequest(BaseModel):
