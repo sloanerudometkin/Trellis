@@ -80,6 +80,14 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
   await page.getByRole("button", { name: "Create workspace" }).click();
 
   await expect(page.getByRole("navigation", { name: "Workspace views" })).toBeVisible();
+  await page.setViewportSize({ width: 375, height: 812 });
+  await expect(page.getByRole("button", { name: "Reports" })).toBeVisible();
+  await page.getByRole("button", { name: "Overview" }).focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.getByRole("heading", { name: "AEO" })).toBeVisible();
+  await expect(page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).resolves.toBe(true);
+  await page.getByRole("button", { name: "Overview" }).click();
+  await page.setViewportSize({ width: 1280, height: 800 });
   await page.getByRole("button", { name: "Analyze website" }).click();
   await expect(page.getByRole("status")).toContainText("queued");
   await expect(page.getByTestId("analysis-results")).toContainText("2 pages analyzed", { timeout: 6000 });

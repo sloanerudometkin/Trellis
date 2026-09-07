@@ -29,6 +29,15 @@
 .comparison-table { @apply mt-5 overflow-x-auto; }
 .comparison-table table { @apply w-full border-collapse text-sm; }
 .comparison-table th, .comparison-table td { @apply border-b border-moss/10 p-3 text-left; }
+.skip-link { @apply fixed left-4 top-4 z-50 -translate-y-24 rounded-lg bg-ink px-4 py-3 text-white focus:translate-y-0; }
+.overview-callout { @apply mb-5 flex flex-wrap items-end justify-between gap-4 rounded-2xl border border-moss/15 bg-paper p-5; }
+.overview-callout .secondary-button { @apply mt-0; }
+.overview-grid { @apply grid gap-4 md:grid-cols-3; }
+.summary-card { @apply rounded-2xl border border-moss/15 bg-paper p-5; }
+.summary-card strong { @apply mt-2 block font-display text-2xl; }
+.summary-card span { @apply mt-2 block text-sm leading-6 text-ink/65; }
+.summary-loading { @apply rounded-2xl border border-dashed border-moss/20 bg-paper p-5 text-ink/60; }
+.partial-notice { @apply mb-5 rounded-xl border border-[#d2a84a]/40 bg-[#d2a84a]/10 p-4 text-sm leading-6; }
 
 .health-score-card {
   display: grid;

@@ -476,13 +476,13 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Write component/integration tests for Overview, AEO, SEO/Content, SEM, Reports, and Organizer.
-- [ ] Test shared website and AnalysisRun context across every view.
-- [ ] Test navigation, responsive behavior, and keyboard use.
-- [ ] Test loading, empty, failed, partial, retry, and unauthorized states.
-- [ ] Complete the Overview summary cards and since-last-scan callouts.
-- [ ] Reconcile visual patterns and remove disconnected placeholder data.
-- [ ] Confirm both critical Playwright journeys pass against the integrated app.
+- [x] Write component/integration tests for Overview, AEO, SEO/Content, SEM, Reports, and Organizer.
+- [x] Test shared website and AnalysisRun context across every view.
+- [x] Test navigation, responsive behavior, and keyboard use.
+- [x] Test loading, empty, failed, partial, retry, and unauthorized states.
+- [x] Complete the Overview summary cards and since-last-scan callouts.
+- [x] Reconcile visual patterns and remove disconnected placeholder data.
+- [x] Confirm both critical Playwright journeys pass against the integrated app.
 
 **Acceptance criteria:**
 

@@ -1,16 +1,20 @@
 import { FormEvent, useEffect, useState } from "react";
 
-import { ApiRequestError, createWebsite, decideSuggestion, getAnalysis, getOrganizerItems, retryAnalysis, startAnalysis, updateOrganizerItem, updateSuggestionStage } from "./api/client";
-import type { AnalysisRunResponse, AnalysisStatus, DismissReason, OrganizerItemResponse, OrganizerStage, SuggestionResponse, WebsiteResponse } from "./api/contracts";
+import { ApiRequestError, createWebsite, decideSuggestion, getAnalysis, getOrganizerItems, getReports, retryAnalysis, startAnalysis, updateOrganizerItem, updateSuggestionStage } from "./api/client";
+import type { AnalysisRunResponse, DismissReason, OrganizerItemResponse, OrganizerStage, ReportResponse, SuggestionResponse, WebsiteResponse } from "./api/contracts";
 import { RecommendationView } from "./RecommendationView";
 import { OrganizerView } from "./OrganizerView";
 import { TechnicalAuditView } from "./TechnicalAuditView";
 import { SemView } from "./SemView";
-import { HealthScoreCard } from "./HealthScoreCard";
 import { ReportsView } from "./ReportsView";
+import { OverviewView } from "./OverviewView";
 
 const views = ["Overview", "AEO", "SEO/Content", "SEM", "Reports", "Organizer"] as const;
 type View = (typeof views)[number];
+
+function requestErrorMessage(caught: unknown, fallback: string) {
+  return caught instanceof ApiRequestError && caught.code === "unauthorized" ? "Your session has expired. Sign in again." : fallback;
+}
 
 function AddWebsiteForm({ onCreated }: { onCreated: (website: WebsiteResponse) => void }) {
   const [url, setUrl] = useState("");
@@ -82,9 +86,12 @@ function Workspace({ website }: { website: WebsiteResponse }) {
   const [activeView, setActiveView] = useState<View>("Overview");
   const [analysis, setAnalysis] = useState<AnalysisRunResponse | null>(null);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [analysisStarting, setAnalysisStarting] = useState(false);
   const [organizerItems, setOrganizerItems] = useState<OrganizerItemResponse[]>([]);
   const [organizerLoading, setOrganizerLoading] = useState(false);
   const [organizerError, setOrganizerError] = useState<string | null>(null);
+  const [latestReport, setLatestReport] = useState<ReportResponse | null>(null);
+  const [reportLoading, setReportLoading] = useState(false);
   const accessToken = window.localStorage.getItem("trellis_access_token") ?? "";
 
   useEffect(() => {
@@ -101,11 +108,12 @@ function Workspace({ website }: { website: WebsiteResponse }) {
 
   async function beginAnalysis() {
     setAnalysisError(null);
+    setAnalysisStarting(true);
     try {
       setAnalysis(await startAnalysis(website.id, accessToken));
-    } catch {
-      setAnalysisError("We couldn't start the analysis. Please try again.");
-    }
+    } catch (caught) {
+      setAnalysisError(requestErrorMessage(caught, "We couldn't start the analysis. Please try again."));
+    } finally { setAnalysisStarting(false); }
   }
 
   async function retryFailedAnalysis() {
@@ -113,8 +121,8 @@ function Workspace({ website }: { website: WebsiteResponse }) {
     setAnalysisError(null);
     try {
       setAnalysis(await retryAnalysis(analysis.id, accessToken));
-    } catch {
-      setAnalysisError("We couldn't retry the analysis. Please try again.");
+    } catch (caught) {
+      setAnalysisError(requestErrorMessage(caught, "We couldn't retry the analysis. Please try again."));
     }
   }
 
@@ -136,7 +144,7 @@ function Workspace({ website }: { website: WebsiteResponse }) {
   async function refreshOrganizer() {
     setOrganizerLoading(true); setOrganizerError(null);
     try { setOrganizerItems(await getOrganizerItems(website.id, accessToken)); }
-    catch { setOrganizerError("We couldn’t load your Organizer. Please try again."); }
+    catch (caught) { setOrganizerError(requestErrorMessage(caught, "We couldn’t load your Organizer. Please try again.")); }
     finally { setOrganizerLoading(false); }
   }
 
@@ -157,17 +165,23 @@ function Workspace({ website }: { website: WebsiteResponse }) {
   }
 
   useEffect(() => { if (activeView === "Organizer") void refreshOrganizer(); }, [activeView]);
+  useEffect(() => {
+    if (analysis?.status !== "completed") return;
+    setReportLoading(true);
+    void getReports(website.id, accessToken).then((reports) => setLatestReport(reports[0] ?? null)).catch((caught) => {
+      if (caught instanceof ApiRequestError && caught.code === "unauthorized") setAnalysisError("Your session has expired. Sign in again.");
+    }).finally(() => setReportLoading(false));
+  }, [analysis?.id, analysis?.status, website.id, accessToken]);
 
-  const progressMessages: Record<AnalysisStatus, string> = {
-    queued: "Your analysis is queued and will begin shortly.",
-    scraping: "Reading the public pages Trellis is allowed to visit…",
-    analyzing: "Finding meaningful keywords and filtering repeated boilerplate…",
-    generating: "Preparing your analysis results…",
-    completed: "Analysis complete.",
-    failed: analysis?.error_message ?? "The analysis could not be completed.",
-  };
+  function handleNavKey(event: React.KeyboardEvent<HTMLButtonElement>, index: number) {
+    if (!["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const next = event.key === "Home" ? 0 : event.key === "End" ? views.length - 1 : (index + (["ArrowDown", "ArrowRight"].includes(event.key) ? 1 : -1) + views.length) % views.length;
+    setActiveView(views[next]);
+    document.getElementById(`workspace-tab-${next}`)?.focus();
+  }
   return (
-    <div className="min-h-screen bg-[#f3efe3]">
+    <div className="min-h-screen bg-[#f3efe3]"><a className="skip-link" href="#workspace-content">Skip to workspace content</a>
       <header className="border-b border-moss/15 bg-paper px-5 py-4 sm:px-8">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           <div><p className="font-display text-2xl text-moss">Trellis</p><p className="mt-1 text-xs text-ink/55">Paid + organic search workspace</p></div>
@@ -175,30 +189,13 @@ function Workspace({ website }: { website: WebsiteResponse }) {
         </div>
       </header>
       <div className="mx-auto grid max-w-7xl md:grid-cols-[220px_1fr]">
-        <nav className="border-b border-moss/15 bg-paper p-4 md:min-h-[calc(100vh-81px)] md:border-b-0 md:border-r" aria-label="Workspace views">
-          <ul className="flex gap-2 overflow-x-auto md:flex-col">{views.map((view) => <li key={view}><button className={`nav-button ${activeView === view ? "nav-button-active" : ""}`} onClick={() => setActiveView(view)} aria-current={activeView === view ? "page" : undefined}>{view}</button></li>)}</ul>
+        <nav className="min-w-0 overflow-hidden border-b border-moss/15 bg-paper p-4 md:min-h-[calc(100vh-81px)] md:border-b-0 md:border-r" aria-label="Workspace views">
+          <ul className="flex gap-2 overflow-x-auto md:flex-col">{views.map((view, index) => <li key={view}><button id={`workspace-tab-${index}`} className={`nav-button ${activeView === view ? "nav-button-active" : ""}`} onClick={() => setActiveView(view)} onKeyDown={(event) => handleNavKey(event, index)} aria-current={activeView === view ? "page" : undefined}>{view}</button></li>)}</ul>
         </nav>
-        <main className="p-5 sm:p-8 lg:p-12">
+        <main id="workspace-content" tabIndex={-1} className="min-w-0 p-5 sm:p-8 lg:p-12">
           <p className="eyebrow">{website.business_name}</p><h1 className="mt-2 font-display text-4xl">{activeView}</h1>
           {activeView === "Overview" ? (
-            <section className="empty-state" aria-labelledby="analysis-title">
-              <p className="font-mono text-xs uppercase tracking-[0.16em] text-moss">Website analysis</p>
-              <h2 id="analysis-title" className="mt-3 font-display text-2xl">{analysis?.status === "completed" ? "Your first results are ready." : "Turn your website into a starting strategy."}</h2>
-              {!analysis && <p className="mt-3 max-w-xl leading-7 text-ink/65">Trellis will safely read up to 15 public pages and identify the language your website emphasizes.</p>}
-              {analysis && <p className="mt-3 max-w-xl leading-7 text-ink/70" role={analysis.status === "failed" ? "alert" : "status"} aria-live="polite">{progressMessages[analysis.status]}</p>}
-              {analysisError && <div className="error-box" role="alert">{analysisError}</div>}
-              {!analysis && <button className="primary-button sm:w-auto" onClick={beginAnalysis}>Analyze website</button>}
-              {analysis?.status === "failed" && <button className="primary-button sm:w-auto" onClick={retryFailedAnalysis}>Retry analysis</button>}
-              {analysis?.status === "completed" && (
-                <div className="mt-7" data-testid="analysis-results">
-                  {typeof analysis.health_score === "number" && <HealthScoreCard score={analysis.health_score} delta={analysis.health_score_delta ?? null} history={analysis.health_score_history ?? []} disclosure={analysis.health_score_disclosure} />}
-                  <p className="text-sm font-semibold">{analysis.pages_scanned_count} {analysis.pages_scanned_count === 1 ? "page" : "pages"} analyzed</p>
-                  <h3 className="mt-5 font-display text-xl">Top keywords</h3>
-                  <ul className="mt-3 flex flex-wrap gap-2">{analysis.keywords.slice(0, 10).map((keyword) => <li className="rounded-full border border-moss/20 bg-white px-3 py-1.5 text-sm" key={keyword.phrase}>{keyword.phrase} <span className="text-ink/45">×{keyword.frequency}</span></li>)}</ul>
-                  <button className="secondary-button mt-6 sm:w-auto" onClick={beginAnalysis}>Rescan website</button>
-                </div>
-              )}
-            </section>
+            <OverviewView analysis={analysis} latestReport={latestReport} reportLoading={reportLoading} analysisError={analysisError} onAnalyze={beginAnalysis} onRetry={retryFailedAnalysis} analysisStarting={analysisStarting} />
           ) : activeView === "AEO" ? (
             <RecommendationView analysis={analysis} kind="aeo" requestError={analysisError} onDecision={handleDecision} onStageChange={handleSuggestionStage} />
           ) : activeView === "SEO/Content" ? (
@@ -209,9 +206,7 @@ function Workspace({ website }: { website: WebsiteResponse }) {
             <OrganizerView items={organizerItems} loading={organizerLoading} error={organizerError} onStageChange={handleOrganizerStage} />
           ) : activeView === "Reports" ? (
             <ReportsView websiteId={website.id} accessToken={accessToken} refreshKey={analysis?.id} />
-          ) : (
-            <section className="empty-state" aria-labelledby="view-state-title"><p className="font-mono text-xs uppercase tracking-[0.16em] text-moss">Workspace ready</p><h2 id="view-state-title" className="mt-3 font-display text-2xl">{activeView} data will appear as later MVP features are completed.</h2></section>
-          )}
+          ) : null}
         </main>
       </div>
     </div>

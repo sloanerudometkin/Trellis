@@ -41,9 +41,10 @@ function ReportDetail({ report }: { report: ReportResponse }) {
 export function ReportsView({ websiteId, accessToken, refreshKey }: { websiteId: number; accessToken: string; refreshKey?: number }) {
   const [reports, setReports] = useState<ReportResponse[]>([]); const [openId, setOpenId] = useState<number | null>(null);
   const [beforeId, setBeforeId] = useState<number | null>(null); const [afterId, setAfterId] = useState<number | null>(null);
-  const [comparison, setComparison] = useState<ReportComparisonResponse | null>(null); const [error, setError] = useState<string | null>(null);
-  useEffect(() => { void getReports(websiteId, accessToken).then((items) => { setReports(items); setOpenId((current) => current ?? items[0]?.id ?? null); setAfterId(items[0]?.id ?? null); setBeforeId(items[1]?.id ?? null); }).catch(() => setError("We couldn’t load Report history.")); }, [websiteId, accessToken, refreshKey]);
+  const [comparison, setComparison] = useState<ReportComparisonResponse | null>(null); const [error, setError] = useState<string | null>(null); const [loading, setLoading] = useState(true);
+  useEffect(() => { setLoading(true); setError(null); void getReports(websiteId, accessToken).then((items) => { setReports(items); setOpenId((current) => current ?? items[0]?.id ?? null); setAfterId(items[0]?.id ?? null); setBeforeId(items[1]?.id ?? null); }).catch((caught) => setError(caught instanceof Error && "code" in caught && caught.code === "unauthorized" ? "Your session has expired. Sign in again." : "We couldn’t load Report history.")).finally(() => setLoading(false)); }, [websiteId, accessToken, refreshKey]);
   async function runComparison() { if (!beforeId || !afterId || beforeId === afterId) return; setError(null); try { setComparison(await compareReports(websiteId, beforeId, afterId, accessToken)); } catch { setError("We couldn’t compare those Reports."); } }
+  if (loading) return <section className="empty-state" role="status" aria-busy="true">Loading Report history…</section>;
   if (error && reports.length === 0) return <div className="error-box" role="alert">{error}</div>;
   if (reports.length === 0) return <section className="empty-state"><h2 className="font-display text-2xl">No Reports yet</h2><p>Complete an analysis to save your first KPI snapshot.</p></section>;
   const open = reports.find((item) => item.id === openId) ?? reports[0];
