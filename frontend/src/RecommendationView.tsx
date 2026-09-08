@@ -42,7 +42,7 @@ function RecommendationCard({ suggestion, checklist, onDecision, onStageChange }
         <h3 className="text-sm font-semibold">Why this matters</h3>
         <p className="mt-1 leading-6 text-ink/70">{suggestion.rationale}</p>
       </div>
-      {suggestion.affected_page_url && <p className="mt-4 break-all text-sm text-ink/60"><span className="font-semibold">Page:</span> {suggestion.affected_page_url}</p>}
+      {suggestion.affected_page_url && <p className="mt-4 break-all text-sm text-ink/70"><span className="font-semibold">Page:</span> {suggestion.affected_page_url}</p>}
       {suggestion.starter_outline && (
         <section className="mt-5" aria-label="Starter outline">
           <h3 className="font-display text-xl">Starter outline</h3>
@@ -62,7 +62,7 @@ function RecommendationCard({ suggestion, checklist, onDecision, onStageChange }
           <span className="badge cost-tier-badge">Cost Tier: {displayStage(suggestion.cost_tier ?? "unknown")} · heuristic estimate</span>
           {suggestion.cheaper_alternative_to_id && <span className="badge alternative-badge">Cheaper alternative</span>}
         </div>
-        <p className="mt-2 text-xs text-ink/60">{suggestion.cost_tier_disclosure}</p>
+        <p className="mt-2 text-xs text-ink/70">{suggestion.cost_tier_disclosure}</p>
         {suggestion.sem_keyword && <p className="mt-4"><span className="font-semibold">Keyword:</span> {suggestion.sem_keyword}</p>}
         <dl className="mt-4 grid gap-4 sm:grid-cols-2">
           <div><dt>Ad group</dt><dd>{suggestion.ad_group_label}</dd></div>
@@ -78,7 +78,7 @@ function RecommendationCard({ suggestion, checklist, onDecision, onStageChange }
         {suggestion.status === "accepted" && <label className="stage-control">Stage<select aria-label={`Stage for ${suggestion.title}`} value={suggestion.stage} disabled={busy} onChange={(event) => onStageChange && act(() => onStageChange(suggestion, event.target.value as OrganizerStage))}>{stages.map((stage) => <option key={stage.value} value={stage.value}>{stage.label}</option>)}</select></label>}
       </div>
       {choosingReason && <div className="reason-picker" role="group" aria-label={`Dismiss reason for ${suggestion.title}`}><p className="text-sm font-semibold">Why are you dismissing this?</p><div className="mt-3 flex flex-wrap gap-2">{dismissReasons.map((reason) => <button className="reason-button" disabled={busy} key={reason.value} onClick={() => onDecision && act(() => onDecision(suggestion, "dismissed", reason.value))}>{reason.label}</button>)}</div></div>}
-      {suggestion.status === "dismissed" && <p className="mt-5 text-sm text-ink/60">Dismissed: {displayStage(suggestion.dismiss_reason ?? "other")}</p>}
+      {suggestion.status === "dismissed" && <p className="mt-5 text-sm text-ink/70">Dismissed: {displayStage(suggestion.dismiss_reason ?? "other")}</p>}
       {error && <div className="error-box" role="alert">{error}</div>}
     </article>
   );
@@ -86,12 +86,12 @@ function RecommendationCard({ suggestion, checklist, onDecision, onStageChange }
 
 export function RecommendationView({ analysis, kind, requestError, onDecision, onStageChange }: { analysis: AnalysisRunResponse | null; kind: RecommendationKind; requestError?: string | null; onDecision?: (suggestion: SuggestionResponse, status: "accepted" | "dismissed", reason?: DismissReason) => Promise<void>; onStageChange?: (suggestion: SuggestionResponse, stage: OrganizerStage) => Promise<void> }) {
   const copy = labels[kind];
-  if (requestError) return <section className="empty-state" role="alert"><p className="eyebrow">Couldn’t load recommendations</p><h2 className="mt-3 font-display text-2xl">{requestError}</h2><p className="mt-3 text-ink/65">Return to Overview and try the analysis again.</p></section>;
-  if (!analysis) return <section className="empty-state"><p className="eyebrow">Analysis needed</p><h2 className="mt-3 font-display text-2xl">Run your first website analysis from Overview.</h2><p className="mt-3 text-ink/65">Your persisted recommendations will appear here when it completes.</p></section>;
-  if (["queued", "scraping", "analyzing", "generating"].includes(analysis.status)) return <section className="empty-state" role="status" aria-live="polite"><p className="eyebrow">Preparing your action plan</p><h2 className="mt-3 font-display text-2xl">Your analysis is still in progress.</h2><p className="mt-3 text-ink/65">This view will update automatically when your recommendations are ready.</p></section>;
-  if (analysis.status === "failed") return <section className="empty-state" role="alert"><p className="eyebrow">Analysis incomplete</p><h2 className="mt-3 font-display text-2xl">We couldn’t finish your action plan.</h2><p className="mt-3 text-ink/65">{analysis.error_message ?? "Return to Overview to retry the analysis."}</p></section>;
+  if (requestError) return <section className="empty-state" role="alert"><p className="eyebrow">Couldn’t load recommendations</p><h2 className="mt-3 font-display text-2xl">{requestError}</h2><p className="mt-3 text-ink/70">Return to Overview and try the analysis again.</p></section>;
+  if (!analysis) return <section className="empty-state"><p className="eyebrow">Analysis needed</p><h2 className="mt-3 font-display text-2xl">Run your first website analysis from Overview.</h2><p className="mt-3 text-ink/70">Your persisted recommendations will appear here when it completes.</p></section>;
+  if (["queued", "scraping", "analyzing", "generating"].includes(analysis.status)) return <section className="empty-state" role="status" aria-live="polite"><p className="eyebrow">Preparing your action plan</p><h2 className="mt-3 font-display text-2xl">Your analysis is still in progress.</h2><p className="mt-3 text-ink/70">This view will update automatically when your recommendations are ready.</p></section>;
+  if (analysis.status === "failed") return <section className="empty-state" role="alert"><p className="eyebrow">Analysis incomplete</p><h2 className="mt-3 font-display text-2xl">We couldn’t finish your action plan.</h2><p className="mt-3 text-ink/70">{analysis.error_message ?? "Return to Overview to retry the analysis."}</p></section>;
 
   const suggestions = analysis.suggestions.filter((suggestion) => suggestion.category === kind);
-  if (suggestions.length === 0) return <section className="empty-state"><p className="eyebrow">{copy.eyebrow}</p><h2 className="mt-3 font-display text-2xl">{copy.empty}</h2><p className="mt-3 text-ink/65">Your completed analysis is saved; run another analysis later to check again.</p></section>;
-  return <section className="mt-7" aria-label={copy.eyebrow}><p className="mb-5 max-w-2xl text-ink/65">These site-specific actions are saved with this analysis, so you can return to them anytime.</p><div className="grid gap-5">{suggestions.map((suggestion) => <RecommendationCard key={suggestion.id} suggestion={suggestion} checklist={kind === "aeo"} onDecision={onDecision} onStageChange={onStageChange} />)}</div></section>;
+  if (suggestions.length === 0) return <section className="empty-state"><p className="eyebrow">{copy.eyebrow}</p><h2 className="mt-3 font-display text-2xl">{copy.empty}</h2><p className="mt-3 text-ink/70">Your completed analysis is saved; run another analysis later to check again.</p></section>;
+  return <section className="mt-7" aria-label={copy.eyebrow}><p className="mb-5 max-w-2xl text-ink/70">These site-specific actions are saved with this analysis, so you can return to them anytime.</p><div className="grid gap-5">{suggestions.map((suggestion) => <RecommendationCard key={suggestion.id} suggestion={suggestion} checklist={kind === "aeo"} onDecision={onDecision} onStageChange={onStageChange} />)}</div></section>;
 }

@@ -15,6 +15,7 @@
     "react-dom": "latest"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "1.62.1",
     "@tailwindcss/vite": "latest",
     "@testing-library/jest-dom": "7.0.1",

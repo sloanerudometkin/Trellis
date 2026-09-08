@@ -476,13 +476,13 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Write component/integration tests for Overview, AEO, SEO/Content, SEM, Reports, and Organizer.
-- [ ] Test shared website and AnalysisRun context across every view.
-- [ ] Test navigation, responsive behavior, and keyboard use.
-- [ ] Test loading, empty, failed, partial, retry, and unauthorized states.
-- [ ] Complete the Overview summary cards and since-last-scan callouts.
-- [ ] Reconcile visual patterns and remove disconnected placeholder data.
-- [ ] Confirm both critical Playwright journeys pass against the integrated app.
+- [x] Write component/integration tests for Overview, AEO, SEO/Content, SEM, Reports, and Organizer.
+- [x] Test shared website and AnalysisRun context across every view.
+- [x] Test navigation, responsive behavior, and keyboard use.
+- [x] Test loading, empty, failed, partial, retry, and unauthorized states.
+- [x] Complete the Overview summary cards and since-last-scan callouts.
+- [x] Reconcile visual patterns and remove disconnected placeholder data.
+- [x] Confirm both critical Playwright journeys pass against the integrated app.
 
 **Acceptance criteria:**
 
@@ -500,10 +500,10 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Run all accumulated pytest, Vitest, and Playwright tests.
-- [ ] Fix regressions; do not add unplanned features.
-- [ ] Run automated accessibility checks and complete keyboard/manual checks.
-- [ ] Verify focus, labels, contrast, status text, and responsive layouts.
+- [x] Run all accumulated pytest, Vitest, and Playwright tests.
+- [x] Fix regressions; do not add unplanned features.
+- [x] Run automated accessibility checks and complete keyboard/manual checks.
+- [x] Verify focus, labels, contrast, status text, and responsive layouts.
 - [ ] Configure production environment variables without committing secrets.
 - [ ] Deploy the Flask backend to Render.
 - [ ] Deploy the React frontend to Netlify.
