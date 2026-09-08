@@ -1,4 +1,11 @@
 import { expect, test } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+
+async function expectNoAccessibilityViolations(page: ConstructorParameters<typeof AxeBuilder>[0]["page"]) {
+  await page.waitForTimeout(200);
+  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
+  expect(results.violations, results.violations.map((item) => `${item.id}: ${item.help}`).join("\n")).toEqual([]);
+}
 
 test("sign in → add website → analyze → view results", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("trellis_access_token", "e2e-token"));
@@ -82,7 +89,18 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
   await expect(page.getByRole("navigation", { name: "Workspace views" })).toBeVisible();
   await page.setViewportSize({ width: 375, height: 812 });
   await expect(page.getByRole("button", { name: "Reports" })).toBeVisible();
-  await page.getByRole("button", { name: "Overview" }).focus();
+  const overviewTab = page.getByRole("button", { name: "Overview" });
+  await overviewTab.focus();
+  await page.keyboard.press("Tab");
+  const aeoTab = page.getByRole("button", { name: "AEO" });
+  await expect(aeoTab).toBeFocused();
+  const focusOutline = await aeoTab.evaluate((element) => {
+    const style = window.getComputedStyle(element);
+    return { style: style.outlineStyle, width: style.outlineWidth };
+  });
+  expect(focusOutline.style).not.toBe("none");
+  expect(Number.parseFloat(focusOutline.width)).toBeGreaterThanOrEqual(3);
+  await overviewTab.focus();
   await page.keyboard.press("ArrowRight");
   await expect(page.getByRole("heading", { name: "AEO" })).toBeVisible();
   await expect(page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).resolves.toBe(true);
@@ -120,6 +138,10 @@ test("sign in → add website → analyze → view results", async ({ page }) =>
   await expect(page.getByRole("region", { name: "SEM summary" })).toContainText("1 accepted");
   await page.getByRole("button", { name: "Organizer" }).click();
   await expect(page.getByRole("region", { name: "Backlog" })).toContainText("Test the keyword: design studio");
+  for (const view of ["Overview", "AEO", "SEO/Content", "SEM", "Reports", "Organizer"]) {
+    await page.getByRole("button", { name: view, exact: true }).click();
+    await expectNoAccessibilityViolations(page);
+  }
 });
 
 test("rescan → open Report history → compare two Reports", async ({ page }) => {

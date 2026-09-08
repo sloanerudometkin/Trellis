@@ -500,10 +500,10 @@ An issue can move to Done only when:
 
 **Sub-issues:**
 
-- [ ] Run all accumulated pytest, Vitest, and Playwright tests.
-- [ ] Fix regressions; do not add unplanned features.
-- [ ] Run automated accessibility checks and complete keyboard/manual checks.
-- [ ] Verify focus, labels, contrast, status text, and responsive layouts.
+- [x] Run all accumulated pytest, Vitest, and Playwright tests.
+- [x] Fix regressions; do not add unplanned features.
+- [x] Run automated accessibility checks and complete keyboard/manual checks.
+- [x] Verify focus, labels, contrast, status text, and responsive layouts.
 - [ ] Configure production environment variables without committing secrets.
 - [ ] Deploy the Flask backend to Render.
 - [ ] Deploy the React frontend to Netlify.

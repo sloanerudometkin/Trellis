@@ -14,14 +14,14 @@
 .report-history h2, .report-compare h2 { @apply font-display text-2xl; }
 .report-history button { @apply mt-3 flex w-full flex-col rounded-xl border border-moss/15 bg-white p-4 text-left hover:border-moss/40; }
 .report-history button[aria-pressed="true"] { @apply border-moss bg-moss/10; }
-.report-history span { @apply mt-1 text-sm text-ink/65; }
+.report-history span { @apply mt-1 text-sm text-ink/70; }
 .report-summary { @apply font-display text-xl; }
 .report-disclosure { @apply mt-3 rounded-lg bg-[#d2a84a]/10 p-3 text-sm leading-6 text-ink/70; }
 .report-groups { @apply mt-5 grid gap-4 lg:grid-cols-3; }
 .report-group { @apply mt-4 rounded-xl border border-moss/10 bg-white p-4; }
 .report-group h3 { @apply font-display text-lg; }
 .report-group dl div { @apply mt-2 flex justify-between gap-4 border-t border-moss/10 pt-2; }
-.report-group dt { @apply text-sm text-ink/65; }
+.report-group dt { @apply text-sm text-ink/70; }
 .report-group dd { @apply font-semibold; }
 .compare-controls { @apply mt-4 grid gap-4 lg:grid-cols-3 lg:items-end; }
 .compare-controls label { @apply text-sm font-semibold; }
@@ -35,8 +35,8 @@
 .overview-grid { @apply grid gap-4 md:grid-cols-3; }
 .summary-card { @apply rounded-2xl border border-moss/15 bg-paper p-5; }
 .summary-card strong { @apply mt-2 block font-display text-2xl; }
-.summary-card span { @apply mt-2 block text-sm leading-6 text-ink/65; }
-.summary-loading { @apply rounded-2xl border border-dashed border-moss/20 bg-paper p-5 text-ink/60; }
+.summary-card span { @apply mt-2 block text-sm leading-6 text-ink/70; }
+.summary-loading { @apply rounded-2xl border border-dashed border-moss/20 bg-paper p-5 text-ink/70; }
 .partial-notice { @apply mb-5 rounded-xl border border-[#d2a84a]/40 bg-[#d2a84a]/10 p-4 text-sm leading-6; }
 
 .health-score-card {
@@ -57,10 +57,10 @@
   color: #2d4b34;
 }
 
-.health-score-value span { font-size: 1rem; color: rgb(29 42 32 / 55%); }
+.health-score-value span { font-size: 1rem; color: rgb(29 42 32 / 70%); }
 .health-score-delta { margin-top: .5rem; font-weight: 650; }
-.health-score-disclosure { max-width: 34rem; margin-top: .75rem; font-size: .78rem; line-height: 1.5; color: rgb(29 42 32 / 62%); }
-.health-score-trend-label { margin-bottom: .4rem; font-size: .8rem; font-weight: 700; color: rgb(29 42 32 / 65%); }
+.health-score-disclosure { max-width: 34rem; margin-top: .75rem; font-size: .78rem; line-height: 1.5; color: rgb(29 42 32 / 70%); }
+.health-score-trend-label { margin-bottom: .4rem; font-size: .8rem; font-weight: 700; color: rgb(29 42 32 / 70%); }
 .health-score-chart { width: 100%; max-width: 20rem; overflow: visible; }
 .health-score-chart line { stroke: rgb(45 75 52 / 20%); stroke-width: 1; }
 .health-score-chart polyline { fill: none; stroke: #2d4b34; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
@@ -86,7 +86,8 @@ button, input, textarea, select { font: inherit; }
 .eyebrow { @apply font-mono text-xs font-semibold uppercase tracking-[0.18em] text-moss; }
 .panel { @apply rounded-3xl border border-moss/15 bg-white/70 p-6 shadow-[0_24px_80px_rgba(29,42,32,0.08)] sm:p-8; }
 .field-label { @apply mt-6 mb-2 block text-sm font-semibold text-ink; }
-input, textarea { @apply box-border w-full rounded-xl border border-moss/25 bg-paper px-4 py-3 text-ink outline-none transition placeholder:text-ink/35 focus:border-moss focus:ring-3 focus:ring-moss/10 disabled:cursor-wait disabled:opacity-60; }
+input, textarea { @apply box-border w-full rounded-xl border border-moss/25 bg-paper px-4 py-3 text-ink outline-none transition placeholder:text-ink/70 focus:border-moss focus:ring-3 focus:ring-moss/10 disabled:cursor-wait disabled:opacity-60; }
+button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid #2c4e35; outline-offset: 3px; }
 .recommendation-card { @apply rounded-2xl border border-moss/15 bg-paper p-5 shadow-sm sm:p-7; }
 .badge { @apply rounded-full px-3 py-1 font-mono text-xs font-semibold uppercase tracking-wide; }
 .priority-high { @apply bg-[#d7835f]/20 text-ink; }
@@ -99,7 +100,7 @@ input, textarea { @apply box-border w-full rounded-xl border border-moss/25 bg-p
 textarea { resize: vertical; }
 .primary-button { @apply mt-6 w-full rounded-xl bg-moss px-5 py-3 font-semibold text-white transition hover:bg-[#203d29] focus:outline-none focus:ring-3 focus:ring-moss/25 disabled:cursor-not-allowed disabled:opacity-55; }
 .error-box { @apply mt-5 rounded-xl border border-red-800/20 bg-red-50 px-4 py-3 text-sm text-red-900; }
-.nav-button { @apply w-max rounded-lg px-3 py-2 text-left text-sm font-medium text-ink/65 transition hover:bg-moss/5 hover:text-moss md:w-full; }
+.nav-button { @apply w-max rounded-lg px-3 py-2 text-left text-sm font-medium text-ink/70 transition hover:bg-moss/5 hover:text-moss md:w-full; }
 .nav-button-active { @apply bg-moss text-white hover:bg-moss hover:text-white; }
 .empty-state { @apply mt-8 rounded-2xl border border-dashed border-moss/25 bg-paper p-6 sm:p-10; }
 .action-row { @apply mt-6 flex flex-wrap items-end gap-3 border-t border-moss/10 pt-5; }
@@ -107,7 +108,7 @@ textarea { resize: vertical; }
 .secondary-button { @apply rounded-xl border border-moss/30 bg-white px-5 py-3 font-semibold text-moss transition hover:bg-moss/5 disabled:opacity-55; }
 .reason-picker { @apply mt-4 rounded-xl bg-white p-4; }
 .reason-button { @apply rounded-full border border-moss/25 px-3 py-2 text-sm font-semibold text-moss hover:bg-moss/5; }
-.stage-control { @apply ml-auto grid gap-1 text-xs font-semibold uppercase tracking-wide text-ink/55; }
+.stage-control { @apply ml-auto grid gap-1 text-xs font-semibold uppercase tracking-wide text-ink/70; }
 .stage-control select { @apply rounded-lg border border-moss/25 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-ink; }
 .kanban-board { @apply grid gap-4 xl:grid-cols-4; }
 .kanban-column { @apply min-h-48 rounded-2xl border border-moss/15 bg-paper p-4; }

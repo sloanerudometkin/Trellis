@@ -67,12 +67,12 @@ function AddWebsiteForm({ onCreated }: { onCreated: (website: WebsiteResponse) =
         </div>
         <form className="panel" onSubmit={handleSubmit} noValidate aria-busy={submitting}>
           <h2 className="font-display text-3xl">Add a website</h2>
-          <p className="mt-2 text-sm leading-6 text-ink/65">We’ll save the workspace first. Analysis comes next.</p>
+          <p className="mt-2 text-sm leading-6 text-ink/70">We’ll save the workspace first. Analysis comes next.</p>
           <label className="field-label" htmlFor="website-url">Website URL</label>
           <input id="website-url" type="text" inputMode="url" autoComplete="url" placeholder="example.com" value={url} onChange={(event) => setUrl(event.target.value)} disabled={submitting} required />
           <label className="field-label" htmlFor="business-name">Business or organization name</label>
           <input id="business-name" type="text" autoComplete="organization" placeholder="Community Garden Network" value={businessName} onChange={(event) => setBusinessName(event.target.value)} disabled={submitting} required />
-          <label className="field-label" htmlFor="business-context">Business context <span className="font-normal text-ink/50">(optional)</span></label>
+          <label className="field-label" htmlFor="business-context">Business context <span className="font-normal text-ink/70">(optional)</span></label>
           <textarea id="business-context" rows={4} maxLength={5000} placeholder="Who you serve, what you offer, and your search goals" value={businessContext} onChange={(event) => setBusinessContext(event.target.value)} disabled={submitting} />
           {error && <div className="error-box" role="alert">{error}</div>}
           <button className="primary-button" type="submit" disabled={submitting || !url.trim() || !businessName.trim()}>{submitting ? "Creating workspace…" : "Create workspace"}</button>
@@ -184,8 +184,8 @@ function Workspace({ website }: { website: WebsiteResponse }) {
     <div className="min-h-screen bg-[#f3efe3]"><a className="skip-link" href="#workspace-content">Skip to workspace content</a>
       <header className="border-b border-moss/15 bg-paper px-5 py-4 sm:px-8">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-          <div><p className="font-display text-2xl text-moss">Trellis</p><p className="mt-1 text-xs text-ink/55">Paid + organic search workspace</p></div>
-          <div className="min-w-0 text-right"><p className="truncate font-semibold">{website.business_name}</p><p className="truncate text-sm text-ink/55">{website.url}</p></div>
+          <div><p className="font-display text-2xl text-moss">Trellis</p><p className="mt-1 text-xs text-ink/70">Paid + organic search workspace</p></div>
+          <div className="min-w-0 text-right"><p className="truncate font-semibold">{website.business_name}</p><p className="truncate text-sm text-ink/70">{website.url}</p></div>
         </div>
       </header>
       <div className="mx-auto grid max-w-7xl md:grid-cols-[220px_1fr]">
