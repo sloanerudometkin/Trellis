@@ -116,6 +116,27 @@ def test_invalid_groq_retry_then_gemini_fallback() -> None:
     assert hosts == ["api.groq.com", "api.groq.com", "generativelanguage.googleapis.com"]
 
 
+def test_placeholder_keys_are_not_treated_as_configured() -> None:
+    with httpx.Client(transport=httpx.MockTransport(lambda request: pytest.fail(f"Unexpected request to {request.url.host}"))) as client:
+        with pytest.raises(RecommendationProviderError, match="No recommendation provider is configured"):
+            generate_recommendations("site prompt", client=client, groq_api_key="replace-me", gemini_api_key="replace-me")
+
+
+def test_rejected_provider_credentials_do_not_expose_request_details() -> None:
+    def handler(request: httpx.Request):
+        return httpx.Response(401 if request.url.host == "api.groq.com" else 400, json={"error": "credential rejected"}, request=request)
+
+    with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(RecommendationProviderError) as caught:
+            generate_recommendations("site prompt", client=client, groq_api_key="bad-groq", gemini_api_key="bad-gemini")
+
+    message = str(caught.value)
+    assert message == "Groq credentials were rejected. Gemini credentials were rejected."
+    assert "http" not in message
+    assert "bad-groq" not in message
+    assert "bad-gemini" not in message
+
+
 def test_only_validated_recommendations_are_persisted_with_required_state(app) -> None:
     analysis = analysis_record("A neighborhood gardening nonprofit.")
     batch = RecommendationBatch.model_validate(SUCCESS)

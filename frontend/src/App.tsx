@@ -8,6 +8,8 @@ import { TechnicalAuditView } from "./TechnicalAuditView";
 import { SemView } from "./SemView";
 import { ReportsView } from "./ReportsView";
 import { OverviewView } from "./OverviewView";
+import { AuthScreen } from "./auth/AuthScreen";
+import { getCurrentSession, getTestAccessToken, isAuthConfigured, onAuthStateChange, signInWithPassword, signOut, signUpWithPassword } from "./auth/client";
 
 const views = ["Overview", "AEO", "SEO/Content", "SEM", "Reports", "Organizer"] as const;
 type View = (typeof views)[number];
@@ -16,7 +18,7 @@ function requestErrorMessage(caught: unknown, fallback: string) {
   return caught instanceof ApiRequestError && caught.code === "unauthorized" ? "Your session has expired. Sign in again." : fallback;
 }
 
-function AddWebsiteForm({ onCreated }: { onCreated: (website: WebsiteResponse) => void }) {
+function AddWebsiteForm({ accessToken, onCreated }: { accessToken: string; onCreated: (website: WebsiteResponse) => void }) {
   const [url, setUrl] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [businessContext, setBusinessContext] = useState("");
@@ -29,11 +31,6 @@ function AddWebsiteForm({ onCreated }: { onCreated: (website: WebsiteResponse) =
     const trimmedUrl = url.trim();
     if (!trimmedUrl || /\s/.test(trimmedUrl)) {
       setError("Enter a valid website URL, such as example.com.");
-      return;
-    }
-    const accessToken = window.localStorage.getItem("trellis_access_token");
-    if (!accessToken) {
-      setError("Your session has expired. Sign in again before adding a website.");
       return;
     }
     setSubmitting(true);
@@ -82,7 +79,7 @@ function AddWebsiteForm({ onCreated }: { onCreated: (website: WebsiteResponse) =
   );
 }
 
-function Workspace({ website }: { website: WebsiteResponse }) {
+function Workspace({ website, accessToken, onSignOut }: { website: WebsiteResponse; accessToken: string; onSignOut: () => Promise<void> }) {
   const [activeView, setActiveView] = useState<View>("Overview");
   const [analysis, setAnalysis] = useState<AnalysisRunResponse | null>(null);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
@@ -92,8 +89,6 @@ function Workspace({ website }: { website: WebsiteResponse }) {
   const [organizerError, setOrganizerError] = useState<string | null>(null);
   const [latestReport, setLatestReport] = useState<ReportResponse | null>(null);
   const [reportLoading, setReportLoading] = useState(false);
-  const accessToken = window.localStorage.getItem("trellis_access_token") ?? "";
-
   useEffect(() => {
     if (!analysis || analysis.status === "completed" || analysis.status === "failed") return;
     const timer = window.setTimeout(async () => {
@@ -185,7 +180,7 @@ function Workspace({ website }: { website: WebsiteResponse }) {
       <header className="border-b border-moss/15 bg-paper px-5 py-4 sm:px-8">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           <div><p className="font-display text-2xl text-moss">Trellis</p><p className="mt-1 text-xs text-ink/70">Paid + organic search workspace</p></div>
-          <div className="min-w-0 text-right"><p className="truncate font-semibold">{website.business_name}</p><p className="truncate text-sm text-ink/70">{website.url}</p></div>
+          <div className="flex min-w-0 items-center gap-4"><div className="min-w-0 text-right"><p className="truncate font-semibold">{website.business_name}</p><p className="truncate text-sm text-ink/70">{website.url}</p></div><button className="header-button" type="button" onClick={() => void onSignOut()}>Sign out</button></div>
         </div>
       </header>
       <div className="mx-auto grid max-w-7xl md:grid-cols-[220px_1fr]">
@@ -214,6 +209,33 @@ function Workspace({ website }: { website: WebsiteResponse }) {
 }
 
 export default function App() {
+  const initialTestAccessToken = getTestAccessToken();
   const [website, setWebsite] = useState<WebsiteResponse | null>(null);
-  return website ? <Workspace website={website} /> : <AddWebsiteForm onCreated={setWebsite} />;
+  const [accessToken, setAccessToken] = useState<string | null>(initialTestAccessToken);
+  const [authLoading, setAuthLoading] = useState(!initialTestAccessToken);
+
+  useEffect(() => {
+    let active = true;
+    void getCurrentSession().then((session) => {
+      if (active) setAccessToken(session?.access_token ?? null);
+    }).catch(() => {
+      if (active) setAccessToken(null);
+    }).finally(() => { if (active) setAuthLoading(false); });
+    const unsubscribe = onAuthStateChange((session) => {
+      setAccessToken(session?.access_token ?? null);
+      setWebsite(null);
+      setAuthLoading(false);
+    });
+    return () => { active = false; unsubscribe(); };
+  }, []);
+
+  async function handleSignOut() {
+    await signOut();
+    setAccessToken(null);
+    setWebsite(null);
+  }
+
+  if (authLoading) return <main className="auth-loading" role="status">Opening your Trellis workspace…</main>;
+  if (!accessToken) return <AuthScreen configured={isAuthConfigured} onSignIn={signInWithPassword} onSignUp={signUpWithPassword} />;
+  return website ? <Workspace website={website} accessToken={accessToken} onSignOut={handleSignOut} /> : <AddWebsiteForm accessToken={accessToken} onCreated={setWebsite} />;
 }

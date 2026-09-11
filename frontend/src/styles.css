@@ -82,6 +82,15 @@ body {
   min-height: 100vh;
 }
 
+.auth-shell { @apply mx-auto grid min-h-screen max-w-6xl items-center gap-10 px-5 py-12 lg:grid-cols-[1fr_0.85fr] lg:px-8; }
+.auth-intro h1 { @apply mt-3 max-w-2xl font-display text-5xl leading-tight text-ink sm:text-6xl; }
+.auth-intro > p:last-child { @apply mt-5 max-w-xl text-lg leading-8 text-ink/70; }
+.auth-panel { @apply w-full; }
+.auth-switch { @apply mt-5 w-full rounded-xl px-4 py-2 text-sm font-semibold text-moss underline-offset-4 hover:underline; }
+.notice-box { @apply mt-5 rounded-xl border border-moss/20 bg-moss/5 px-4 py-3 text-sm text-ink; }
+.auth-loading { @apply grid min-h-screen place-items-center px-5 text-center font-display text-2xl text-moss; }
+.header-button { @apply shrink-0 rounded-lg border border-moss/25 bg-white px-3 py-2 text-sm font-semibold text-moss hover:bg-moss/5; }
+
 button, input, textarea, select { font: inherit; }
 .eyebrow { @apply font-mono text-xs font-semibold uppercase tracking-[0.18em] text-moss; }
 .panel { @apply rounded-3xl border border-moss/15 bg-white/70 p-6 shadow-[0_24px_80px_rgba(29,42,32,0.08)] sm:p-8; }

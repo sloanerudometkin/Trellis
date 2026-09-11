@@ -1,0 +1,478 @@
+<title>Pathero Visual Identity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #16203A;
+    --ink-soft: #2B3550;
+    --paper: #F2F5F8;
+    --paper-raised: #FFFFFF;
+    --muted: #5B6472;
+    --border: #DEE3E9;
+    --signal: #FF6B4A;
+    --signal-soft: #FFE4DC;
+    --route: #3E6C99;
+    --route-soft: #E3EDF5;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #EEF1F6;
+      --ink-soft: #C7CEDC;
+      --paper: #0E1420;
+      --paper-raised: #161D2C;
+      --muted: #949FB3;
+      --border: #29324A;
+      --signal: #FF8465;
+      --signal-soft: #3A2620;
+      --route: #7EACD4;
+      --route-soft: #1C2B3B;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ink: #EEF1F6;
+    --ink-soft: #C7CEDC;
+    --paper: #0E1420;
+    --paper-raised: #161D2C;
+    --muted: #949FB3;
+    --border: #29324A;
+    --signal: #FF8465;
+    --signal-soft: #3A2620;
+    --route: #7EACD4;
+    --route-soft: #1C2B3B;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hanken Grotesk", system-ui, sans-serif;
+    line-height: 1.55;
+  }
+
+  .wrap {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 64px 28px 96px;
+  }
+
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--route);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 22px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--signal);
+    flex: none;
+  }
+
+  h1.wordmark {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 700;
+    font-size: clamp(56px, 10vw, 104px);
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+
+  .tagline {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 500;
+    font-size: clamp(19px, 2.6vw, 25px);
+    color: var(--ink-soft);
+    margin: 0 0 28px;
+    text-wrap: balance;
+  }
+
+  .lede {
+    max-width: 62ch;
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin: 0 0 48px;
+  }
+  .lede strong { color: var(--ink); font-weight: 600; }
+
+  .glance {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 88px;
+    flex-wrap: wrap;
+  }
+  .glance-tile {
+    flex: 1 1 140px;
+    background: var(--paper-raised);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .glance-tile svg { width: 46px; height: 46px; }
+  .glance-tile span {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  h2.section-head {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 700;
+    font-size: clamp(26px, 3.6vw, 34px);
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+  }
+  .section-intro {
+    max-width: 62ch;
+    color: var(--muted);
+    font-size: 16px;
+    margin: 0 0 44px;
+  }
+
+  .concepts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 22px;
+    margin-bottom: 40px;
+  }
+
+  .concept {
+    background: var(--paper-raised);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 30px 26px 28px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .concept-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 4px;
+  }
+  .concept-name {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 700;
+    font-size: 23px;
+    margin: 0 0 22px;
+  }
+
+  .icon-stage {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    height: 168px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .icon-stage svg { width: 88px; height: 88px; }
+
+  .lockup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .lockup svg { width: 34px; height: 34px; flex: none; }
+  .lockup .lockup-word {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .concept-rationale {
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin: 0 0 18px;
+    flex-grow: 1;
+  }
+
+  .concept-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .best-for strong { color: var(--ink-soft); font-weight: 600; }
+
+  .size-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chip-16 {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .chip-16 svg { width: 14px; height: 14px; }
+  .chip-16.on-dark { background: #10141F; }
+
+  .recommend {
+    background: var(--route-soft);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 30px 32px;
+    margin: 8px 0 64px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+  .recommend svg { width: 40px; height: 40px; margin-top: 4px; }
+  .recommend h3 {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 19px;
+    margin: 0 0 8px;
+  }
+  .recommend p { margin: 0 0 10px; font-size: 15px; color: var(--ink-soft); }
+  .recommend p:last-child { margin-bottom: 0; }
+
+  .footer-note {
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    font-size: 14.5px;
+    color: var(--muted);
+    max-width: 68ch;
+  }
+  .footer-note strong { color: var(--ink-soft); }
+
+  @media (max-width: 620px) {
+    .recommend { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="wrap">
+
+  <p class="eyebrow">Logo Concepts — Round One</p>
+  <h1 class="wordmark">Pathero</h1>
+  <p class="tagline">Turn search insights into a plan you can finish.</p>
+  <p class="lede">
+    Three directions for the mark, all built from the same idea: a <strong>path</strong>, not a plant.
+    None of these borrow the vine-and-leaf language you're moving away from — each one is a route,
+    a waypoint, or a point on a map, which is the whole point of the name.
+  </p>
+
+  <div class="glance">
+    <div class="glance-tile">
+      <svg viewBox="0 0 100 100"><use href="#icon-waypath"></use></svg>
+      <span>A · Waypath</span>
+    </div>
+    <div class="glance-tile">
+      <svg viewBox="0 0 100 100"><use href="#icon-monogram"></use></svg>
+      <span>B · Waypoint P</span>
+    </div>
+    <div class="glance-tile">
+      <svg viewBox="0 0 100 100"><use href="#icon-converge"></use></svg>
+      <span>C · Convergence</span>
+    </div>
+  </div>
+
+  <h2 class="section-head">The three directions</h2>
+  <p class="section-intro">
+    Each card below shows the icon on its own, how it sits next to the wordmark, and how it holds up
+    shrunk down to app-icon size — that tiny size is where most people will actually meet your logo first,
+    as a browser tab or home-screen icon, so it has to survive getting small.
+  </p>
+
+  <div class="concepts">
+
+    <div class="concept">
+      <p class="concept-label">Concept A</p>
+      <h3 class="concept-name">The Waypath</h3>
+      <div class="icon-stage">
+        <svg viewBox="0 0 100 100"><use href="#icon-waypath"></use></svg>
+      </div>
+      <div class="lockup">
+        <svg viewBox="0 0 100 100"><use href="#icon-waypath"></use></svg>
+        <span class="lockup-word">Pathero</span>
+      </div>
+      <p class="concept-rationale">
+        A single confident route through a few turns, ending in one solid point. The open circle at
+        the start is you, right now. Each bend is a decision Pathero already prioritized for you. The
+        solid dot at the top is today's most important move — the "what to do next."
+      </p>
+      <div class="concept-meta">
+        <span class="best-for">Best for: <strong>app icon, favicon, tab</strong></span>
+        <span class="size-check">
+          <span class="chip-16"><svg viewBox="0 0 100 100"><use href="#icon-waypath-mono"></use></svg></span>
+          16px
+        </span>
+      </div>
+    </div>
+
+    <div class="concept">
+      <p class="concept-label">Concept B</p>
+      <h3 class="concept-name">The Waypoint P</h3>
+      <div class="icon-stage">
+        <svg viewBox="0 0 100 100"><use href="#icon-monogram"></use></svg>
+      </div>
+      <div class="lockup">
+        <svg viewBox="0 0 100 100"><use href="#icon-monogram"></use></svg>
+        <span class="lockup-word">Pathero</span>
+      </div>
+      <p class="concept-rationale">
+        A single letter carries the whole brand — until you notice the arrow built into it. The counter
+        of the "P" is cut as a forward-pointing wedge instead of a plain hole, so even the negative
+        space is pointing somewhere. Reads as the most "established software company" of the three.
+      </p>
+      <div class="concept-meta">
+        <span class="best-for">Best for: <strong>brand recognition, merch</strong></span>
+        <span class="size-check">
+          <span class="chip-16"><svg viewBox="0 0 100 100"><use href="#icon-monogram-mono"></use></svg></span>
+          16px
+        </span>
+      </div>
+    </div>
+
+    <div class="concept">
+      <p class="concept-label">Concept C</p>
+      <h3 class="concept-name">The Convergence</h3>
+      <div class="icon-stage">
+        <svg viewBox="0 0 100 100"><use href="#icon-converge"></use></svg>
+      </div>
+      <div class="lockup">
+        <svg viewBox="0 0 100 100"><use href="#icon-converge"></use></svg>
+        <span class="lockup-word">Pathero</span>
+      </div>
+      <p class="concept-rationale">
+        Three separate points — paid search, SEO, AEO — pulled into one line, one plan. It's the most
+        literal illustration of "one coordinated strategy, all in one place," and tells that story
+        before anyone reads a word of copy.
+      </p>
+      <div class="concept-meta">
+        <span class="best-for">Best for: <strong>pitch decks, site hero</strong></span>
+        <span class="size-check">
+          <span class="chip-16"><svg viewBox="0 0 100 100"><use href="#icon-converge-mono"></use></svg></span>
+          16px
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="recommend">
+    <svg viewBox="0 0 100 100"><use href="#icon-waypath"></use></svg>
+    <div>
+      <h3>If you want one recommendation: Concept A, the Waypath.</h3>
+      <p>
+        It holds up best at tiny sizes, which matters more than it seems like it should — most people
+        will meet this logo first as a small tab icon, not a big hero image. It's also the most literal
+        read of the brand promise: <em>shows you where you are, what matters, and what to do next.</em>
+      </p>
+      <p>
+        If you'd rather lead with the "three channels, one plan" story up front, Concept C is a strong
+        second choice, and it can still live alongside the Waypath as a companion mark for decks and the
+        marketing site.
+      </p>
+    </div>
+  </div>
+
+  <p class="footer-note">
+    These are directions to react to, not finished artwork — once you pick one (or want to mix pieces
+    of two), I'll build it out into a full lockup: primary logo, icon-only mark, favicon, and rules for
+    light and dark backgrounds. <strong>Before you get attached to a direction</strong>, it's worth five
+    minutes on tmsearch.uspto.gov and a domain registrar to confirm "Pathero" is clear for you to
+    register specifically — I've checked what I can from here, but that last step is yours to close out.
+  </p>
+
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+
+    <g id="icon-waypath">
+      <polyline points="14,84 30,70 30,48 52,48 52,26 76,15"
+                fill="none" stroke="var(--ink)" stroke-width="6.5"
+                stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="14" cy="84" r="5.5" fill="var(--paper-raised)" stroke="var(--ink)" stroke-width="4.5"/>
+      <circle cx="30" cy="70" r="4" fill="var(--route)"/>
+      <circle cx="30" cy="48" r="4" fill="var(--route)"/>
+      <circle cx="52" cy="48" r="4" fill="var(--route)"/>
+      <circle cx="52" cy="26" r="4" fill="var(--route)"/>
+      <circle cx="76" cy="15" r="8.5" fill="var(--signal)"/>
+    </g>
+
+    <g id="icon-waypath-mono">
+      <polyline points="14,84 30,70 30,48 52,48 52,26 76,15"
+                fill="none" stroke="#fff" stroke-width="9"
+                stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="76" cy="15" r="11" fill="#fff"/>
+    </g>
+
+    <g id="icon-monogram">
+      <rect x="30" y="16" width="15" height="70" rx="6" fill="var(--ink)"/>
+      <path d="M 45,16
+               C 66,16 72,32 72,41
+               C 72,52 63,60 45,60
+               L 45,44
+               C 56,44 58,40 58,38
+               C 58,35 55,32 45,32
+               Z"
+            fill="var(--ink)"/>
+      <polygon points="42,26 42,40 57,33" fill="var(--paper-raised)"/>
+      <circle cx="60" cy="76" r="7" fill="var(--signal)"/>
+    </g>
+
+    <g id="icon-monogram-mono">
+      <rect x="30" y="16" width="15" height="70" rx="6" fill="#fff"/>
+      <path d="M 45,16
+               C 66,16 72,32 72,41
+               C 72,52 63,60 45,60
+               L 45,44
+               C 56,44 58,40 58,38
+               C 58,35 55,32 45,32
+               Z"
+            fill="#fff"/>
+      <polygon points="42,26 42,40 57,33" fill="#10141F"/>
+    </g>
+
+    <g id="icon-converge">
+      <line x1="26" y1="18" x2="50" y2="46" stroke="var(--route)" stroke-width="4.5" stroke-linecap="round"/>
+      <line x1="50" y1="12" x2="50" y2="46" stroke="var(--route)" stroke-width="4.5" stroke-linecap="round"/>
+      <line x1="76" y1="20" x2="50" y2="46" stroke="var(--route)" stroke-width="4.5" stroke-linecap="round"/>
+      <circle cx="26" cy="18" r="6.5" fill="var(--route-soft)" stroke="var(--route)" stroke-width="3.5"/>
+      <circle cx="50" cy="12" r="6.5" fill="var(--route-soft)" stroke="var(--route)" stroke-width="3.5"/>
+      <circle cx="76" cy="20" r="6.5" fill="var(--route-soft)" stroke="var(--route)" stroke-width="3.5"/>
+      <line x1="50" y1="46" x2="50" y2="76" stroke="var(--ink)" stroke-width="6.5" stroke-linecap="round"/>
+      <circle cx="50" cy="46" r="4.5" fill="var(--ink)"/>
+      <circle cx="50" cy="80" r="9" fill="var(--signal)"/>
+    </g>
+
+    <g id="icon-converge-mono">
+      <line x1="26" y1="18" x2="50" y2="46" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+      <line x1="50" y1="12" x2="50" y2="46" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+      <line x1="76" y1="20" x2="50" y2="46" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+      <line x1="50" y1="46" x2="50" y2="76" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="50" cy="80" r="11" fill="#fff"/>
+    </g>
+
+  </defs>
+</svg>

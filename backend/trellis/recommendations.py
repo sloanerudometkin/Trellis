@@ -71,6 +71,8 @@ def _groq_content(client: httpx.Client, prompt: str, api_key: str) -> str:
     )
     if response.status_code == 429:
         raise RecommendationRateLimitError("Groq is temporarily rate limited.")
+    if response.status_code in {401, 403}:
+        raise RecommendationProviderError("Groq credentials were rejected.")
     if response.status_code >= 500:
         raise RecommendationProviderError("Groq is temporarily unavailable.")
     response.raise_for_status()
@@ -95,6 +97,8 @@ def _gemini_content(client: httpx.Client, prompt: str, api_key: str) -> str:
     )
     if response.status_code == 429:
         raise RecommendationRateLimitError("Gemini is temporarily rate limited.")
+    if response.status_code in {400, 401, 403}:
+        raise RecommendationProviderError("Gemini credentials were rejected.")
     if response.status_code >= 500:
         raise RecommendationProviderError("Gemini is temporarily unavailable.")
     response.raise_for_status()
@@ -111,9 +115,9 @@ def _validate_content(content: str) -> RecommendationBatch:
 def generate_recommendations(prompt: str, *, client: httpx.Client, groq_api_key: str, gemini_api_key: str) -> RecommendationBatch:
     """Use Groq first, retry schema drift once, then use Gemini as backup."""
     providers: list[tuple[str, Callable[[], str]]] = []
-    if groq_api_key:
+    if groq_api_key and groq_api_key != "replace-me":
         providers.append(("Groq", lambda: _groq_content(client, prompt, groq_api_key)))
-    if gemini_api_key:
+    if gemini_api_key and gemini_api_key != "replace-me":
         providers.append(("Gemini", lambda: _gemini_content(client, prompt, gemini_api_key)))
     if not providers:
         raise RecommendationProviderError("No recommendation provider is configured.")

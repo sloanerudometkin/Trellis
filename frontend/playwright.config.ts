@@ -27,6 +27,7 @@ export default defineConfig({
     ? undefined
     : {
         command: "npm run dev -- --host 127.0.0.1",
+        env: { ...process.env, VITE_E2E_AUTH_BYPASS: "true" },
         url: baseURL,
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,
