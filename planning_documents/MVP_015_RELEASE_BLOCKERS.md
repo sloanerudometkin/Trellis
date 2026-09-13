@@ -1,6 +1,6 @@
 # MVP-015 Release Blockers
 
-Last verified: September 8, 2026
+Last verified: September 9, 2026
 
 MVP-015 is locally release-ready but is not deployment-complete. Do not merge or delete `feature/ui-deployment` until every blocker below is closed and the production smoke checks pass.
 
@@ -15,7 +15,7 @@ MVP-015 is locally release-ready but is not deployment-complete. Do not merge or
 
 1. **Deployment accounts are not authenticated.** The in-app browser reaches sign-in screens for Render, Netlify, and Supabase, and the GitHub CLI reports that its saved token is invalid. Signed-in accounts are required before the branch can be pushed and services, environment variables, database access, HTTPS origins, or callbacks can be configured.
 2. **The production environment values are unavailable.** Render still needs `DATABASE_URL`, `SUPABASE_URL`, `FRONTEND_ORIGIN`, and provider API keys entered in its secret store. Netlify still needs `VITE_API_BASE_URL` entered in its environment-variable settings. Never paste these values into tracked files.
-3. **There is no real frontend Supabase sign-in flow.** The browser tests inject a mocked `trellis_access_token` into local storage. The deployed frontend cannot obtain or refresh a real user session, so the sign-in acceptance journey cannot pass yet. Implement and test the Supabase client/session UI before production acceptance.
+3. **The implemented Supabase sign-in flow is not connected to a real project yet.** The frontend now includes account creation, email/password sign-in, session restoration/refresh, sign-out, and tested configuration/error states. Real acceptance still requires a Supabase Project URL and publishable key in Netlify, the matching `SUPABASE_URL` in Render, and a successful live sign-up/sign-in smoke test.
 4. **Production smoke tests have no target URLs.** The Render and Netlify services do not exist yet, so HTTPS, CORS, JWT validation, production migrations, the health endpoint, and both critical journeys cannot be verified.
 
 ## Required production smoke gate

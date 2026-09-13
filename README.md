@@ -100,6 +100,22 @@ cp frontend/.env.example frontend/.env
 
 Replace the placeholders in `backend/.env` only when your Supabase project is ready. These local `.env` files may contain secrets and are ignored by Git.
 
+### Connect Supabase authentication
+
+1. Create or open a Supabase project, then use its **Connect** dialog to copy the Project URL and publishable key.
+2. In Supabase, open **Authentication → URL Configuration**. Set the Site URL to `http://localhost:5173` while developing and add `http://localhost:5173/**` as an allowed redirect URL. Replace the Site URL with the deployed Netlify URL for production.
+3. Add these browser-safe values to `frontend/.env`:
+
+```bash
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+```
+
+4. Add the same project URL to `backend/.env` as `SUPABASE_URL`. Set `DATABASE_URL` to the Supabase Postgres connection string from the Connect dialog.
+5. Restart both development servers after changing an environment file.
+
+The publishable key is designed for browser use; never place a Supabase secret/service-role key in the frontend. With email confirmation enabled, a new user must follow Supabase's confirmation email before signing in.
+
 Create or update the development database tables:
 
 ```bash
@@ -118,7 +134,7 @@ Start the frontend in a second Terminal window:
 make dev-frontend
 ```
 
-Open `http://localhost:5173` in a browser. The backend health contract is available at `http://127.0.0.1:5000/api/v1/health`; protected endpoints require a valid Supabase Bearer token.
+Open `http://localhost:5173` in a browser. Create an account or sign in; the Supabase client restores and refreshes the session automatically, and Trellis sends its access token to protected API endpoints. The backend health contract is available at `http://127.0.0.1:5000/api/v1/health`.
 
 ## Running Tests Locally
 
