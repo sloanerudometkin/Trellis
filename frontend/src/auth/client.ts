@@ -36,6 +36,7 @@ export async function getCurrentSession(): Promise<Session | null> {
 }
 
 export function onAuthStateChange(callback: (session: Session | null) => void): () => void {
+  if (testAuthBypassEnabled) return () => undefined;
   if (!supabase) return () => undefined;
   const { data } = supabase.auth.onAuthStateChange((_event, session) => callback(session));
   return () => data.subscription.unsubscribe();
