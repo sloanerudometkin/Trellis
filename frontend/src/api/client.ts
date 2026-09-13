@@ -1,4 +1,4 @@
-import type { AnalysisEnvelope, AnalysisRunResponse, ApiError, DismissReason, HealthResponse, OrganizerEnvelope, OrganizerItemEnvelope, OrganizerItemResponse, OrganizerStage, ReportComparisonEnvelope, ReportComparisonResponse, ReportsEnvelope, ReportResponse, SuggestionEnvelope, SuggestionResponse, WebsiteCreateRequest, WebsiteEnvelope, WebsiteResponse } from "./contracts";
+import type { AnalysisEnvelope, AnalysisRunResponse, ApiError, DismissReason, HealthResponse, OrganizerEnvelope, OrganizerItemEnvelope, OrganizerItemResponse, OrganizerStage, ReportComparisonEnvelope, ReportComparisonResponse, ReportsEnvelope, ReportResponse, SuggestionEnvelope, SuggestionResponse, WebsiteCreateRequest, WebsiteEnvelope, WebsiteListEnvelope, WebsiteResponse } from "./contracts";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:5000/api/v1";
@@ -28,6 +28,17 @@ export async function createWebsite(payload: WebsiteCreateRequest, accessToken: 
     throw new ApiRequestError(error?.error ?? "request_failed", error?.message ?? "Trellis could not create the website workspace.");
   }
   return ((await response.json()) as WebsiteEnvelope).data;
+}
+
+export async function getWebsites(accessToken: string): Promise<WebsiteResponse[]> {
+  const response = await fetch(`${API_BASE_URL}/websites`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (!response.ok) {
+    const error = (await response.json().catch(() => null)) as ApiError | null;
+    throw new ApiRequestError(error?.error ?? "request_failed", error?.message ?? "Trellis could not load your websites.");
+  }
+  return ((await response.json()) as WebsiteListEnvelope).data;
 }
 
 async function analysisRequest(path: string, accessToken: string, method = "GET"): Promise<AnalysisRunResponse> {

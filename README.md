@@ -136,6 +136,8 @@ make dev-frontend
 
 Open `http://localhost:5173` in a browser. Create an account or sign in; the Supabase client restores and refreshes the session automatically, and Trellis sends its access token to protected API endpoints. The backend health contract is available at `http://127.0.0.1:5000/api/v1/health`.
 
+After sign-in, accounts with saved websites see a private website-selection homepage. Opening a workspace uses `/websites/<id>`, so refreshing or bookmarking that local route restores the same account-owned website. Accounts without a saved website go directly to the Add Website form.
+
 ## Running Tests Locally
 
 The test foundation uses pytest for the Python backend, Vitest for frontend units and components, and Playwright for complete browser journeys. Run the commands below from the repository's top-level `PassionProject` folder.

@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 
-import { ApiRequestError, createWebsite, decideSuggestion, getAnalysis, getOrganizerItems, getReports, retryAnalysis, startAnalysis, updateOrganizerItem, updateSuggestionStage } from "./api/client";
+import { ApiRequestError, createWebsite, decideSuggestion, getAnalysis, getOrganizerItems, getReports, getWebsites, retryAnalysis, startAnalysis, updateOrganizerItem, updateSuggestionStage } from "./api/client";
 import type { AnalysisRunResponse, DismissReason, OrganizerItemResponse, OrganizerStage, ReportResponse, SuggestionResponse, WebsiteResponse } from "./api/contracts";
 import { RecommendationView } from "./RecommendationView";
 import { OrganizerView } from "./OrganizerView";
@@ -79,7 +79,32 @@ function AddWebsiteForm({ accessToken, onCreated }: { accessToken: string; onCre
   );
 }
 
-function Workspace({ website, accessToken, onSignOut }: { website: WebsiteResponse; accessToken: string; onSignOut: () => Promise<void> }) {
+function WebsiteHome({ websites, error, onAdd, onOpen, onSignOut }: { websites: WebsiteResponse[]; error: string | null; onAdd: () => void; onOpen: (website: WebsiteResponse) => void; onSignOut: () => Promise<void> }) {
+  return (
+    <main className="min-h-screen px-5 py-12 sm:px-8">
+      <section className="mx-auto max-w-5xl">
+        <div className="flex flex-wrap items-start justify-between gap-5">
+          <div><p className="eyebrow">Your account</p><h1 className="mt-2 font-display text-5xl text-ink">Your websites</h1><p className="mt-3 text-ink/70">Choose a workspace or add another website.</p></div>
+          <div className="flex gap-3"><button className="header-button" type="button" onClick={() => void onSignOut()}>Sign out</button><button className="header-button" type="button" onClick={onAdd}>Add another website</button></div>
+        </div>
+        {error && <div className="error-box mt-8" role="alert">{error}</div>}
+        <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+          {websites.map((website) => (
+            <li className="panel p-0" key={website.id}>
+              <button className="w-full p-6 text-left" type="button" aria-label={`Open ${website.business_name}`} onClick={() => onOpen(website)}>
+                <span className="block font-display text-2xl text-ink">{website.business_name}</span>
+                <span className="mt-2 block truncate text-sm text-ink/70">{website.url}</span>
+                <span className="mt-5 block text-sm font-semibold text-moss">Open workspace →</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </main>
+  );
+}
+
+function Workspace({ website, accessToken, onBack, onSignOut }: { website: WebsiteResponse; accessToken: string; onBack: () => void; onSignOut: () => Promise<void> }) {
   const [activeView, setActiveView] = useState<View>("Overview");
   const [analysis, setAnalysis] = useState<AnalysisRunResponse | null>(null);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
@@ -180,7 +205,7 @@ function Workspace({ website, accessToken, onSignOut }: { website: WebsiteRespon
       <header className="border-b border-moss/15 bg-paper px-5 py-4 sm:px-8">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           <div><p className="font-display text-2xl text-moss">Trellis</p><p className="mt-1 text-xs text-ink/70">Paid + organic search workspace</p></div>
-          <div className="flex min-w-0 items-center gap-4"><div className="min-w-0 text-right"><p className="truncate font-semibold">{website.business_name}</p><p className="truncate text-sm text-ink/70">{website.url}</p></div><button className="header-button" type="button" onClick={() => void onSignOut()}>Sign out</button></div>
+          <div className="flex min-w-0 items-center gap-3"><button className="header-button" type="button" onClick={onBack}>All websites</button><div className="min-w-0 text-right"><p className="truncate font-semibold">{website.business_name}</p><p className="truncate text-sm text-ink/70">{website.url}</p></div><button className="header-button" type="button" onClick={() => void onSignOut()}>Sign out</button></div>
         </div>
       </header>
       <div className="mx-auto grid max-w-7xl md:grid-cols-[220px_1fr]">
@@ -211,6 +236,10 @@ function Workspace({ website, accessToken, onSignOut }: { website: WebsiteRespon
 export default function App() {
   const initialTestAccessToken = getTestAccessToken();
   const [website, setWebsite] = useState<WebsiteResponse | null>(null);
+  const [websites, setWebsites] = useState<WebsiteResponse[]>([]);
+  const [websitesLoading, setWebsitesLoading] = useState(false);
+  const [websitesError, setWebsitesError] = useState<string | null>(null);
+  const [addingWebsite, setAddingWebsite] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(initialTestAccessToken);
   const [authLoading, setAuthLoading] = useState(!initialTestAccessToken);
 
@@ -229,13 +258,81 @@ export default function App() {
     return () => { active = false; unsubscribe(); };
   }, []);
 
+  useEffect(() => {
+    if (!accessToken) {
+      setWebsites([]);
+      setWebsitesLoading(false);
+      return;
+    }
+    // The browser-test token is intentionally synthetic, so there is no real
+    // account whose websites can be listed. Real Supabase sessions always use
+    // the account-home flow below.
+    if (initialTestAccessToken) {
+      setAddingWebsite(true);
+      setWebsitesLoading(false);
+      return;
+    }
+    let active = true;
+    setWebsitesLoading(true);
+    setWebsitesError(null);
+    void getWebsites(accessToken).then((savedWebsites) => {
+      if (!active) return;
+      setWebsites(savedWebsites);
+      const routeMatch = window.location.pathname.match(/^\/websites\/(\d+)$/);
+      const routedWebsite = routeMatch ? savedWebsites.find((item) => item.id === Number(routeMatch[1])) : undefined;
+      setWebsite(routedWebsite ?? null);
+      setAddingWebsite(savedWebsites.length === 0);
+      if (routeMatch && !routedWebsite) {
+        window.history.replaceState({}, "", "/");
+        setWebsitesError("That website workspace was not found in your account.");
+      }
+    }).catch((caught) => {
+      if (!active) return;
+      setWebsitesError(requestErrorMessage(caught, "We couldn't load your websites. Please try again."));
+    }).finally(() => { if (active) setWebsitesLoading(false); });
+    return () => { active = false; };
+  }, [accessToken]);
+
+  useEffect(() => {
+    function restoreRoute() {
+      const routeMatch = window.location.pathname.match(/^\/websites\/(\d+)$/);
+      setWebsite(routeMatch ? websites.find((item) => item.id === Number(routeMatch[1])) ?? null : null);
+      setAddingWebsite(false);
+    }
+    window.addEventListener("popstate", restoreRoute);
+    return () => window.removeEventListener("popstate", restoreRoute);
+  }, [websites]);
+
+  function openWebsite(selectedWebsite: WebsiteResponse) {
+    window.history.pushState({}, "", `/websites/${selectedWebsite.id}`);
+    setWebsite(selectedWebsite);
+    setAddingWebsite(false);
+  }
+
+  function showWebsiteHome() {
+    window.history.pushState({}, "", "/");
+    setWebsite(null);
+    setAddingWebsite(false);
+  }
+
+  function handleWebsiteCreated(created: WebsiteResponse) {
+    setWebsites((current) => [...current, created]);
+    openWebsite(created);
+  }
+
   async function handleSignOut() {
     await signOut();
+    window.history.replaceState({}, "", "/");
     setAccessToken(null);
     setWebsite(null);
   }
 
   if (authLoading) return <main className="auth-loading" role="status">Opening your Trellis workspace…</main>;
   if (!accessToken) return <AuthScreen configured={isAuthConfigured} onSignIn={signInWithPassword} onSignUp={signUpWithPassword} />;
-  return website ? <Workspace website={website} accessToken={accessToken} onSignOut={handleSignOut} /> : <AddWebsiteForm accessToken={accessToken} onCreated={setWebsite} />;
+  if (websitesLoading) return <main className="auth-loading" role="status">Loading your websites…</main>;
+  if (website) return <Workspace website={website} accessToken={accessToken} onBack={showWebsiteHome} onSignOut={handleSignOut} />;
+  if (addingWebsite) return <AddWebsiteForm accessToken={accessToken} onCreated={handleWebsiteCreated} />;
+  if (websitesError) return <WebsiteHome websites={websites} error={websitesError} onAdd={() => setAddingWebsite(true)} onOpen={openWebsite} onSignOut={handleSignOut} />;
+  if (websites.length === 0) return <AddWebsiteForm accessToken={accessToken} onCreated={handleWebsiteCreated} />;
+  return <WebsiteHome websites={websites} error={websitesError} onAdd={() => setAddingWebsite(true)} onOpen={openWebsite} onSignOut={handleSignOut} />;
 }
