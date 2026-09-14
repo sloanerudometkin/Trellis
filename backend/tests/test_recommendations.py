@@ -62,6 +62,7 @@ def test_groq_success_uses_one_structured_output_call() -> None:
     assert len(requests) == 1
     sent = json.loads(requests[0].content)
     assert sent["response_format"] == {"type": "json_object"}
+    assert sent["model"] == "openai/gpt-oss-120b"
     assert requests[0].headers["authorization"] == "Bearer groq-test"
 
 
@@ -114,6 +115,34 @@ def test_invalid_groq_retry_then_gemini_fallback() -> None:
     with httpx.Client(transport=httpx.MockTransport(handler)) as client:
         generate_recommendations("site prompt", client=client, groq_api_key="groq", gemini_api_key="gemini")
     assert hosts == ["api.groq.com", "api.groq.com", "generativelanguage.googleapis.com"]
+
+
+def test_current_gemini_model_is_used() -> None:
+    requests: list[httpx.Request] = []
+    def handler(request: httpx.Request):
+        requests.append(request)
+        return gemini_response(request, json.dumps(SUCCESS))
+    with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+        generate_recommendations("site prompt", client=client, groq_api_key="", gemini_api_key="gemini")
+    assert "/models/gemini-3.5-flash:generateContent" in requests[0].url.path
+
+
+def test_placeholder_keys_are_not_treated_as_configured() -> None:
+    with httpx.Client(transport=httpx.MockTransport(lambda request: pytest.fail(f"Unexpected request to {request.url.host}"))) as client:
+        with pytest.raises(RecommendationProviderError, match="No recommendation provider is configured"):
+            generate_recommendations("site prompt", client=client, groq_api_key="replace-me", gemini_api_key="replace-me")
+
+
+def test_provider_errors_do_not_expose_urls_or_api_keys() -> None:
+    def handler(request: httpx.Request):
+        return httpx.Response(404, json={"error": "model not found"}, request=request)
+    with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(RecommendationProviderError) as caught:
+            generate_recommendations("site prompt", client=client, groq_api_key="secret-groq", gemini_api_key="secret-gemini")
+    message = str(caught.value)
+    assert message == "Groq's configured model is unavailable. Gemini's configured model is unavailable."
+    assert "http" not in message
+    assert "secret" not in message
 
 
 def test_only_validated_recommendations_are_persisted_with_required_state(app) -> None:

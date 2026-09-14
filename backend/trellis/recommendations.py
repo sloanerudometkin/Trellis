@@ -17,7 +17,7 @@ from trellis.sem_strategy import apply_sem_strategy
 
 
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
-GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
 SYSTEM_PROMPT = """You are Trellis, a paid-and-organic search strategist for resource-limited marketers. Return only JSON matching the supplied schema. Give site-specific AEO, SEO/content, and SEM recommendations. Every rationale must explain why the action matters for this website. SEM cost tiers are heuristic estimates, never real bid prices."""
 
 
@@ -63,7 +63,7 @@ def _groq_content(client: httpx.Client, prompt: str, api_key: str) -> str:
         GROQ_URL,
         headers={"Authorization": f"Bearer {api_key}"},
         json={
-            "model": "llama-3.3-70b-versatile",
+            "model": "openai/gpt-oss-120b",
             "messages": [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": prompt}],
             "response_format": {"type": "json_object"},
             "temperature": 0.2,
@@ -71,9 +71,14 @@ def _groq_content(client: httpx.Client, prompt: str, api_key: str) -> str:
     )
     if response.status_code == 429:
         raise RecommendationRateLimitError("Groq is temporarily rate limited.")
+    if response.status_code in {401, 403}:
+        raise RecommendationProviderError("Groq credentials were rejected.")
+    if response.status_code == 404:
+        raise RecommendationProviderError("Groq's configured model is unavailable.")
     if response.status_code >= 500:
         raise RecommendationProviderError("Groq is temporarily unavailable.")
-    response.raise_for_status()
+    if response.status_code >= 400:
+        raise RecommendationProviderError("Groq rejected the recommendation request.")
     try:
         return response.json()["choices"][0]["message"]["content"]
     except (KeyError, IndexError, TypeError) as error:
@@ -95,9 +100,14 @@ def _gemini_content(client: httpx.Client, prompt: str, api_key: str) -> str:
     )
     if response.status_code == 429:
         raise RecommendationRateLimitError("Gemini is temporarily rate limited.")
+    if response.status_code in {401, 403}:
+        raise RecommendationProviderError("Gemini credentials were rejected.")
+    if response.status_code == 404:
+        raise RecommendationProviderError("Gemini's configured model is unavailable.")
     if response.status_code >= 500:
         raise RecommendationProviderError("Gemini is temporarily unavailable.")
-    response.raise_for_status()
+    if response.status_code >= 400:
+        raise RecommendationProviderError("Gemini rejected the recommendation request.")
     try:
         return response.json()["candidates"][0]["content"]["parts"][0]["text"]
     except (KeyError, IndexError, TypeError) as error:
@@ -111,9 +121,9 @@ def _validate_content(content: str) -> RecommendationBatch:
 def generate_recommendations(prompt: str, *, client: httpx.Client, groq_api_key: str, gemini_api_key: str) -> RecommendationBatch:
     """Use Groq first, retry schema drift once, then use Gemini as backup."""
     providers: list[tuple[str, Callable[[], str]]] = []
-    if groq_api_key:
+    if groq_api_key and groq_api_key != "replace-me":
         providers.append(("Groq", lambda: _groq_content(client, prompt, groq_api_key)))
-    if gemini_api_key:
+    if gemini_api_key and gemini_api_key != "replace-me":
         providers.append(("Gemini", lambda: _gemini_content(client, prompt, gemini_api_key)))
     if not providers:
         raise RecommendationProviderError("No recommendation provider is configured.")
